@@ -1,0 +1,17 @@
+# EditorConfig ayuda a mantener estilos de codificación consistentes
+trim_trailing_whitespace = true
+
+insert_final_newline = true
+
+end_of_line = lf
+
+indent_size = 2
+
+indent_style = space
+
+charset = utf-8
+
+[*]
+
+root = true
+
