@@ -8,10 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial setup of ERP Modular project
 - Basic structure with React, TypeScript, Tailwind CSS, ESLint
 - Supabase integration
 - Checklist for development tracking
+- GitHub Projects board for task management
+- Issues for each development phase (0-4)
+- GitHub Wiki enabled for documentation
+- Dependabot configuration for automated dependency updates
+- Security policy and vulnerability reporting guidelines
+- CI/CD pipeline with GitHub Actions (linting, type checking, building, security scanning)
 
 ### Changed
 
