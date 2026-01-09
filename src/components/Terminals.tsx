@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Monitor, Plus, CreditCard as Edit, Trash2, Search, Wifi, WifiOff } from 'lucide-react';
+import React, {useState} from 'react';
+import {CreditCard as Edit, Monitor, Plus, Search, Trash2, Wifi, WifiOff} from 'lucide-react';
 
 interface Terminal {
   id: string;
@@ -65,10 +65,6 @@ const Terminals: React.FC = () => {
     { value: 'production', label: 'Producción', description: 'Terminal de planta' }
   ];
 
-  const availablePermissions = [
-    'sales', 'payments', 'receipts', 'reports', 'inventory', 
-    'employees', 'production', 'timetracker', 'faceauth', 'purchases'
-  ];
 
   const filteredTerminals = terminals.filter(terminal =>
     terminal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

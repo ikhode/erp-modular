@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Package, Plus, CreditCard as Edit, Trash2, Search } from 'lucide-react';
+import React, {useState} from 'react';
+import {CreditCard as Edit, Package, Plus, Search, Trash2} from 'lucide-react';
 
 interface Product {
   id: string;
@@ -17,7 +17,7 @@ interface Product {
 }
 
 const Products: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([
+  const [products] = useState<Product[]>([
     {
       id: '1',
       name: 'Coco Fresco',
@@ -48,15 +48,7 @@ const Products: React.FC = () => {
     }
   ]);
 
-  const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-
-  const locationTypes = [
-    { id: '1', name: 'Patios' },
-    { id: '2', name: 'Bodegas' },
-    { id: '3', name: 'Tanques' },
-    { id: '4', name: 'Líneas de Producción' }
-  ];
 
   const categories = [
     'Materia Prima',
@@ -66,12 +58,6 @@ const Products: React.FC = () => {
     'Desecho'
   ];
 
-  const units = [
-    { value: 'kg', label: 'Kilogramos' },
-    { value: 'L', label: 'Litros' },
-    { value: 'pz', label: 'Piezas' },
-    { value: 'ml', label: 'Mililitros' }
-  ];
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,7 +69,6 @@ const Products: React.FC = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Productos</h1>
         <button
-          onClick={() => setShowModal(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
         >
           <Plus className="h-5 w-5" />

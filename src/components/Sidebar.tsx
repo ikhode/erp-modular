@@ -1,18 +1,31 @@
 import React from 'react';
-import { 
-  Home, Users, Clock, ShoppingCart, Package, Factory, FileText,
-  Building2, LogOut, Settings, MapPin, Layers, 
-  ShoppingBag, DollarSign, Monitor, Cog, Search
+import {
+    Building2,
+    Clock,
+    Cog,
+    DollarSign,
+    Factory,
+    FileText,
+    Home,
+    Layers,
+    LogOut,
+    MapPin,
+    Monitor,
+    Package,
+    Search,
+    Settings,
+    ShoppingBag,
+    ShoppingCart,
+    Users
 } from 'lucide-react';
 
 interface SidebarProps {
   activeModule: string;
   setActiveModule: (module: string) => void;
   userRole: string;
-  companyConfig: any;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRole, companyConfig }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRole }) => {
   const getMenuItems = () => {
     const baseItems = [
       { id: 'dashboard', label: 'Dashboard', icon: Home, roles: ['owner', 'admin', 'supervisor', 'cashier'] },

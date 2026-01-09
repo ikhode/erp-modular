@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FileText, Download, Calendar, TrendingUp, Users, DollarSign, Package, Factory, Clock } from 'lucide-react';
+import React, {useState} from 'react';
+import {Clock, DollarSign, Download, Factory, FileText, Package, TrendingUp, Users} from 'lucide-react';
 
 const Reports: React.FC = () => {
   const [selectedReport, setSelectedReport] = useState('ventas');
@@ -336,3 +336,4 @@ const Reports: React.FC = () => {
 };
 
 export default Reports;
+

@@ -68,11 +68,11 @@ export const DevErrorOverlay: React.FC = () => {
           ]);
         }
         return res;
-      } catch (err: any) {
+      } catch (err: unknown) {
         setErrors((prev) => [
           {
-            message: `Fetch failed: ${err?.message || err}`,
-            stack: err?.stack,
+            message: `Fetch failed: ${(err as Error)?.message || String(err)}`,
+            stack: (err as Error)?.stack,
             time: new Date().toLocaleTimeString(),
             type: 'Network'
           },

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ShoppingBag, Plus, CreditCard as Edit, Trash2, Search, Calendar } from 'lucide-react';
+import React, {useState} from 'react';
+import {CreditCard as Edit, Plus, Search, ShoppingBag, Trash2} from 'lucide-react';
 
 interface Purchase {
   id: string;

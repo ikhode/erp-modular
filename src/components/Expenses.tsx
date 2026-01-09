@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { DollarSign, Plus, CreditCard as Edit, Trash2, Search, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
+import React, {useState} from 'react';
+import {CreditCard as Edit, DollarSign, Plus, Search, Trash2, TrendingDown, TrendingUp} from 'lucide-react';
 
 interface Expense {
   id: string;
@@ -59,11 +59,6 @@ const Expenses: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('month');
-
-  const categories = [
-    'Materiales', 'Nómina', 'Servicios', 'Mantenimiento', 
-    'Transporte', 'Ventas', 'Otros'
-  ];
 
   const types = [
     { value: 'all', label: 'Todos' },
@@ -336,3 +331,4 @@ const Expenses: React.FC = () => {
 };
 
 export default Expenses;
+

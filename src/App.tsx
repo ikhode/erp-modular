@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Configuration from './components/Configuration';
@@ -22,19 +22,6 @@ function App() {
   const [activeModule, setActiveModule] = useState('dashboard');
   const [userRole, setUserRole] = useState('admin'); // owner, admin, supervisor, cashier, employee
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [companyConfig, setCompanyConfig] = useState({
-    name: 'Mi Empresa',
-    industry: 'general',
-    modules: {
-      inventory: true,
-      production: true,
-      sales: true,
-      purchases: true,
-      employees: true,
-      expenses: true,
-      reports: true
-    }
-  });
 
   const renderModule = () => {
     switch (activeModule) {

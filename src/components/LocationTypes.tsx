@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Layers, Plus, CreditCard as Edit, Trash2, MapPin } from 'lucide-react';
+import React, {useState} from 'react';
+import {CreditCard as Edit, MapPin, Plus, Trash2} from 'lucide-react';
 
 interface LocationType {
   id: string;
@@ -64,9 +64,6 @@ const LocationTypes: React.FC = () => {
     { value: 'cyan', label: 'Cian', class: 'bg-cyan-500' },
   ];
 
-  const icons = [
-    'MapPin', 'Package', 'Factory', 'Droplets', 'Warehouse', 'Truck'
-  ];
 
   const handleSubmit = () => {
     if (!formData.name.trim()) {

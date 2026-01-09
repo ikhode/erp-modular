@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Settings, Save, Plus, Trash2, CreditCard as Edit } from 'lucide-react';
+import React, {useState} from 'react';
+import {Plus, Save, Settings, Trash2} from 'lucide-react';
 
 const Configuration: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');
@@ -59,7 +59,7 @@ const Configuration: React.FC = () => {
     });
   };
 
-  const updateProcess = (id: number, field: string, value: any) => {
+  const updateProcess = (id: number, field: string, value: string | number | boolean) => {
     setConfig({
       ...config,
       processes: config.processes.map(process =>

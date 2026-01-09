@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ShoppingCart, Plus, CreditCard as Edit, Trash2, Search, DollarSign, Receipt } from 'lucide-react';
+import React, {useState} from 'react';
+import {CreditCard as Edit, DollarSign, Plus, Receipt, Search, ShoppingCart, Trash2} from 'lucide-react';
 
 interface Sale {
   id: string;
@@ -124,7 +124,6 @@ const Sales: React.FC = () => {
 
   const totalSales = sales.filter(s => s.status === 'completed').reduce((sum, s) => sum + s.total, 0);
   const completedSales = sales.filter(s => s.status === 'completed').length;
-  const pendingSales = sales.filter(s => s.status === 'pending').length;
   const totalItems = sales.reduce((sum, s) => sum + s.products.reduce((pSum, p) => pSum + p.quantity, 0), 0);
 
   return (
