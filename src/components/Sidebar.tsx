@@ -23,9 +23,10 @@ interface SidebarProps {
   activeModule: string;
   setActiveModule: (module: string) => void;
   userRole: string;
+  onLogout: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRole }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRole, onLogout }) => {
   const getMenuItems = () => {
     const baseItems = [
       { id: 'dashboard', label: 'Dashboard', icon: Home, roles: ['owner', 'admin', 'supervisor', 'cashier'] },
@@ -181,7 +182,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
 
       <div className="absolute bottom-6 left-6 right-6">
         <button 
-          onClick={() => setIsAuthenticated(false)}
+          onClick={onLogout}
           className="w-full flex items-center space-x-3 px-4 py-2 text-left text-blue-300 hover:text-white hover:bg-blue-800 rounded-md transition-colors"
         >
           <LogOut className="h-5 w-5" />

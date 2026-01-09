@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Configuration from './components/Configuration';
@@ -72,6 +72,7 @@ function App() {
         activeModule={activeModule} 
         setActiveModule={setActiveModule}
         userRole={userRole} 
+        onLogout={() => setIsAuthenticated(false)}
       />
       <main className="flex-1 ml-64 p-8">
         {renderModule()}

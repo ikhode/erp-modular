@@ -83,18 +83,18 @@ export const DevErrorOverlay: React.FC = () => {
     };
     // Captura errores de XHR
     const origXHROpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function (...args) {
+    XMLHttpRequest.prototype.open = function (method: string, url: string | URL, async: boolean = true, username?: string | null, password?: string | null) {
       this.addEventListener('error', function () {
         setErrors((prev) => [
           {
-            message: `XHR error: ${args[1]}`,
+            message: `XHR error: ${url}`,
             time: new Date().toLocaleTimeString(),
             type: 'XHR'
           },
           ...prev
         ]);
       });
-      origXHROpen.apply(this, args);
+      origXHROpen.call(this, method, url, async, username, password);
     };
     // Limpieza
     window.addEventListener('error', onError);

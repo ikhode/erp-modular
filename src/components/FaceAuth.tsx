@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Camera, CheckCircle } from 'lucide-react';
+import {useState} from 'react';
+import {Camera, CheckCircle} from 'lucide-react';
 
 interface FaceAuthProps {
   onAuthenticated: () => void;

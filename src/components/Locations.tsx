@@ -82,7 +82,7 @@ const Locations: React.FC = () => {
     capacity: '',
     unit: 'kg',
     description: '',
-    status: 'active' as const
+    status: 'active' as 'active' | 'inactive' | 'maintenance'
   });
 
   const units = [
