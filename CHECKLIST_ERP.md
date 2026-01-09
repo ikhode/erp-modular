@@ -23,7 +23,7 @@
 ### 0.1 Configuración Inicial del Proyecto
 
 - [x] **0.1.1** Crear repositorio Git `erp-modular`
-- [ ] **0.1.2** Verificar y documentar estructura de carpetas existente:
+- [x] **0.1.2** Verificar y documentar estructura de carpetas existente:
   ```
   /src/components        # Componentes React reutilizables
   /src/lib               # Librerías y utilidades (ej: supabase)
@@ -34,9 +34,9 @@
   ```
   > Nota: Adaptar nuevas carpetas solo si son necesarias y justificadas para el flujo real del proyecto. Mantener la
   estructura actual lo más posible.
-- [ ] **0.1.3** Inicializar proyecto React con TypeScript
-- [ ] **0.1.4** Configurar Tailwind CSS
-- [ ] **0.1.5** Configurar variables de entorno (.env.example y .env.local)
+- [x] **0.1.3** Inicializar proyecto React con TypeScript
+- [x] **0.1.4** Configurar Tailwind CSS
+- [x] **0.1.5** Configurar variables de entorno (.env.example y .env.local)
 - [ ] **0.1.6** Crear archivo CHANGELOG.md
 - [ ] **0.1.7** Crear archivo README.md con instrucciones de instalación
 - [ ] **0.1.8** Configurar ESLint y Prettier
