@@ -116,14 +116,27 @@ export interface Inventario {
 export interface ProduccionTicket {
   id?: number;
   folio?: string; // Nuevo campo para folio automático
-  procesoId: number;
-  empleadoId: number;
-  insumos: { productoId: number; cantidad: number }[];
+  processId: number;
+  employeeId: number;
+  insumos: { productoId: number; cantidad: number; locationId: number }[]; // Actualizado para incluir ubicación
   productoTerminadoId: number;
   cantidadProducida: number;
   ubicacionDestinoId: number;
   firmaEmpleadoBase64?: string;
-  estado: 'pendiente' | 'en_proceso' | 'completado';
+  faceAuthData?: Record<string, unknown>; // Datos biométricos
+  estado: 'pendiente' | 'en_proceso' | 'completado' | 'cancelado';
+  // Campos de pago
+  paymentAmount?: number;
+  paymentMethod?: 'efectivo' | 'transferencia' | 'cheque';
+  // Timestamps
+  startedAt?: Date;
+  completedAt?: Date;
+  paidAt?: Date;
+  // Campos adicionales
+  notes?: string;
+  supervisorNotes?: string;
+  qualityCheck?: boolean;
+  qualityNotes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -240,7 +253,7 @@ export class ERPDB extends Dexie {
 
   constructor() {
     super('erp_modular');
-    this.version(2).stores({
+    this.version(3).stores({
       clientes: '++id, nombre, rfc, email, createdAt',
       proveedores: '++id, nombre, rfc, email, createdAt',
       productos: '++id, nombre, precioActual, createdAt',
@@ -248,9 +261,9 @@ export class ERPDB extends Dexie {
       ubicaciones: '++id, nombre, tipo, createdAt',
       procesos: '++id, nombre, ubicacionId, requiereFaceAuth, createdAt',
       inventario: '++id, productoId, ubicacionId, cantidad, createdAt',
-      produccionTickets: '++id, procesoId, empleadoId, estado, createdAt',
-      compras: '++id, proveedorId, productoId, tipo, estado, createdAt',
-      ventas: '++id, clienteId, productoId, tipoEntrega, estado, createdAt',
+      produccionTickets: '++id, folio, procesoId, empleadoId, estado, createdAt',
+      compras: '++id, folio, proveedorId, productoId, tipo, estado, createdAt',
+      ventas: '++id, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
       syncQueue: '++id, operation, table, synced, createdAt',
       userRoles: '++id, name, createdAt',
       locationTypes: '++id, name, createdAt',
