@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dependabot configuration for automated dependency updates
 - Security policy and vulnerability reporting guidelines
 - CI/CD pipeline with GitHub Actions (linting, type checking, building, security scanning)
+- Migración del checklist ERP a GitHub Issues y Projects para mejor trazabilidad y colaboración.
+- Issue #22: Checklist ERP Completo - Migración desde archivo.
+- Proyecto GitHub: ERP Modular Development (ID 5) para gestión de tareas.
 
 ### Changed
 

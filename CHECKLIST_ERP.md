@@ -40,8 +40,8 @@
 - [x] **0.1.6** Crear archivo CHANGELOG.md
 - [x] **0.1.7** Crear archivo README.md con instrucciones de instalación
 - [x] **0.1.8** Configurar ESLint y Prettier
-- [ ] **0.1.9** Configurar Git hooks (pre-commit, pre-push)
-- [ ] **0.1.10** Crear cuenta y proyecto en Supabase
+- [x] **0.1.9** Configurar Git hooks (pre-commit, pre-push)
+- [x] **0.1.10** Crear cuenta y proyecto en Supabase
 - [ ] **0.1.11** Validar conectividad con Supabase
 - [ ] **0.1.12** Configurar buckets de Storage en Supabase
 
@@ -482,12 +482,12 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 8
-- **Progreso general:** 4%
+- **Tareas completadas:** 9
+- **Progreso general:** 5%
 
 ### Por Fase
 
-- **FASE 0 - Estructura Base:** 8/35 (23%)
+- **FASE 0 - Estructura Base:** 9/35 (26%)
 - **FASE 1 - Núcleo Operativo:** 0/58 (0%)
 - **FASE 2 - Financiera:** 0/42 (0%)
 - **FASE 3 - Operacional:** 0/28 (0%)
