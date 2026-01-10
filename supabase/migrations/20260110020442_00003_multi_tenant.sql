@@ -1,18 +1,3 @@
--- Create extended users table
-CREATE TABLE public.users
-(
-    id         UUID REFERENCES auth.users (id) ON DELETE CASCADE PRIMARY KEY,
-    email      TEXT UNIQUE NOT NULL,
-    role       user_role   NOT NULL DEFAULT 'empleado',
-    nombre     TEXT,
-    apellido   TEXT,
-    telefono   TEXT,
-    activo     BOOLEAN              DEFAULT true,
-    created_at TIMESTAMPTZ          DEFAULT NOW(),
-    updated_at TIMESTAMPTZ          DEFAULT NOW(),
-    tenant_id  UUID                 DEFAULT gen_random_uuid()
-);
-
 -- Create profiles table for user metadata
 CREATE TABLE public.profiles
 (
@@ -46,31 +31,7 @@ CREATE TRIGGER on_auth_user_created
     FOR EACH ROW
 EXECUTE FUNCTION public.handle_new_user();
 
--- Add tenant_id to all tables
-ALTER TABLE public.users
-    ADD COLUMN tenant_id UUID REFERENCES public.profiles (tenant_id) ON DELETE CASCADE;
-ALTER TABLE public.clientes
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.proveedores
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.productos
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.empleados
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.ubicaciones
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.procesos
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.inventario
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.produccion_tickets
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.compras
-    ADD COLUMN tenant_id UUID NOT NULL;
-ALTER TABLE public.ventas
-    ADD COLUMN tenant_id UUID NOT NULL;
-
--- Create indexes for tenant_id
+-- Create indexes for tenant_id (columns already exist)
 CREATE INDEX idx_clientes_tenant_id ON public.clientes (tenant_id);
 CREATE INDEX idx_proveedores_tenant_id ON public.proveedores (tenant_id);
 CREATE INDEX idx_productos_tenant_id ON public.productos (tenant_id);

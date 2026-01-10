@@ -176,7 +176,7 @@ export class ERPDB extends Dexie {
 
   constructor() {
     super('erp_modular');
-    this.version(1).stores({
+    this.version(2).stores({
       clientes: '++id, nombre, rfc, email, createdAt',
       proveedores: '++id, nombre, rfc, email, createdAt',
       productos: '++id, nombre, precioActual, createdAt',
