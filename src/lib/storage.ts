@@ -1,4 +1,5 @@
 import type {
+    Attendance,
     CashFlow,
     Cliente,
     Compra,
@@ -12,6 +13,7 @@ import type {
     Producto,
     Proveedor,
     SyncQueue,
+    Transfer,
     Ubicacion,
     UserRole,
     Venta,
@@ -82,6 +84,8 @@ export const locationTypeStorage = new DexieStorage<LocationType>(db.locationTyp
 export const processTypeStorage = new DexieStorage<ProcessType>(db.processTypes);
 export const syncQueueStorage = new DexieStorage<SyncQueue>(db.syncQueue);
 export const folioSequenceStorage = new DexieStorage<FolioSequence>(db.folioSequences);
+export const transferStorage = new DexieStorage<Transfer>(db.transfers);
+export const attendanceStorage = new DexieStorage<Attendance>(db.attendance);
 
 // ✅ Sync queue management
 export const syncQueue = {
@@ -163,4 +167,6 @@ export const storage = {
     userRoles: userRoleStorage, // Gestión de roles de usuario: tipos de roles disponibles para empleados y permisos asociados.
     locationTypes: locationTypeStorage, // Gestión de tipos de ubicación: categorías de lugares (patios, bodegas, etc.) con productos permitidos.
     processTypes: processTypeStorage, // Gestión de tipos de proceso: categorías de procesos de producción (destopado, pelado, etc.).
+    transfers: transferStorage, // Gestión de traslados: registros de movimientos de productos entre ubicaciones.
+    asistencia: attendanceStorage, // Gestión de asistencia: registros de entrada y salida de empleados, con horarios y estados.
 };

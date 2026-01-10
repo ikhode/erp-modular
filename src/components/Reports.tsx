@@ -1,9 +1,49 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Clock, DollarSign, Download, Factory, FileText, Package, TrendingUp, Users} from 'lucide-react';
+import {storage} from '../lib/storage';
+import {Attendance, Empleado, Inventario, ProduccionTicket, Producto, Venta} from '../lib/db';
 
 const Reports: React.FC = () => {
   const [selectedReport, setSelectedReport] = useState('ventas');
   const [dateRange, setDateRange] = useState('7');
+  const [ventas, setVentas] = useState<Venta[]>([]);
+  const [produccion, setProduccion] = useState<ProduccionTicket[]>([]);
+  const [empleados, setEmpleados] = useState<Empleado[]>([]);
+  const [inventario, setInventario] = useState<Inventario[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [asistencia, setAsistencia] = useState<Attendance[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [ventasData, produccionData, empleadosData, inventarioData, productosData, asistenciaData] = await Promise.all([
+        storage.ventas.getAll(),
+        storage.produccion.getAll(),
+        storage.empleados.getAll(),
+        storage.inventario.getAll(),
+        storage.productos.getAll(),
+        storage.asistencia.getAll()
+      ]);
+      setVentas(ventasData);
+      setProduccion(produccionData);
+      setEmpleados(empleadosData);
+      setInventario(inventarioData);
+      setProductos(productosData);
+      setAsistencia(asistenciaData);
+    } catch (error) {
+      console.error('Error loading reports data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getProducto = (id: number) => productos.find(p => p.id === id);
+  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
 
   const reportTypes = [
     { id: 'ventas', name: 'Reporte de Ventas', icon: DollarSign, description: 'Análisis detallado de ventas por período' },
@@ -13,28 +53,29 @@ const Reports: React.FC = () => {
   ];
 
   const salesData = {
-    totalSales: 45780,
-    transactions: 324,
-    avgTicket: 141.30,
-    topProducts: [
-      { name: 'Coco Rallado 500g', quantity: 89, revenue: 3115 },
-      { name: 'Aceite de Coco 250ml', quantity: 45, revenue: 5400 },
-      { name: 'Coco Deshidratado 250g', quantity: 67, revenue: 3015 },
-    ],
-    dailySales: [
-      { date: '15/01', amount: 6420 },
-      { date: '16/01', amount: 7230 },
-      { date: '17/01', amount: 5890 },
-      { date: '18/01', amount: 8120 },
-      { date: '19/01', amount: 6780 },
-      { date: '20/01', amount: 7340 },
-      { date: '21/01', amount: 4000 },
-    ]
+    totalSales: ventas.reduce((total, venta) => total + venta.total, 0),
+    transactions: ventas.length,
+    avgTicket: ventas.reduce((total, venta) => total + venta.total, 0) / ventas.length || 0,
+    topProducts: productos.map(producto => ({
+      name: producto.nombre,
+      quantity: ventas.reduce((total, venta) => total + (venta.productos.find(p => p.id === producto.id)?.cantidad || 0), 0),
+      revenue: ventas.reduce((total, venta) => total + (venta.productos.find(p => p.id === producto.id)?.cantidad || 0) * producto.precio, 0)
+    })).sort((a, b) => b.revenue - a.revenue).slice(0, 3),
+    dailySales: Array.from({ length: 7 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dayString = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+      const amount = ventas.filter(venta => {
+        const ventaDate = new Date(venta.fecha);
+        return ventaDate.getDate() === date.getDate() && ventaDate.getMonth() === date.getMonth() && ventaDate.getFullYear() === date.getFullYear();
+      }).reduce((total, venta) => total + venta.total, 0);
+      return { date: dayString, amount };
+    }).reverse()
   };
 
   const productionData = {
-    totalProduced: 1250,
-    efficiency: 87,
+    totalProduced: produccion.reduce((total, prod) => total + prod.cantidad, 0),
+    efficiency: produccion.reduce((total, prod) => total + prod.eficiencia, 0) / produccion.length || 0,
     downtime: '2.5h',
     topLines: [
       { name: 'Línea A - Rallado', produced: 650, efficiency: 92 },
@@ -44,15 +85,15 @@ const Reports: React.FC = () => {
   };
 
   const employeeData = {
-    totalEmployees: 24,
-    presentToday: 22,
-    avgHours: 8.2,
-    overtime: 45,
-    topPerformers: [
-      { name: 'Juan Pérez', hours: 42, efficiency: 95 },
-      { name: 'María García', hours: 40, efficiency: 92 },
-      { name: 'Carlos López', hours: 38, efficiency: 89 },
-    ]
+    totalEmployees: empleados.length,
+    presentToday: asistencia.filter(a => a.fecha === new Date().toISOString().split('T')[0]).length,
+    avgHours: asistencia.reduce((total, a) => total + a.horasTrabajadas, 0) / asistencia.length || 0,
+    overtime: asistencia.filter(a => a.horasExtra > 0).reduce((total, a) => total + a.horasExtra, 0),
+    topPerformers: empleados.map(empleado => ({
+      name: empleado.nombre,
+      hours: asistencia.filter(a => a.empleadoId === empleado.id).reduce((total, a) => total + a.horasTrabajadas, 0),
+      efficiency: produccion.filter(p => p.empleadoId === empleado.id).reduce((total, p) => total + p.eficiencia, 0) / produccion.filter(p => p.empleadoId === empleado.id).length || 0
+    })).sort((a, b) => b.efficiency - a.efficiency).slice(0, 3)
   };
 
   const renderSalesReport = () => (
@@ -282,6 +323,14 @@ const Reports: React.FC = () => {
         return renderSalesReport();
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

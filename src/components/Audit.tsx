@@ -1,140 +1,85 @@
-import React, {useState} from 'react';
-import {Activity, Calendar, Eye, Search, User} from 'lucide-react';
-
-interface AuditLog {
-  id: string;
-  timestamp: string;
-  userId: string;
-  userName: string;
-  userRole: string;
-  action: string;
-  module: string;
-  details: string;
-  ipAddress: string;
-  terminal: string;
-  status: 'success' | 'failed' | 'warning';
-}
+import React, { useEffect, useState } from 'react';
+import { Activity, Calendar, Eye, Search, User } from 'lucide-react';
+import { storage } from '../lib/storage';
+import { SyncQueue } from '../lib/db';
 
 const Audit: React.FC = () => {
-  const [auditLogs] = useState<AuditLog[]>([
-    {
-      id: '1',
-      timestamp: '2024-01-15 14:30:25',
-      userId: '001',
-      userName: 'Juan Pérez',
-      userRole: 'admin',
-      action: 'LOGIN',
-      module: 'Authentication',
-      details: 'Inicio de sesión exitoso con Face ID',
-      ipAddress: '192.168.1.100',
-      terminal: 'Terminal Principal',
-      status: 'success'
-    },
-    {
-      id: '2',
-      timestamp: '2024-01-15 14:25:10',
-      userId: '002',
-      userName: 'María García',
-      userRole: 'cashier',
-      action: 'SALE_CREATE',
-      module: 'Sales',
-      details: 'Venta creada por $450.00 - Ticket #12345',
-      ipAddress: '192.168.1.101',
-      terminal: 'Caja 1',
-      status: 'success'
-    },
-    {
-      id: '3',
-      timestamp: '2024-01-15 14:20:15',
-      userId: '003',
-      userName: 'Carlos López',
-      userRole: 'supervisor',
-      action: 'INVENTORY_UPDATE',
-      module: 'Inventory',
-      details: 'Actualización de inventario - Producto: Coco Rallado 500g',
-      ipAddress: '192.168.1.102',
-      terminal: 'Terminal Supervisor',
-      status: 'success'
-    },
-    {
-      id: '4',
-      timestamp: '2024-01-15 14:15:30',
-      userId: '004',
-      userName: 'Ana Martínez',
-      userRole: 'employee',
-      action: 'LOGIN_FAILED',
-      module: 'Authentication',
-      details: 'Intento de inicio de sesión fallido - Face ID no reconocido',
-      ipAddress: '192.168.1.103',
-      terminal: 'Control de Acceso',
-      status: 'failed'
-    },
-    {
-      id: '5',
-      timestamp: '2024-01-15 14:10:45',
-      userId: '001',
-      userName: 'Juan Pérez',
-      userRole: 'admin',
-      action: 'PRODUCT_CREATE',
-      module: 'Products',
-      details: 'Producto creado: Aceite de Coco Premium 500ml',
-      ipAddress: '192.168.1.100',
-      terminal: 'Terminal Principal',
-      status: 'success'
-    }
-  ]);
-
+  const [auditLogs, setAuditLogs] = useState<SyncQueue[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [selectedUser, setSelectedUser] = useState('all');
-  const [dateRange, setDateRange] = useState('today');
 
-  const modules = [
-    'all', 'Authentication', 'Sales', 'Inventory', 'Products', 
-    'Employees', 'Production', 'Purchases', 'Configuration'
-  ];
+  useEffect(() => {
+    loadAuditLogs();
+  }, []);
 
-  const statuses = [
-    { value: 'all', label: 'Todos' },
-    { value: 'success', label: 'Exitoso' },
-    { value: 'failed', label: 'Fallido' },
-    { value: 'warning', label: 'Advertencia' }
-  ];
-
-  const users = [
-    'all', 'Juan Pérez', 'María García', 'Carlos López', 'Ana Martínez'
-  ];
+  const loadAuditLogs = async () => {
+    setLoading(true);
+    try {
+      const logs = await storage.syncQueue.getAll();
+      setAuditLogs(logs);
+    } catch (error) {
+      console.error('Error loading audit logs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredLogs = auditLogs.filter(log => {
-    const matchesSearch = log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         log.userName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesModule = selectedModule === 'all' || log.module === selectedModule;
-    const matchesStatus = selectedStatus === 'all' || log.status === selectedStatus;
-    const matchesUser = selectedUser === 'all' || log.userName === selectedUser;
-    
-    return matchesSearch && matchesModule && matchesStatus && matchesUser;
+    const matchesSearch = log.table.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         log.operation.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesModule = selectedModule === 'all' || log.table === selectedModule;
+    const matchesStatus = selectedStatus === 'all' || (selectedStatus === 'synced' ? log.synced : !log.synced);
+    return matchesSearch && matchesModule && matchesStatus;
   });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'success': return 'bg-green-100 text-green-800';
-      case 'failed': return 'bg-red-100 text-red-800';
-      case 'warning': return 'bg-yellow-100 text-yellow-800';
+  const getStatusColor = (synced: boolean) => {
+    return synced ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+  };
+
+  const getStatusLabel = (synced: boolean) => {
+    return synced ? 'Sincronizado' : 'Pendiente';
+  };
+
+  const getActionColor = (operation: string) => {
+    switch (operation) {
+      case 'create': return 'bg-blue-100 text-blue-800';
+      case 'update': return 'bg-yellow-100 text-yellow-800';
+      case 'delete': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getActionIcon = (action: string) => {
-    if (action.includes('LOGIN')) return User;
-    if (action.includes('CREATE') || action.includes('UPDATE') || action.includes('DELETE')) return Activity;
-    return Eye;
+  const formatDate = (date: Date) => {
+    return date.toLocaleString('es-MX');
   };
 
+  const modules = [
+    { value: 'all', label: 'Todos los módulos' },
+    { value: 'clientes', label: 'Clientes' },
+    { value: 'proveedores', label: 'Proveedores' },
+    { value: 'productos', label: 'Productos' },
+    { value: 'empleados', label: 'Empleados' },
+    { value: 'ubicaciones', label: 'Ubicaciones' },
+    { value: 'procesos', label: 'Procesos' },
+    { value: 'inventario', label: 'Inventario' },
+    { value: 'produccion', label: 'Producción' },
+    { value: 'compras', label: 'Compras' },
+    { value: 'ventas', label: 'Ventas' },
+    { value: 'transfers', label: 'Traslados' },
+    { value: 'cashFlow', label: 'Finanzas' },
+  ];
+
+  const statuses = [
+    { value: 'all', label: 'Todos los estados' },
+    { value: 'synced', label: 'Sincronizados' },
+    { value: 'pending', label: 'Pendientes' },
+  ];
+
   const totalLogs = auditLogs.length;
-  const successfulActions = auditLogs.filter(log => log.status === 'success').length;
-  const failedActions = auditLogs.filter(log => log.status === 'failed').length;
+  const successfulActions = auditLogs.filter(log => log.synced).length;
+  const pendingActions = auditLogs.filter(log => !log.synced).length;
   const uniqueUsers = new Set(auditLogs.map(log => log.userId)).size;
 
   return (
@@ -164,7 +109,7 @@ const Audit: React.FC = () => {
           <div className="flex items-center">
             <Activity className="h-8 w-8 text-green-600 mr-3" />
             <div>
-              <p className="text-sm text-gray-600">Exitosas</p>
+              <p className="text-sm text-gray-600">Sincronizadas</p>
               <p className="text-2xl font-bold">{successfulActions}</p>
             </div>
           </div>
@@ -173,8 +118,8 @@ const Audit: React.FC = () => {
           <div className="flex items-center">
             <Activity className="h-8 w-8 text-red-600 mr-3" />
             <div>
-              <p className="text-sm text-gray-600">Fallidas</p>
-              <p className="text-2xl font-bold">{failedActions}</p>
+              <p className="text-sm text-gray-600">Pendientes</p>
+              <p className="text-2xl font-bold">{pendingActions}</p>
             </div>
           </div>
         </div>
@@ -209,9 +154,8 @@ const Audit: React.FC = () => {
             onChange={(e) => setSelectedModule(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="all">Todos los módulos</option>
-            {modules.slice(1).map(module => (
-              <option key={module} value={module}>{module}</option>
+            {modules.map(module => (
+              <option key={module.value} value={module.value}>{module.label}</option>
             ))}
           </select>
           <select
@@ -222,26 +166,6 @@ const Audit: React.FC = () => {
             {statuses.map(status => (
               <option key={status.value} value={status.value}>{status.label}</option>
             ))}
-          </select>
-          <select
-            value={selectedUser}
-            onChange={(e) => setSelectedUser(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="all">Todos los usuarios</option>
-            {users.slice(1).map(user => (
-              <option key={user} value={user}>{user}</option>
-            ))}
-          </select>
-          <select
-            value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="today">Hoy</option>
-            <option value="week">Esta semana</option>
-            <option value="month">Este mes</option>
-            <option value="quarter">Este trimestre</option>
           </select>
         </div>
       </div>
@@ -277,11 +201,11 @@ const Audit: React.FC = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredLogs.map((log) => {
-                const ActionIcon = getActionIcon(log.action);
+                const ActionIcon = getActionIcon(log.operation);
                 return (
                   <tr key={log.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">
-                      {log.timestamp}
+                      {formatDate(new Date(log.timestamp))}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -292,12 +216,12 @@ const Audit: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <ActionIcon className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{log.action}</span>
+                        <span className="text-sm font-medium text-gray-900">{log.operation}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                        {log.module}
+                        {log.table}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -306,9 +230,8 @@ const Audit: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.status)}`}>
-                        {log.status === 'success' ? 'Exitoso' :
-                         log.status === 'failed' ? 'Fallido' : 'Advertencia'}
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.synced)}`}>
+                        {getStatusLabel(log.synced)}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

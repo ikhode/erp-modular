@@ -189,6 +189,37 @@ export interface Venta {
   updatedAt: Date;
 }
 
+export interface Transfer {
+  id?: number;
+  folio?: string; // Nuevo campo para folio automático
+  productoId: number;
+  cantidad: number;
+  ubicacionOrigenId: number;
+  ubicacionDestinoId: number;
+  estado: 'pendiente' | 'en_transito' | 'completado' | 'cancelado';
+  solicitadoPor?: number; // ID del empleado que solicita
+  aprobadoPor?: number; // ID del supervisor que aprueba
+  transportadoPor?: number; // ID del empleado que transporta
+  fechaSolicitud: Date;
+  fechaAprobacion?: Date;
+  fechaTransporte?: Date;
+  fechaCompletado?: Date;
+  motivoCancelacion?: string;
+  notas?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Attendance {
+  id?: number;
+  employeeId: number;
+  action: 'entrada' | 'salida' | 'comida' | 'regreso_comida' | 'baño' | 'regreso_baño';
+  timestamp: Date;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface SyncQueue {
   id?: number;
   operation: 'create' | 'update' | 'delete';
@@ -259,6 +290,8 @@ export class ERPDB extends Dexie {
   produccionTickets!: Table<ProduccionTicket>;
   compras!: Table<Compra>;
   ventas!: Table<Venta>;
+  transfers!: Table<Transfer>;
+  attendance!: Table<Attendance>;
   cashFlow!: Table<CashFlow>;
   syncQueue!: Table<SyncQueue>;
   userRoles!: Table<UserRole>;
@@ -268,7 +301,7 @@ export class ERPDB extends Dexie {
 
   constructor() {
     super('erp_modular');
-    this.version(4).stores({
+    this.version(6).stores({
       clientes: '++id, nombre, rfc, email, createdAt',
       proveedores: '++id, nombre, rfc, email, createdAt',
       productos: '++id, nombre, precioActual, createdAt',
@@ -276,9 +309,11 @@ export class ERPDB extends Dexie {
       ubicaciones: '++id, nombre, tipo, createdAt',
       procesos: '++id, nombre, ubicacionId, requiereFaceAuth, createdAt',
       inventario: '++id, productoId, ubicacionId, cantidad, createdAt',
-      produccionTickets: '++id, folio, procesoId, empleadoId, estado, createdAt',
+      produccionTickets: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, estado, createdAt',
       compras: '++id, folio, proveedorId, productoId, tipo, estado, createdAt',
       ventas: '++id, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
+      transfers: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, estado, fechaSolicitud, createdAt',
+      attendance: '++id, employeeId, action, timestamp, createdAt',
       cashFlow: '++id, amount, movementType, sourceType, createdAt',
       syncQueue: '++id, operation, table, synced, createdAt',
       userRoles: '++id, name, createdAt',

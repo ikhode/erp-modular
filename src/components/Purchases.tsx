@@ -563,7 +563,7 @@ const Purchases: React.FC = () => {
                       ...nuevoProveedor,
                       createdAt: new Date(),
                       updatedAt: new Date(),
-                    }).then(() => {
+                    }).then(async () => {
                       setNuevoProveedor({ nombre: '', rfc: '', createdAt: new Date(), updatedAt: new Date() });
                       setProveedores(await proveedorStorage.getAll());
                     });
@@ -618,7 +618,7 @@ const Purchases: React.FC = () => {
                       ...nuevoProducto,
                       createdAt: new Date(),
                       updatedAt: new Date(),
-                    }).then(() => {
+                    }).then(async () => {
                       setNuevoProducto({ nombre: '', precioMin: 0, precioMax: 0, precioActual: 0, unidad: '', compra: true, venta: false, procesoEntrada: false, procesoSalida: false, createdAt: new Date(), updatedAt: new Date() });
                       setProductos(await productoStorage.getAll());
                     });

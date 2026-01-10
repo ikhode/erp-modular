@@ -1,124 +1,109 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CreditCard as Edit, DollarSign, Plus, Search, Trash2, TrendingDown, TrendingUp} from 'lucide-react';
-
-interface Expense {
-  id: string;
-  description: string;
-  amount: number;
-  category: string;
-  type: 'expense' | 'income' | 'withdrawal';
-  date: string;
-  relatedTo?: string;
-  relatedType?: 'product' | 'process' | 'employee';
-  receipt?: string;
-  approvedBy?: string;
-  status: 'pending' | 'approved' | 'rejected';
-  createdAt: string;
-}
+import {cashFlowStorage} from '../lib/storage';
+import {CashFlow} from '../lib/db';
 
 const Expenses: React.FC = () => {
-  const [expenses, setExpenses] = useState<Expense[]>([
-    {
-      id: '1',
-      description: 'Compra de materia prima',
-      amount: 5000,
-      category: 'Materiales',
-      type: 'expense',
-      date: '2024-01-15',
-      relatedTo: 'Coco fresco',
-      relatedType: 'product',
-      status: 'approved',
-      approvedBy: 'Admin',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '2',
-      description: 'Venta de productos',
-      amount: 8500,
-      category: 'Ventas',
-      type: 'income',
-      date: '2024-01-15',
-      status: 'approved',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '3',
-      description: 'Pago de nómina',
-      amount: 15000,
-      category: 'Nómina',
-      type: 'expense',
-      date: '2024-01-14',
-      status: 'approved',
-      approvedBy: 'Admin',
-      createdAt: '2024-01-14'
-    }
-  ]);
-
+  const [cashFlows, setCashFlows] = useState<CashFlow[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const [editingCashFlow, setEditingCashFlow] = useState<CashFlow | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('month');
 
-  const types = [
-    { value: 'all', label: 'Todos' },
-    { value: 'expense', label: 'Gastos' },
-    { value: 'income', label: 'Ingresos' },
-    { value: 'withdrawal', label: 'Retiros' }
-  ];
+  const [formData, setFormData] = useState({
+    amount: 0,
+    movementType: 'ingreso' as 'ingreso' | 'egreso',
+    sourceType: 'gasto' as CashFlow['sourceType'],
+    description: '',
+    paymentMethod: 'efectivo' as CashFlow['paymentMethod']
+  });
 
-  const filteredExpenses = expenses.filter(expense => {
-    const matchesSearch = expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         expense.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = selectedType === 'all' || expense.type === selectedType;
+  useEffect(() => {
+    loadCashFlows();
+  }, []);
+
+  const loadCashFlows = async () => {
+    setLoading(true);
+    try {
+      const data = await cashFlowStorage.getAll();
+      setCashFlows(data);
+    } catch (error) {
+      console.error('Error loading cash flows:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (cashFlow: CashFlow) => {
+    setEditingCashFlow(cashFlow);
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (confirm('¿Está seguro de eliminar este registro?')) {
+      try {
+        await cashFlowStorage.delete(id);
+        setCashFlows(cashFlows.filter(cf => cf.id !== id));
+      } catch (error) {
+        console.error('Error deleting cash flow:', error);
+      }
+    }
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(e.target.value);
+  };
+
+  const handlePeriodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedPeriod(e.target.value);
+  };
+
+  const filteredCashFlows = cashFlows.filter(cashFlow => {
+    const matchesSearch = cashFlow.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         cashFlow.sourceType.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = selectedType === 'all' || cashFlow.movementType === selectedType;
     return matchesSearch && matchesType;
   });
 
-  const totalIncome = expenses.filter(e => e.type === 'income' && e.status === 'approved')
-                             .reduce((sum, e) => sum + e.amount, 0);
-  const totalExpenses = expenses.filter(e => e.type === 'expense' && e.status === 'approved')
-                               .reduce((sum, e) => sum + e.amount, 0);
-  const totalWithdrawals = expenses.filter(e => e.type === 'withdrawal' && e.status === 'approved')
-                                  .reduce((sum, e) => sum + e.amount, 0);
-  const netIncome = totalIncome - totalExpenses - totalWithdrawals;
+  const totalIncome = cashFlows.filter(cf => cf.movementType === 'ingreso')
+                             .reduce((sum, cf) => sum + cf.amount, 0);
+  const totalExpenses = cashFlows.filter(cf => cf.movementType === 'egreso')
+                               .reduce((sum, cf) => sum + cf.amount, 0);
+  const totalWithdrawals = cashFlows.filter(cf => cf.movementType === 'egreso' && cf.sourceType === 'gasto')
+                                  .reduce((sum, cf) => sum + cf.amount, 0);
+  const netIncome = totalIncome - totalExpenses;
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'income': return 'bg-green-100 text-green-800';
-      case 'expense': return 'bg-red-100 text-red-800';
-      case 'withdrawal': return 'bg-orange-100 text-orange-800';
+      case 'ingreso': return 'bg-green-100 text-green-800';
+      case 'egreso': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'income': return TrendingUp;
-      case 'expense': return TrendingDown;
-      case 'withdrawal': return DollarSign;
+      case 'ingreso': return TrendingUp;
+      case 'egreso': return TrendingDown;
       default: return DollarSign;
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('es-MX');
   };
 
-  const handleEdit = (expense: Expense) => {
-    setEditingExpense(expense);
-    setShowModal(true);
-  };
-
-  const handleDelete = (id: string) => {
-    if (confirm('¿Está seguro de eliminar este registro?')) {
-      setExpenses(expenses.filter(e => e.id !== id));
-    }
-  };
+  const types = [
+    { value: 'all', label: 'Todos' },
+    { value: 'ingreso', label: 'Ingresos' },
+    { value: 'egreso', label: 'Gastos' }
+  ];
 
   return (
     <div className="space-y-6">
@@ -184,13 +169,13 @@ const Expenses: React.FC = () => {
               type="text"
               placeholder="Buscar registros..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearch}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <select
             value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
+            onChange={handleTypeChange}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             {types.map(type => (
@@ -199,7 +184,7 @@ const Expenses: React.FC = () => {
           </select>
           <select
             value={selectedPeriod}
-            onChange={(e) => setSelectedPeriod(e.target.value)}
+            onChange={handlePeriodChange}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="week">Esta semana</option>
@@ -223,13 +208,13 @@ const Expenses: React.FC = () => {
                   Tipo
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Categoría
+                  Origen
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Monto
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Estado
+                  Método de Pago
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Fecha
@@ -240,56 +225,52 @@ const Expenses: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredExpenses.map((expense) => {
-                const TypeIcon = getTypeIcon(expense.type);
+              {filteredCashFlows.map((cashFlow) => {
+                const TypeIcon = getTypeIcon(cashFlow.movementType);
                 return (
-                  <tr key={expense.id} className="hover:bg-gray-50">
+                  <tr key={cashFlow.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{expense.description}</div>
-                        {expense.relatedTo && (
+                        <div className="text-sm font-medium text-gray-900">{cashFlow.description}</div>
+                        {cashFlow.referenceType && cashFlow.referenceId && (
                           <div className="text-sm text-gray-500">
-                            Relacionado: {expense.relatedTo} ({expense.relatedType})
+                            Ref: {cashFlow.referenceType} #{cashFlow.referenceId}
                           </div>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(expense.type)}`}>
+                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(cashFlow.movementType)}`}>
                         <TypeIcon className="h-3 w-3 mr-1" />
-                        {expense.type === 'income' ? 'Ingreso' : 
-                         expense.type === 'expense' ? 'Gasto' : 'Retiro'}
+                        {cashFlow.movementType === 'ingreso' ? 'Ingreso' : 'Egreso'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {expense.category}
+                      {cashFlow.sourceType}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className={`text-sm font-bold ${
-                        expense.type === 'income' ? 'text-green-600' : 'text-red-600'
+                        cashFlow.movementType === 'ingreso' ? 'text-green-600' : 'text-red-600'
                       }`}>
-                        {expense.type === 'income' ? '+' : '-'}${expense.amount.toLocaleString()}
+                        {cashFlow.movementType === 'ingreso' ? '+' : '-'}${cashFlow.amount.toLocaleString()}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(expense.status)}`}>
-                        {expense.status === 'approved' ? 'Aprobado' :
-                         expense.status === 'pending' ? 'Pendiente' : 'Rechazado'}
-                      </span>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {cashFlow.paymentMethod || 'No especificado'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {expense.date}
+                      {formatDate(cashFlow.createdAt)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button
-                          onClick={() => handleEdit(expense)}
+                          onClick={() => handleEdit(cashFlow)}
                           className="text-blue-600 hover:text-blue-900"
                         >
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(expense.id)}
+                          onClick={() => cashFlow.id && handleDelete(cashFlow.id.toString())}
                           className="text-red-600 hover:text-red-900"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -309,7 +290,7 @@ const Expenses: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              {editingExpense ? 'Editar Registro' : 'Nuevo Registro'}
+              {editingCashFlow ? 'Editar Registro' : 'Nuevo Registro'}
             </h3>
             <p className="text-gray-600 mb-4">
               Funcionalidad completa del modal en desarrollo...
@@ -317,7 +298,7 @@ const Expenses: React.FC = () => {
             <button
               onClick={() => {
                 setShowModal(false);
-                setEditingExpense(null);
+                setEditingCashFlow(null);
               }}
               className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
             >

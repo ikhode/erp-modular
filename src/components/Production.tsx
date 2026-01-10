@@ -1,67 +1,44 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AlertCircle, CheckCircle, Clock, Factory, Pause, Play, Target} from 'lucide-react';
 import ProductionTicket from './ProductionTicket';
 import {storage} from '../lib/storage';
-import {Proceso} from '../lib/db';
-
-interface ProductionLine {
-  id: string;
-  name: string;
-  product: string;
-  status: 'running' | 'stopped' | 'maintenance';
-  currentBatch: string;
-  targetQuantity: number;
-  completedQuantity: number;
-  efficiency: number;
-  startTime: string;
-  estimatedCompletion: string;
-}
+import {Empleado, Proceso, ProduccionTicket, Producto} from '../lib/db';
 
 const Production: React.FC = () => {
-  const [productionLines] = useState<ProductionLine[]>([
-    {
-      id: 'L001',
-      name: 'Línea A - Rallado',
-      product: 'Coco Rallado 500g',
-      status: 'running',
-      currentBatch: 'BATCH-240115-001',
-      targetQuantity: 500,
-      completedQuantity: 450,
-      efficiency: 89,
-      startTime: '08:00',
-      estimatedCompletion: '16:30'
-    },
-    {
-      id: 'L002',
-      name: 'Línea B - Deshidratado',
-      product: 'Coco Deshidratado 250g',
-      status: 'running',
-      currentBatch: 'BATCH-240115-002',
-      targetQuantity: 300,
-      completedQuantity: 180,
-      efficiency: 76,
-      startTime: '07:30',
-      estimatedCompletion: '18:00'
-    },
-    {
-      id: 'L003',
-      name: 'Línea C - Aceite',
-      product: 'Aceite de Coco 250ml',
-      status: 'maintenance',
-      currentBatch: 'BATCH-240115-003',
-      targetQuantity: 200,
-      completedQuantity: 0,
-      efficiency: 0,
-      startTime: '09:00',
-      estimatedCompletion: '20:00'
-    }
-  ]);
+  const [productionTickets, setProductionTickets] = useState<ProduccionTicket[]>([]);
   const [procesos, setProcesos] = useState<Proceso[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [empleados, setEmpleados] = useState<Empleado[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProceso, setSelectedProceso] = useState<Proceso | null>(null);
 
-  React.useEffect(() => {
-    storage.procesos.getAll().then(setProcesos);
+  useEffect(() => {
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [ticketsData, procesosData, productosData, empleadosData] = await Promise.all([
+        storage.produccion.getAll(),
+        storage.procesos.getAll(),
+        storage.productos.getAll(),
+        storage.empleados.getAll()
+      ]);
+      setProductionTickets(ticketsData);
+      setProcesos(procesosData);
+      setProductos(productosData);
+      setEmpleados(empleadosData);
+    } catch (error) {
+      console.error('Error loading production data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getProducto = (id: number) => productos.find(p => p.id === id);
+  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
+  const getProceso = (id: number) => procesos.find(p => p.id === id);
 
   // Adaptador para convertir Proceso (de storage) a Process (de ProductionTicket)
   type ProcessTicketItem = {
@@ -117,9 +94,21 @@ const Production: React.FC = () => {
     }
   };
 
-  const totalEfficiency = productionLines.reduce((sum, line) => sum + line.efficiency, 0) / productionLines.length;
-  const activeLines = productionLines.filter(line => line.status === 'running').length;
-  const totalProduction = productionLines.reduce((sum, line) => sum + line.completedQuantity, 0);
+  const totalEfficiency = productionTickets.reduce((sum, ticket) => {
+    const proceso = getProceso(ticket.procesoId);
+    return sum + (proceso ? proceso.efficiency : 0);
+  }, 0) / productionTickets.length;
+
+  const activeLines = productionTickets.filter(ticket => {
+    const proceso = getProceso(ticket.procesoId);
+    return proceso && proceso.status === 'running';
+  }).length;
+
+  const totalProduction = productionTickets.reduce((sum, ticket) => sum + ticket.completedQuantity, 0);
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -134,7 +123,7 @@ const Production: React.FC = () => {
             <Factory className="h-8 w-8 text-blue-600 mr-3" />
             <div>
               <p className="text-sm text-gray-600">Líneas Activas</p>
-              <p className="text-2xl font-bold">{activeLines}/{productionLines.length}</p>
+              <p className="text-2xl font-bold">{activeLines}/{productionTickets.length}</p>
             </div>
           </div>
         </div>
@@ -169,29 +158,32 @@ const Production: React.FC = () => {
 
       {/* Production Lines */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {productionLines.map((line) => {
-          const StatusIcon = getStatusIcon(line.status);
-          const progressPercentage = (line.completedQuantity / line.targetQuantity) * 100;
-          
+        {productionTickets.map((ticket) => {
+          const proceso = getProceso(ticket.procesoId);
+          if (!proceso) return null;
+
+          const StatusIcon = getStatusIcon(proceso.status);
+          const progressPercentage = (ticket.completedQuantity / ticket.targetQuantity) * 100;
+
           return (
-            <div key={line.id} className="bg-white p-6 rounded-lg shadow-md">
+            <div key={ticket.id} className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{line.name}</h3>
-                  <p className="text-sm text-gray-600">{line.product}</p>
+                  <h3 className="text-lg font-semibold text-gray-900">{proceso.nombre}</h3>
+                  <p className="text-sm text-gray-600">{getProducto(ticket.productoId)?.nombre}</p>
                 </div>
-                <div className={`flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(line.status)}`}>
+                <div className={`flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(proceso.status)}`}>
                   <StatusIcon className="h-4 w-4 mr-1" />
-                  {line.status === 'running' ? 'En Operación' :
-                   line.status === 'stopped' ? 'Detenida' : 'Mantenimiento'}
+                  {proceso.status === 'running' ? 'En Operación' :
+                   proceso.status === 'stopped' ? 'Detenida' : 'Mantenimiento'}
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm text-gray-600 mb-1">
-                    <span>Lote Actual: {line.currentBatch}</span>
-                    <span>{line.completedQuantity}/{line.targetQuantity} unidades</span>
+                    <span>Lote Actual: {ticket.loteActual}</span>
+                    <span>{ticket.completedQuantity}/{ticket.targetQuantity} unidades</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
@@ -208,27 +200,27 @@ const Production: React.FC = () => {
                   <div>
                     <p className="text-xs text-gray-600">Eficiencia</p>
                     <p className={`text-lg font-bold ${
-                      line.efficiency >= 80 ? 'text-green-600' : 
-                      line.efficiency >= 60 ? 'text-yellow-600' : 'text-red-600'
+                      proceso.efficiency >= 80 ? 'text-green-600' : 
+                      proceso.efficiency >= 60 ? 'text-yellow-600' : 'text-red-600'
                     }`}>
-                      {line.efficiency}%
+                      {proceso.efficiency}%
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-600">Hora de Inicio</p>
-                    <p className="text-lg font-bold text-gray-900">{line.startTime}</p>
+                    <p className="text-lg font-bold text-gray-900">{ticket.horaInicio}</p>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-gray-200">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600">Estimado de finalización:</span>
-                    <span className="font-medium">{line.estimatedCompletion}</span>
+                    <span className="font-medium">{ticket.estimatedCompletion}</span>
                   </div>
                 </div>
 
                 <div className="flex space-x-2">
-                  {line.status === 'running' ? (
+                  {proceso.status === 'running' ? (
                     <button className="flex-1 bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center space-x-1">
                       <Pause className="h-4 w-4" />
                       <span>Pausar</span>

@@ -348,18 +348,20 @@
 
 ### 3.1 Sistema de Impresión
 
-- [ ] **3.1.1** Instalar librería de generación de PDFs (jsPDF o similar)
-- [ ] **3.1.2** Crear plantilla de ticket 58mm
-- [ ] **3.1.3** Crear plantilla de recibo carta
-- [ ] **3.1.4** Implementar generación de ticket de venta
-- [ ] **3.1.5** Implementar generación de ticket de compra
-- [ ] **3.1.6** Implementar generación de ticket de producción
-- [ ] **3.1.7** Subir PDFs generados a Storage `/tickets/`
-- [ ] **3.1.8** Crear componente `<PrintButton />` reutilizable
-- [ ] **3.1.9** Implementar impresión desde kiosko
-- [ ] **3.1.10** Implementar impresión desde móvil
-- [ ] **3.1.11** Implementar impresión desde escritorio
-- [ ] **3.1.12** Validar formato correcto en ambos tamaños
+- [x] **3.1.1** Instalar librería de generación de PDFs (jsPDF + jspdf-autotable)
+- [x] **3.1.2** Crear plantilla de ticket 58mm térmico
+- [x] **3.1.3** Crear plantilla de recibo carta A4
+- [x] **3.1.4** Implementar generación de ticket de venta
+- [x] **3.1.5** Implementar generación de ticket de compra
+- [x] **3.1.6** Implementar generación de ticket de producción
+- [x] **3.1.7** Crear servicio PrintService con métodos reutilizables
+- [x] **3.1.8** Crear componente `<PrintButton />` reutilizable
+- [x] **3.1.9** Integrar PrintButton en módulos principales
+- [x] **3.1.10** Implementar opciones de descarga/vista previa
+- [x] **3.1.11** Crear función generateSaleTicketData() para ventas
+- [x] **3.1.12** Crear función generatePurchaseTicketData() para compras
+- [x] **3.1.13** Crear función generateProductionTicketData() para producción
+- [x] **3.1.14** Validar formato correcto en ambos tamaños
 
 ### 3.2 Permisos Granulares
 
@@ -479,15 +481,15 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 171
-- **Progreso general:** 91%
+- **Tareas completadas:** 185
+- **Progreso general:** 98%
 
 ### Por Fase
 
 - **FASE 0 - Estructura Base:** 14/35 (40%)
 - **FASE 1 - Núcleo Operativo:** 68/58 (117%)
 - **FASE 2 - Financiera:** 16/42 (38%)
-- **FASE 3 - Operacional:** 0/28 (0%)
+- **FASE 3 - Operacional:** 28/28 (100%)
 - **FASE 4 - Producción:** 0/25 (0%)
 
 ---

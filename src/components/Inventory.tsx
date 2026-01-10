@@ -1,113 +1,65 @@
-import React, { useState } from 'react';
-import { Package, Plus, AlertTriangle, TrendingDown, TrendingUp, Search } from 'lucide-react';
-
-interface InventoryItem {
-  id: string;
-  name: string;
-  category: string;
-  currentStock: number;
-  minStock: number;
-  maxStock: number;
-  unit: string;
-  unitCost: number;
-  supplier: string;
-  lastUpdated: string;
-}
+import React, {useEffect, useState} from 'react';
+import {AlertTriangle, Package, Plus, Search, TrendingDown, TrendingUp} from 'lucide-react';
+import {storage} from '../lib/storage';
+import {Inventario, Producto, Ubicacion} from '../lib/db';
 
 const Inventory: React.FC = () => {
+  const [inventario, setInventario] = useState<Inventario[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('todos');
 
-  const inventory: InventoryItem[] = [
-    {
-      id: '1',
-      name: 'Coco Fresco',
-      category: 'Materia Prima',
-      currentStock: 500,
-      minStock: 100,
-      maxStock: 1000,
-      unit: 'kg',
-      unitCost: 15.00,
-      supplier: 'Proveedores del Pacífico',
-      lastUpdated: '2024-01-15'
-    },
-    {
-      id: '2',
-      name: 'Coco Rallado 500g',
-      category: 'Producto Terminado',
-      currentStock: 50,
-      minStock: 100,
-      maxStock: 500,
-      unit: 'piezas',
-      unitCost: 25.00,
-      supplier: 'Producción Interna',
-      lastUpdated: '2024-01-15'
-    },
-    {
-      id: '3',
-      name: 'Envases 500g',
-      category: 'Empaque',
-      currentStock: 200,
-      minStock: 150,
-      maxStock: 1000,
-      unit: 'piezas',
-      unitCost: 3.50,
-      supplier: 'Envases Modernos SA',
-      lastUpdated: '2024-01-14'
-    },
-    {
-      id: '4',
-      name: 'Aceite de Coco 250ml',
-      category: 'Producto Terminado',
-      currentStock: 75,
-      minStock: 50,
-      maxStock: 300,
-      unit: 'piezas',
-      unitCost: 80.00,
-      supplier: 'Producción Interna',
-      lastUpdated: '2024-01-15'
-    },
-    {
-      id: '5',
-      name: 'Etiquetas',
-      category: 'Empaque',
-      currentStock: 500,
-      minStock: 200,
-      maxStock: 2000,
-      unit: 'piezas',
-      unitCost: 0.50,
-      supplier: 'Impresiones Rápidas',
-      lastUpdated: '2024-01-13'
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [inventarioData, productosData, ubicacionesData] = await Promise.all([
+        storage.inventario.getAll(),
+        storage.productos.getAll(),
+        storage.ubicaciones.getAll()
+      ]);
+      setInventario(inventarioData);
+      setProductos(productosData);
+      setUbicaciones(ubicacionesData);
+    } catch (error) {
+      console.error('Error loading inventory data:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const categories = [
-    { value: 'todos', label: 'Todos' },
-    { value: 'Materia Prima', label: 'Materia Prima' },
-    { value: 'Producto Terminado', label: 'Productos Terminados' },
-    { value: 'Empaque', label: 'Empaque' },
-  ];
+  const getProducto = (id: number) => productos.find(p => p.id === id);
+  const getUbicacion = (id: number) => ubicaciones.find(u => u.id === id);
 
-  const filteredInventory = inventory.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.supplier.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'todos' || item.category === selectedCategory;
+  const filteredInventory = inventario.filter(item => {
+    const producto = getProducto(item.productoId);
+    const matchesSearch = producto?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.proveedor.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'todos' || producto?.categoria === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const getStockStatus = (item: InventoryItem) => {
-    if (item.currentStock <= item.minStock) {
+  const getStockStatus = (item: Inventario) => {
+    if (item.stockActual <= item.minimo) {
       return { status: 'critical', color: 'text-red-600 bg-red-100', icon: AlertTriangle };
-    } else if (item.currentStock <= item.minStock * 1.2) {
+    } else if (item.stockActual <= item.minimo * 1.2) {
       return { status: 'low', color: 'text-yellow-600 bg-yellow-100', icon: TrendingDown };
     } else {
       return { status: 'good', color: 'text-green-600 bg-green-100', icon: TrendingUp };
     }
   };
 
-  const totalValue = inventory.reduce((sum, item) => sum + (item.currentStock * item.unitCost), 0);
-  const lowStockItems = inventory.filter(item => item.currentStock <= item.minStock).length;
-  const criticalItems = inventory.filter(item => item.currentStock <= item.minStock * 0.5).length;
+  const totalValue = inventario.reduce((sum, item) => {
+    const producto = getProducto(item.productoId);
+    return sum + (item.stockActual * (producto?.costoUnitario || 0));
+  }, 0);
+  const lowStockItems = inventario.filter(item => item.stockActual <= item.minimo).length;
+  const criticalItems = inventario.filter(item => item.stockActual <= item.minimo * 0.5).length;
 
   return (
     <div className="space-y-6">
@@ -126,7 +78,7 @@ const Inventory: React.FC = () => {
             <Package className="h-8 w-8 text-blue-600 mr-3" />
             <div>
               <p className="text-sm text-gray-600">Total Items</p>
-              <p className="text-2xl font-bold">{inventory.length}</p>
+              <p className="text-2xl font-bold">{inventario.length}</p>
             </div>
           </div>
         </div>
@@ -173,7 +125,12 @@ const Inventory: React.FC = () => {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {categories.map(category => (
+            {[
+              { value: 'todos', label: 'Todos' },
+              { value: 'Materia Prima', label: 'Materia Prima' },
+              { value: 'Producto Terminado', label: 'Productos Terminados' },
+              { value: 'Empaque', label: 'Empaque' },
+            ].map(category => (
               <button
                 key={category.value}
                 onClick={() => setSelectedCategory(category.value)}
@@ -221,25 +178,26 @@ const Inventory: React.FC = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredInventory.map((item) => {
+                const producto = getProducto(item.productoId);
                 const stockStatus = getStockStatus(item);
                 const StatusIcon = stockStatus.icon;
                 return (
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{producto?.nombre}</div>
                         <div className="text-sm text-gray-500">ID: {item.id}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {item.category}
+                      {producto?.categoria}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {item.currentStock} {item.unit}
+                        {item.stockActual} {producto?.unidad}
                       </div>
                       <div className="text-xs text-gray-500">
-                        Min: {item.minStock} | Max: {item.maxStock}
+                        Min: {item.minimo} | Max: {item.maximo}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -250,13 +208,13 @@ const Inventory: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      ${item.unitCost.toFixed(2)}
+                      ${producto?.costoUnitario.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      ${(item.currentStock * item.unitCost).toLocaleString()}
+                      ${(item.stockActual * (producto?.costoUnitario || 0)).toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {item.supplier}
+                      {item.proveedor}
                     </td>
                   </tr>
                 );

@@ -1,107 +1,84 @@
 import React, {useEffect, useState} from 'react';
-import {supabase} from '../lib/supabase';
 import {ArrowRight, Ban, CheckCircle, Clock, MapPin, Package, Play, XCircle} from 'lucide-react';
+import {transferStorage} from '../lib/storage';
+import {Transfer} from '../lib/db';
 import TransferForm from './TransferForm';
-
-interface Transfer {
-  id: string;
-  folio: string;
-  quantity: number;
-  transfer_date: string;
-  status: 'pendiente' | 'en_transito' | 'completado' | 'cancelado';
-  notes: string;
-  created_at: string;
-  products: {
-    name: string;
-    unit: string;
-  };
-  from_location: {
-    name: string;
-    type: string;
-  };
-  to_location: {
-    name: string;
-    type: string;
-  };
-}
 
 export default function Transfers() {
   const [transfers, setTransfers] = useState<Transfer[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
+  const [empleados, setEmpleados] = useState<Empleado[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    loadTransfers();
+    loadData();
   }, []);
 
-  const loadTransfers = async () => {
+  const loadData = async () => {
+    setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('transfers')
-        .select(`
-          id, folio, quantity, transfer_date, status, notes, created_at,
-          products(name, unit),
-          from_location:locations!transfers_from_location_id_fkey(name, type),
-          to_location:locations!transfers_to_location_id_fkey(name, type)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setTransfers(data || []);
+      const [transfersData, productosData, ubicacionesData, empleadosData] = await Promise.all([
+        transferStorage.getAll(),
+        productoStorage.getAll(),
+        ubicacionStorage.getAll(),
+        empleadoStorage.getAll()
+      ]);
+      setTransfers(transfersData);
+      setProductos(productosData);
+      setUbicaciones(ubicacionesData);
+      setEmpleados(empleadosData);
     } catch (error) {
-      console.error('Error loading transfers:', error);
+      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleProcessTransfer = async (transferId: string) => {
+  const getProducto = (id: number) => productos.find(p => p.id === id);
+  const getUbicacion = (id: number) => ubicaciones.find(u => u.id === id);
+  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
+
+  const handleProcessTransfer = async (transferId: number) => {
     if (!confirm('¿Está seguro de procesar este traslado? Esta acción no se puede deshacer.')) {
       return;
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('transfers/register', {
-        body: {
-          action: 'process_transfer',
-          transferData: { transferId }
-        }
+      const transfer = await transferStorage.getById(transferId);
+      if (!transfer) throw new Error('Traslado no encontrado');
+
+      await transferStorage.update(transferId, {
+        status: 'completado',
+        fechaCompletado: new Date(),
+        updatedAt: new Date()
       });
 
-      if (error) throw error;
-
-      if (data.success) {
-        alert('Traslado procesado exitosamente');
-        loadTransfers();
-      } else {
-        throw new Error(data.error);
-      }
+      alert('Traslado procesado exitosamente');
+      loadData();
     } catch (error: unknown) {
       console.error('Error processing transfer:', error);
       alert('Error al procesar el traslado: ' + (error as Error).message);
     }
   };
 
-  const handleCancelTransfer = async (transferId: string) => {
+  const handleCancelTransfer = async (transferId: number) => {
     const reason = prompt('Motivo de cancelación:');
     if (!reason) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('transfers/register', {
-        body: {
-          action: 'cancel_transfer',
-          transferData: { transferId, reason }
-        }
+      const transfer = await transferStorage.getById(transferId);
+      if (!transfer) throw new Error('Traslado no encontrado');
+
+      await transferStorage.update(transferId, {
+        status: 'cancelado',
+        motivoCancelacion: reason,
+        updatedAt: new Date()
       });
 
-      if (error) throw error;
-
-      if (data.success) {
-        alert('Traslado cancelado exitosamente');
-        loadTransfers();
-      } else {
-        throw new Error(data.error);
-      }
+      alert('Traslado cancelado exitosamente');
+      loadData();
     } catch (error: unknown) {
       console.error('Error canceling transfer:', error);
       alert('Error al cancelar el traslado: ' + (error as Error).message);
@@ -219,82 +196,89 @@ export default function Transfers() {
           </h3>
 
           <div className="space-y-4">
-            {transfers.map((transfer) => (
-              <div key={transfer.id} className="border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    {getStatusIcon(transfer.status)}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">
-                        {transfer.folio}
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        {transfer.products.name}
-                      </p>
+            {transfers.map((transfer) => {
+              const producto = getProducto(transfer.productoId);
+              const ubicacionOrigen = getUbicacion(transfer.ubicacionOrigenId);
+              const ubicacionDestino = getUbicacion(transfer.ubicacionDestinoId);
+
+              return (
+                <div key={transfer.id} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      {getStatusIcon(transfer.status)}
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-900">
+                          {transfer.folio || `TRAS-${transfer.id}`}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {producto?.nombre || 'Producto no encontrado'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600">Cantidad</p>
+                        <p className="text-lg font-semibold">
+                          {transfer.cantidad} {producto?.unidad || 'unidades'}
+                        </p>
+                      </div>
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transfer.status)}`}>
+                        {transfer.status}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4">
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">Cantidad</p>
-                      <p className="text-lg font-semibold">
-                        {transfer.quantity} {transfer.products.unit}
-                      </p>
+                  {/* Ruta del traslado */}
+                  <div className="mt-3 flex items-center justify-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium">{ubicacionOrigen?.nombre || 'Ubicación origen'}</span>
+                      <span className="text-xs text-gray-500">({ubicacionOrigen?.tipo || 'Tipo'})</span>
                     </div>
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transfer.status)}`}>
-                      {transfer.status}
-                    </span>
+
+                    <ArrowRight className="h-4 w-4 text-gray-400" />
+
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium">{ubicacionDestino?.nombre || 'Ubicación destino'}</span>
+                      <span className="text-xs text-gray-500">({ubicacionDestino?.tipo || 'Tipo'})</span>
+                    </div>
+                  </div>
+
+                  {transfer.notas && (
+                    <p className="mt-2 text-sm text-gray-600">{transfer.notas}</p>
+                  )}
+
+                  <div className="mt-3 flex items-center justify-between">
+                    <p className="text-xs text-gray-500">
+                      Solicitado: {formatDate(transfer.fechaSolicitud.toISOString())}
+                      {transfer.fechaCompletado && ` | Completado: ${formatDate(transfer.fechaCompletado.toISOString())}`}
+                    </p>
+                    <div className="flex space-x-2">
+                      {transfer.status === 'pendiente' && (
+                        <>
+                          <button
+                            onClick={() => transfer.id && handleProcessTransfer(transfer.id)}
+                            className="text-xs bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded flex items-center"
+                          >
+                            <Play className="h-3 w-3 mr-1" />
+                            Procesar
+                          </button>
+                          <button
+                            onClick={() => transfer.id && handleCancelTransfer(transfer.id)}
+                            className="text-xs bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 rounded flex items-center"
+                          >
+                            <Ban className="h-3 w-3 mr-1" />
+                            Cancelar
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-
-                {/* Ruta del traslado */}
-                <div className="mt-3 flex items-center justify-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm font-medium">{transfer.from_location.name}</span>
-                    <span className="text-xs text-gray-500">({transfer.from_location.type})</span>
-                  </div>
-
-                  <ArrowRight className="h-4 w-4 text-gray-400" />
-
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm font-medium">{transfer.to_location.name}</span>
-                    <span className="text-xs text-gray-500">({transfer.to_location.type})</span>
-                  </div>
-                </div>
-
-                {transfer.notes && (
-                  <p className="mt-2 text-sm text-gray-600">{transfer.notes}</p>
-                )}
-
-                <div className="mt-3 flex items-center justify-between">
-                  <p className="text-xs text-gray-500">
-                    Fecha: {formatDate(transfer.transfer_date)} | Creado: {formatDate(transfer.created_at)}
-                  </p>
-                  <div className="flex space-x-2">
-                    {transfer.status === 'pendiente' && (
-                      <>
-                        <button
-                          onClick={() => handleProcessTransfer(transfer.id)}
-                          className="text-xs bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded flex items-center"
-                        >
-                          <Play className="h-3 w-3 mr-1" />
-                          Procesar
-                        </button>
-                        <button
-                          onClick={() => handleCancelTransfer(transfer.id)}
-                          className="text-xs bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 rounded flex items-center"
-                        >
-                          <Ban className="h-3 w-3 mr-1" />
-                          Cancelar
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
 
             {transfers.length === 0 && (
               <div className="text-center py-12">
@@ -313,7 +297,7 @@ export default function Transfers() {
         <TransferForm
           onClose={() => setShowForm(false)}
           onSuccess={() => {
-            loadTransfers();
+            loadData();
             setShowForm(false);
           }}
         />

@@ -1,27 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {supabase} from '../lib/supabase';
 import {ArrowRight, FileText, MapPin, Package} from 'lucide-react';
-
-interface Product {
-  id: string;
-  name: string;
-  unit: string;
-}
-
-interface Location {
-  id: string;
-  name: string;
-  type: string;
-}
-
-interface InventoryItem {
-  quantity: number;
-  locations: {
-    id: string;
-    name: string;
-    type: string;
-  };
-}
+import {folioGenerator, inventarioStorage, productoStorage, transferStorage, ubicacionStorage} from '../lib/storage';
+import {Inventario, Producto, Ubicacion} from '../lib/db';
 
 interface TransferFormProps {
   onClose: () => void;
@@ -29,83 +9,73 @@ interface TransferFormProps {
 }
 
 export default function TransferForm({ onClose, onSuccess }: TransferFormProps) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [locations, setLocations] = useState<Location[]>([]);
-  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
+  const [inventario, setInventario] = useState<Inventario[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<string>('');
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    fromLocationId: '',
-    toLocationId: '',
-    quantity: '',
-    notes: ''
+    ubicacionOrigenId: 0,
+    ubicacionDestinoId: 0,
+    cantidad: 0,
+    notas: ''
   });
 
   useEffect(() => {
-    loadProducts();
-    loadLocations();
+    loadData();
   }, []);
 
   useEffect(() => {
-    if (selectedProduct) {
-      loadInventory();
+    if (selectedProductId) {
+      loadInventoryForProduct();
     }
-  }, [selectedProduct]);
+  }, [selectedProductId]);
 
-  const loadProducts = async () => {
+  const loadData = async () => {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('id, name, unit')
-        .order('name');
-
-      if (error) throw error;
-      setProducts(data || []);
+      const [productosData, ubicacionesData] = await Promise.all([
+        productoStorage.getAll(),
+        ubicacionStorage.getAll()
+      ]);
+      setProductos(productosData);
+      setUbicaciones(ubicacionesData);
     } catch (error) {
-      console.error('Error loading products:', error);
+      console.error('Error loading data:', error);
     }
   };
 
-  const loadLocations = async () => {
+  const loadInventoryForProduct = async () => {
+    if (!selectedProductId) return;
+
     try {
-      const { data, error } = await supabase
-        .from('locations')
-        .select('id, name, type')
-        .order('name');
+      const inventoryData = await inventarioStorage.getAll();
+      const productInventory = inventoryData.filter(inv => inv.productoId === selectedProductId);
 
-      if (error) throw error;
-      setLocations(data || []);
-    } catch (error) {
-      console.error('Error loading locations:', error);
-    }
-  };
+      // Agregar información de ubicación a cada item de inventario
+      const inventoryWithLocationInfo = await Promise.all(
+        productInventory.map(async (inv) => {
+          const ubicacion = ubicaciones.find(u => u.id === inv.ubicacionId);
+          return {
+            ...inv,
+            ubicacionNombre: ubicacion?.nombre || 'Ubicación desconocida',
+            ubicacionTipo: ubicacion?.tipo || 'Tipo desconocido'
+          };
+        })
+      );
 
-  const loadInventory = async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke('transfers/register', {
-        body: {
-          action: 'get_inventory_by_location',
-          transferData: { productId: selectedProduct }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
-        setInventory(data.inventory);
-      }
+      setInventario(inventoryWithLocationInfo);
     } catch (error) {
       console.error('Error loading inventory:', error);
     }
   };
 
-  const handleProductChange = (productId: string) => {
-    setSelectedProduct(productId);
+  const handleProductChange = (productId: number) => {
+    setSelectedProductId(productId);
     setFormData(prev => ({
       ...prev,
-      fromLocationId: '',
-      toLocationId: '',
-      quantity: ''
+      ubicacionOrigenId: 0,
+      ubicacionDestinoId: 0,
+      cantidad: 0
     }));
   };
 
@@ -114,27 +84,41 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('transfers/register', {
-        body: {
-          action: 'create_transfer',
-          transferData: {
-            productId: selectedProduct,
-            quantity: parseFloat(formData.quantity),
-            fromLocationId: formData.fromLocationId,
-            toLocationId: formData.toLocationId,
-            notes: formData.notes
-          }
-        }
+      if (!selectedProductId || !formData.ubicacionOrigenId || !formData.ubicacionDestinoId || !formData.cantidad) {
+        throw new Error('Todos los campos son requeridos');
+      }
+
+      if (formData.ubicacionOrigenId === formData.ubicacionDestinoId) {
+        throw new Error('La ubicación de origen y destino deben ser diferentes');
+      }
+
+      // Verificar que hay suficiente inventario en la ubicación de origen
+      const origenInventory = inventario.find(inv =>
+        inv.productoId === selectedProductId && inv.ubicacionId === formData.ubicacionOrigenId
+      );
+
+      if (!origenInventory || origenInventory.cantidad < formData.cantidad) {
+        throw new Error('No hay suficiente inventario en la ubicación de origen');
+      }
+
+      // Generar folio
+      const folio = await folioGenerator.generateFolio('TRAS');
+
+      // Crear el traslado
+      await transferStorage.add({
+        folio,
+        productoId: selectedProductId,
+        cantidad: formData.cantidad,
+        ubicacionOrigenId: formData.ubicacionOrigenId,
+        ubicacionDestinoId: formData.ubicacionDestinoId,
+        estado: 'pendiente',
+        fechaSolicitud: new Date(),
+        notas: formData.notas,
+        createdAt: new Date(),
+        updatedAt: new Date()
       });
 
-      if (error) throw error;
-
-      if (data.success) {
-        onSuccess();
-        onClose();
-      } else {
-        throw new Error(data.error);
-      }
+      onSuccess();
     } catch (error: unknown) {
       console.error('Error creating transfer:', error);
       alert('Error al crear el traslado: ' + (error as Error).message);
@@ -143,12 +127,12 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
     }
   };
 
-  const getAvailableQuantity = (locationId: string) => {
-    const item = inventory.find(inv => inv.locations.id === locationId);
-    return item ? item.quantity : 0;
+  const getAvailableQuantity = (ubicacionId: number) => {
+    const item = inventario.find(inv => inv.ubicacionId === ubicacionId);
+    return item ? item.cantidad : 0;
   };
 
-  const selectedProductData = products.find(p => p.id === selectedProduct);
+  const selectedProduct = productos.find(p => p.id === selectedProductId);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -175,34 +159,34 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
               Producto a trasladar
             </label>
             <select
-              value={selectedProduct}
-              onChange={(e) => handleProductChange(e.target.value)}
+              value={selectedProductId ?? ''}
+              onChange={(e) => handleProductChange(Number(e.target.value))}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="">Seleccionar producto...</option>
-              {products.map(product => (
+              {productos.map(product => (
                 <option key={product.id} value={product.id}>
-                  {product.name} ({product.unit})
+                  {product.nombre} ({product.unidad})
                 </option>
               ))}
             </select>
           </div>
 
           {/* Inventario disponible */}
-          {inventory.length > 0 && (
+          {inventario.length > 0 && (
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-gray-700 mb-3">Inventario Disponible</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {inventory.map((item) => (
-                  <div key={item.locations.id} className="bg-white p-3 rounded border">
+                {inventario.map((item) => (
+                  <div key={item.ubicacionId} className="bg-white p-3 rounded border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{item.locations.name}</p>
-                        <p className="text-xs text-gray-500">{item.locations.type}</p>
+                        <p className="text-sm font-medium text-gray-900">{item.ubicacionNombre}</p>
+                        <p className="text-xs text-gray-500">{item.ubicacionTipo}</p>
                       </div>
                       <span className="text-sm font-semibold text-blue-600">
-                        {item.quantity} {selectedProductData?.unit}
+                        {item.cantidad} {selectedProduct?.unidad}
                       </span>
                     </div>
                   </div>
@@ -219,15 +203,15 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
                 Ubicación Origen
               </label>
               <select
-                value={formData.fromLocationId}
-                onChange={(e) => setFormData(prev => ({ ...prev, fromLocationId: e.target.value }))}
+                value={formData.ubicacionOrigenId}
+                onChange={(e) => setFormData(prev => ({ ...prev, ubicacionOrigenId: Number(e.target.value) }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="">Seleccionar origen...</option>
-                {inventory.map((item) => (
-                  <option key={item.locations.id} value={item.locations.id}>
-                    {item.locations.name} ({item.quantity} {selectedProductData?.unit})
+                {inventario.map((item) => (
+                  <option key={item.ubicacionId} value={item.ubicacionId}>
+                    {item.ubicacionNombre} ({item.cantidad} {selectedProduct?.unidad})
                   </option>
                 ))}
               </select>
@@ -245,17 +229,17 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
                 Ubicación Destino
               </label>
               <select
-                value={formData.toLocationId}
-                onChange={(e) => setFormData(prev => ({ ...prev, toLocationId: e.target.value }))}
+                value={formData.ubicacionDestinoId}
+                onChange={(e) => setFormData(prev => ({ ...prev, ubicacionDestinoId: Number(e.target.value) }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="">Seleccionar destino...</option>
-                {locations
-                  .filter(loc => loc.id !== formData.fromLocationId)
+                {ubicaciones
+                  .filter(loc => loc.id !== formData.ubicacionOrigenId)
                   .map(location => (
                     <option key={location.id} value={location.id}>
-                      {location.name} ({location.type})
+                      {location.nombre} ({location.tipo})
                     </option>
                   ))}
               </select>
@@ -272,20 +256,20 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
                 type="number"
                 step="0.01"
                 min="0.01"
-                max={getAvailableQuantity(formData.fromLocationId)}
-                value={formData.quantity}
-                onChange={(e) => setFormData(prev => ({ ...prev, quantity: e.target.value }))}
+                max={getAvailableQuantity(formData.ubicacionOrigenId)}
+                value={formData.cantidad}
+                onChange={(e) => setFormData(prev => ({ ...prev, cantidad: Number(e.target.value) }))}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="0.00"
                 required
               />
               <span className="text-sm text-gray-600">
-                {selectedProductData?.unit}
+                {selectedProduct?.unidad}
               </span>
             </div>
-            {formData.fromLocationId && (
+            {formData.ubicacionOrigenId && (
               <p className="mt-1 text-xs text-gray-500">
-                Disponible: {getAvailableQuantity(formData.fromLocationId)} {selectedProductData?.unit}
+                Disponible: {getAvailableQuantity(formData.ubicacionOrigenId)} {selectedProduct?.unidad}
               </p>
             )}
           </div>
@@ -297,8 +281,8 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
               Notas
             </label>
             <textarea
-              value={formData.notes}
-              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+              value={formData.notas}
+              onChange={(e) => setFormData(prev => ({ ...prev, notas: e.target.value }))}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Motivo del traslado..."
@@ -315,7 +299,7 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
             </button>
             <button
               type="submit"
-              disabled={loading || !selectedProduct}
+              disabled={loading || !selectedProductId}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creando...' : 'Crear Traslado'}

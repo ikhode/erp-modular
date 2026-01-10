@@ -1,43 +1,127 @@
-import React, { useState } from 'react';
-import { Clock, LogIn, LogOut, Coffee, UserCheck, Search, Filter } from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {Clock, Coffee, Filter, LogIn, LogOut, Search, UserCheck} from 'lucide-react';
+import {attendanceStorage, empleadoStorage} from '../lib/storage';
+import {Attendance, Empleado} from '../lib/db';
 
 const TimeTracker: React.FC = () => {
   const [employeeId, setEmployeeId] = useState('');
-  const [selectedAction, setSelectedAction] = useState('entrada');
+  const [selectedAction, setSelectedAction] = useState<Attendance['action']>('entrada');
+  const [attendances, setAttendances] = useState<Attendance[]>([]);
+  const [empleados, setEmpleados] = useState<Empleado[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const actions = [
-    { value: 'entrada', label: 'Entrada', icon: LogIn, color: 'green' },
-    { value: 'salida', label: 'Salida', icon: LogOut, color: 'red' },
-    { value: 'comida', label: 'Salida a Comida', icon: Coffee, color: 'orange' },
-    { value: 'regreso_comida', label: 'Regreso de Comida', icon: Coffee, color: 'blue' },
-    { value: 'baño', label: 'Salida al Baño', icon: UserCheck, color: 'purple' },
-    { value: 'regreso_baño', label: 'Regreso del Baño', icon: UserCheck, color: 'indigo' },
+    { value: 'entrada' as Attendance['action'], label: 'Entrada', icon: LogIn, color: 'green' },
+    { value: 'salida' as Attendance['action'], label: 'Salida', icon: LogOut, color: 'red' },
+    { value: 'comida' as Attendance['action'], label: 'Salida a Comida', icon: Coffee, color: 'orange' },
+    { value: 'regreso_comida' as Attendance['action'], label: 'Regreso de Comida', icon: Coffee, color: 'blue' },
+    { value: 'baño' as Attendance['action'], label: 'Salida al Baño', icon: UserCheck, color: 'purple' },
+    { value: 'regreso_baño' as Attendance['action'], label: 'Regreso del Baño', icon: UserCheck, color: 'indigo' },
   ];
 
-  const recentLogs = [
-    { id: 1, employeeId: '001', name: 'Juan Pérez', action: 'Entrada', time: '08:00:00', date: '2024-01-15' },
-    { id: 2, employeeId: '002', name: 'María García', action: 'Salida a Comida', time: '12:00:00', date: '2024-01-15' },
-    { id: 3, employeeId: '003', name: 'Carlos López', action: 'Entrada', time: '08:15:00', date: '2024-01-15' },
-    { id: 4, employeeId: '001', name: 'Juan Pérez', action: 'Salida al Baño', time: '10:30:00', date: '2024-01-15' },
-    { id: 5, employeeId: '002', name: 'María García', action: 'Regreso de Comida', time: '13:00:00', date: '2024-01-15' },
-  ];
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  const activeEmployees = [
-    { id: '001', name: 'Juan Pérez', status: 'Trabajando', lastAction: 'Entrada 08:00' },
-    { id: '002', name: 'María García', status: 'En Comida', lastAction: 'Salida a comida 12:00' },
-    { id: '003', name: 'Carlos López', status: 'Trabajando', lastAction: 'Entrada 08:15' },
-    { id: '004', name: 'Ana Martínez', status: 'Ausente', lastAction: 'Sin registros hoy' },
-  ];
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [attendancesData, empleadosData] = await Promise.all([
+        attendanceStorage.getAll(),
+        empleadoStorage.getAll()
+      ]);
+      setAttendances(attendancesData);
+      setEmpleados(empleadosData);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleClockAction = () => {
+  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
+
+  const filteredLogs = attendances.filter(attendance => {
+    const empleado = getEmpleado(attendance.employeeId);
+    return empleado?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           attendance.action.toLowerCase().includes(searchTerm.toLowerCase());
+  }).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+  const getActiveEmployees = () => {
+    const today = new Date().toDateString();
+    const todayAttendances = attendances.filter(a => a.timestamp.toDateString() === today);
+
+    return empleados.map(empleado => {
+      const employeeAttendances = todayAttendances.filter(a => a.employeeId === empleado.id);
+      const lastAttendance = employeeAttendances.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())[0];
+
+      let status = 'Ausente';
+      let lastAction = 'Sin registros hoy';
+
+      if (lastAttendance) {
+        switch (lastAttendance.action) {
+          case 'entrada':
+            status = 'Trabajando';
+            lastAction = `Entrada ${lastAttendance.timestamp.toLocaleTimeString()}`;
+            break;
+          case 'comida':
+            status = 'En Comida';
+            lastAction = `Salida a comida ${lastAttendance.timestamp.toLocaleTimeString()}`;
+            break;
+          case 'baño':
+            status = 'En Baño';
+            lastAction = `Salida al baño ${lastAttendance.timestamp.toLocaleTimeString()}`;
+            break;
+          case 'salida':
+            status = 'Fuera';
+            lastAction = `Salida ${lastAttendance.timestamp.toLocaleTimeString()}`;
+            break;
+          default:
+            status = 'Trabajando';
+            lastAction = `${lastAttendance.action} ${lastAttendance.timestamp.toLocaleTimeString()}`;
+        }
+      }
+
+      return {
+        id: empleado.id,
+        name: empleado.nombre,
+        status,
+        lastAction
+      };
+    });
+  };
+
+  const handleClockAction = async () => {
     if (!employeeId) {
       alert('Por favor ingrese el ID del empleado');
       return;
     }
-    
-    const currentTime = new Date().toLocaleTimeString();
-    alert(`Registrado: ${selectedAction} para empleado ${employeeId} a las ${currentTime}`);
-    setEmployeeId('');
+
+    const employeeIdNum = parseInt(employeeId);
+    const empleado = getEmpleado(employeeIdNum);
+
+    if (!empleado) {
+      alert('Empleado no encontrado');
+      return;
+    }
+
+    try {
+      await attendanceStorage.add({
+        employeeId: employeeIdNum,
+        action: selectedAction,
+        timestamp: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      alert(`Registrado: ${selectedAction} para ${empleado.nombre} a las ${new Date().toLocaleTimeString()}`);
+      setEmployeeId('');
+      loadData();
+    } catch (error) {
+      console.error('Error registering attendance:', error);
+      alert('Error al registrar la asistencia');
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -48,6 +132,8 @@ const TimeTracker: React.FC = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  const activeEmployees = getActiveEmployees();
 
   return (
     <div className="space-y-6">
@@ -86,7 +172,7 @@ const TimeTracker: React.FC = () => {
               </label>
               <select
                 value={selectedAction}
-                onChange={(e) => setSelectedAction(e.target.value)}
+                onChange={(e) => setSelectedAction(e.target.value as Attendance['action'])}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {actions.map((action) => (
@@ -141,6 +227,8 @@ const TimeTracker: React.FC = () => {
               <input
                 type="text"
                 placeholder="Buscar empleado..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -170,11 +258,11 @@ const TimeTracker: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {recentLogs.map((log) => (
+              {filteredLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{log.name}</div>
+                      <div className="text-sm font-medium text-gray-900">{getEmpleado(log.employeeId)?.nombre}</div>
                       <div className="text-sm text-gray-500">ID: {log.employeeId}</div>
                     </div>
                   </td>
@@ -182,10 +270,10 @@ const TimeTracker: React.FC = () => {
                     {log.action}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">
-                    {log.time}
+                    {log.timestamp.toLocaleTimeString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {log.date}
+                    {log.timestamp.toLocaleDateString()}
                   </td>
                 </tr>
               ))}
