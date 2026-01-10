@@ -40,7 +40,7 @@ export interface Producto {
 export interface Empleado {
   id?: number;
   nombre: string;
-  rol: string;
+  rol: string; // Reference to user_roles.name
   email?: string;
   telefono?: string;
   createdAt: Date;
@@ -50,7 +50,7 @@ export interface Empleado {
 export interface Ubicacion {
   id?: number;
   nombre: string;
-  tipo: 'patio' | 'bodega' | 'tanque';
+  tipo: string; // Reference to location_types.name
   descripcion?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -62,6 +62,7 @@ export interface Proceso {
   descripcion?: string;
   ubicacionId: number;
   requiereFaceAuth: boolean;
+  tipo: string; // Reference to process_types.name
   createdAt: Date;
   updatedAt: Date;
 }
@@ -131,6 +132,31 @@ export interface SyncQueue {
   synced: boolean;
 }
 
+// Interfaces para las tablas de configuración
+export interface UserRole {
+  id?: number;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface LocationType {
+  id?: number;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ProcessType {
+  id?: number;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Base de datos Dexie
 export class ERPDB extends Dexie {
   clientes!: Table<Cliente>;
@@ -144,6 +170,9 @@ export class ERPDB extends Dexie {
   compras!: Table<Compra>;
   ventas!: Table<Venta>;
   syncQueue!: Table<SyncQueue>;
+  userRoles!: Table<UserRole>;
+  locationTypes!: Table<LocationType>;
+  processTypes!: Table<ProcessType>;
 
   constructor() {
     super('erp_modular');
@@ -159,6 +188,9 @@ export class ERPDB extends Dexie {
       compras: '++id, proveedorId, productoId, tipo, estado, createdAt',
       ventas: '++id, clienteId, productoId, tipoEntrega, estado, createdAt',
       syncQueue: '++id, operation, table, synced, createdAt',
+      userRoles: '++id, name, createdAt',
+      locationTypes: '++id, name, createdAt',
+      processTypes: '++id, name, createdAt',
     });
   }
 }

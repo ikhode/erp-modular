@@ -48,3 +48,22 @@ VALUES ('destopado', 'Proceso de destopado'),
        ('deshuesado', 'Proceso de deshuesado'),
        ('pelado', 'Proceso de pelado'),
        ('pagos', 'Gestión de pagos');
+
+-- Create ENUM types
+CREATE TYPE user_role AS ENUM ('owner', 'admin', 'supervisor', 'cajero', 'empleado');
+CREATE TYPE location_type AS ENUM ('patio', 'bodega', 'tanque');
+CREATE TYPE process_type AS ENUM ('destopado', 'deshuesado', 'pelado', 'pagos');
+
+-- Create extended users table
+CREATE TABLE public.users
+(
+    id         UUID REFERENCES auth.users (id) ON DELETE CASCADE PRIMARY KEY,
+    email      TEXT UNIQUE NOT NULL,
+    role       user_role   NOT NULL DEFAULT 'empleado',
+    nombre     TEXT,
+    apellido   TEXT,
+    telefono   TEXT,
+    activo     BOOLEAN              DEFAULT true,
+    created_at TIMESTAMPTZ          DEFAULT NOW(),
+    updated_at TIMESTAMPTZ          DEFAULT NOW()
+);

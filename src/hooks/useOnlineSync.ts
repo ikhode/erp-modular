@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { isOnline, syncQueue } from '../lib/storage';
+import {useCallback, useEffect, useState} from 'react';
+import {isOnline, syncQueue} from '../lib/storage';
 
 // Placeholder for Supabase sync functions
 // These would be implemented when connecting to Supabase

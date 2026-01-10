@@ -3,12 +3,15 @@ import type {
     Compra,
     Empleado,
     Inventario,
+    LocationType,
     Proceso,
+    ProcessType,
     ProduccionTicket,
     Producto,
     Proveedor,
     SyncQueue,
     Ubicacion,
+    UserRole,
     Venta,
 } from './db';
 import {db} from './db';
@@ -59,6 +62,9 @@ export const produccionStorage = new DexieStorage<ProduccionTicket>(db.produccio
 export const compraStorage = new DexieStorage<Compra>(db.compras);
 export const ventaStorage = new DexieStorage<Venta>(db.ventas);
 export const syncQueueStorage = new DexieStorage<SyncQueue>(db.syncQueue);
+export const userRoleStorage = new DexieStorage<UserRole>(db.userRoles);
+export const locationTypeStorage = new DexieStorage<LocationType>(db.locationTypes);
+export const processTypeStorage = new DexieStorage<ProcessType>(db.processTypes);
 
 // Sync queue management
 export const syncQueue = {
@@ -97,4 +103,7 @@ export const storage = {
   compras: compraStorage,
   ventas: ventaStorage,
   syncQueue,
+  userRoles: userRoleStorage,
+  locationTypes: locationTypeStorage,
+  processTypes: processTypeStorage,
 };
