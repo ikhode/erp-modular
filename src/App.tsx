@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Configuration from './components/Configuration';
