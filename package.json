@@ -12,6 +12,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
+    "deno": "^2.6.4",
     "dexie": "^4.2.1",
     "face-api.js": "^0.22.2",
     "html5-qrcode": "^2.3.8",

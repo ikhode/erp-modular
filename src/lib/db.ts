@@ -198,6 +198,20 @@ export interface SyncQueue {
   synced: boolean;
 }
 
+export interface CashFlow {
+  id?: number;
+  amount: number;
+  movementType: 'ingreso' | 'egreso';
+  sourceType: 'venta' | 'compra' | 'produccion' | 'capital' | 'nomina' | 'gasto' | 'devolucion' | 'otro';
+  referenceType?: string;
+  referenceId?: number;
+  description: string;
+  paymentMethod?: 'efectivo' | 'transferencia' | 'cheque' | 'tarjeta' | 'otro';
+  createdBy?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Interfaces para las tablas de configuración
 export interface UserRole {
   id?: number;
@@ -245,6 +259,7 @@ export class ERPDB extends Dexie {
   produccionTickets!: Table<ProduccionTicket>;
   compras!: Table<Compra>;
   ventas!: Table<Venta>;
+  cashFlow!: Table<CashFlow>;
   syncQueue!: Table<SyncQueue>;
   userRoles!: Table<UserRole>;
   locationTypes!: Table<LocationType>;
@@ -253,7 +268,7 @@ export class ERPDB extends Dexie {
 
   constructor() {
     super('erp_modular');
-    this.version(3).stores({
+    this.version(4).stores({
       clientes: '++id, nombre, rfc, email, createdAt',
       proveedores: '++id, nombre, rfc, email, createdAt',
       productos: '++id, nombre, precioActual, createdAt',
@@ -264,6 +279,7 @@ export class ERPDB extends Dexie {
       produccionTickets: '++id, folio, procesoId, empleadoId, estado, createdAt',
       compras: '++id, folio, proveedorId, productoId, tipo, estado, createdAt',
       ventas: '++id, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
+      cashFlow: '++id, amount, movementType, sourceType, createdAt',
       syncQueue: '++id, operation, table, synced, createdAt',
       userRoles: '++id, name, createdAt',
       locationTypes: '++id, name, createdAt',

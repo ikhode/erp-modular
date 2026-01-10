@@ -1,4 +1,5 @@
 import type {
+    CashFlow,
     Cliente,
     Compra,
     Empleado,
@@ -75,6 +76,7 @@ export const inventarioStorage = new DexieStorage<Inventario>(db.inventario);
 export const produccionStorage = new DexieStorage<ProduccionTicket>(db.produccionTickets);
 export const compraStorage = new DexieStorage<Compra>(db.compras);
 export const ventaStorage = new DexieStorage<Venta>(db.ventas);
+export const cashFlowStorage = new DexieStorage<CashFlow>(db.cashFlow);
 export const userRoleStorage = new DexieStorage<UserRole>(db.userRoles);
 export const locationTypeStorage = new DexieStorage<LocationType>(db.locationTypes);
 export const processTypeStorage = new DexieStorage<ProcessType>(db.processTypes);

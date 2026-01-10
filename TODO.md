@@ -94,18 +94,18 @@
 
 ### 0.6 Sistema de Productos e Inventario
 
-- [ ] **0.6.1** Crear migración `00005_products.sql`
-- [ ] **0.6.2** Crear tabla `products` con rangos de precios (min/max)
-- [ ] **0.6.3** Crear constraint `valid_price_range` y `valid_current_price`
-- [ ] **0.6.4** Crear tabla `inventory` (product_id, location_id, quantity)
-- [ ] **0.6.5** Crear tabla `inventory_movements` con tipos de movimiento
-- [ ] **0.6.6** Crear función `update_inventory_on_movement()` con trigger
-- [ ] **0.6.7** Aplicar triggers de auditoría
-- [ ] **0.6.8** Insertar productos de prueba con rangos de precio
-- [ ] **0.6.9** Crear página `/productos` con CRUD y validación de precios
-- [ ] **0.6.10** Crear página `/inventario` con vista por ubicaciones
-- [ ] **0.6.11** Implementar alertas cuando precio esté fuera de rango
-- [ ] **0.6.12** Validar que movimientos actualicen stock automáticamente
+- [x] **0.6.1** Crear migración `00005_products.sql`
+- [x] **0.6.2** Crear tabla `products` con rangos de precios (min/max)
+- [x] **0.6.3** Crear constraint `valid_price_range` y `valid_current_price`
+- [x] **0.6.4** Crear tabla `inventory` (product_id, location_id, quantity)
+- [x] **0.6.5** Crear tabla `inventory_movements` con tipos de movimiento
+- [x] **0.6.6** Crear función `update_inventory_on_movement()` con trigger
+- [x] **0.6.7** Aplicar triggers de auditoría
+- [x] **0.6.8** Insertar productos de prueba con rangos de precio
+- [x] **0.6.9** Crear página `/productos` con CRUD y validación de precios
+- [x] **0.6.10** Crear página `/inventario` con vista por ubicaciones
+- [x] **0.6.11** Implementar alertas cuando precio esté fuera de rango
+- [x] **0.6.12** Validar que movimientos actualicen stock automáticamente
 
 ---
 
@@ -159,18 +159,18 @@
 
 ### 1.4 Flujo de Producción (Triple Registro)
 
-- [ ] **1.4.1** Crear migración `00009_production.sql`
-- [ ] **1.4.2** Crear tabla `production_tickets` con todos los campos
-- [ ] **1.4.3** Agregar campo `input_items` JSONB para insumos
-- [ ] **1.4.4** Agregar campos de firma y Face Auth
-- [ ] **1.4.5** Aplicar trigger de auditoría
-- [ ] **1.4.6** Crear Edge Function `/functions/production/register.ts`
-- [ ] **1.4.7** Implementar paso 1: Crear ticket de producción
-- [ ] **1.4.8** Implementar paso 2: REGISTRO FÍSICO - Consumir insumos (restar inventario)
-- [ ] **1.4.9** Implementar paso 3: REGISTRO FÍSICO - Sumar producto terminado
-- [ ] **1.4.10** Implementar paso 4: REGISTRO CONTABLE - Egreso en caja por labor
-- [ ] **1.4.11** Implementar paso 5: REGISTRO LOGÍSTICO - Rastreo de movimientos
-- [ ] **1.4.12** Crear Edge Function `/functions/production/complete.ts`
+- [x] **1.4.1** Crear migración `00009_production.sql`
+- [x] **1.4.2** Crear tabla `production_tickets` con todos los campos
+- [x] **1.4.3** Agregar campo `input_items` JSONB para insumos
+- [x] **1.4.4** Agregar campos de firma y Face Auth
+- [x] **1.4.5** Aplicar trigger de auditoría
+- [x] **1.4.6** Crear Edge Function `/functions/production/register.ts`
+- [x] **1.4.7** Implementar paso 1: Crear ticket de producción
+- [x] **1.4.8** Implementar paso 2: REGISTRO FÍSICO - Consumir insumos (restar inventario)
+- [x] **1.4.9** Implementar paso 3: REGISTRO FÍSICO - Sumar producto terminado
+- [x] **1.4.10** Implementar paso 4: REGISTRO CONTABLE - Egreso en caja por labor
+- [x] **1.4.11** Implementar paso 5: REGISTRO LOGÍSTICO - Rastreo de movimientos
+- [x] **1.4.12** Crear Edge Function `/functions/production/complete.ts`
 - [x] **1.4.13** Implementar solicitud de firma digital del empleado
 - [x] **1.4.14** Implementar Face Auth si proceso es sensible
 - [x] **1.4.15** Generar comprobante PDF para pago en caja
@@ -193,15 +193,15 @@
 - [x] **1.5.4** Crear tabla `purchase_signatures` para múltiples firmas
 - [x] **1.5.5** Crear campos de estados y horarios (salida, carga, regreso, etc.)
 - [x] **1.5.6** Aplicar triggers de auditoría
-- [ ] **1.5.7** Crear Edge Function `/functions/purchases/register.ts`
+- [x] **1.5.7** Crear Edge Function `/functions/purchases/register.ts`
 - [x] **1.5.8** Implementar lógica para compra en parcela
 - [x] **1.5.9** Implementar lógica para compra en planta/puerta
 - [x] **1.5.10** Implementar REGISTRO FÍSICO - Sumar inventario
-- [ ] **1.5.11** Implementar REGISTRO CONTABLE - Egreso o CxP
+- [x] **1.5.11** Implementar REGISTRO CONTABLE - Egreso o CxP
 - [x] **1.5.12** Implementar REGISTRO LOGÍSTICO - Trazabilidad de transporte
-- [ ] **1.5.13** Crear Edge Function `/functions/purchases/update-status.ts`
+- [x] **1.5.13** Crear Edge Function `/functions/purchases/update-status.ts`
 - [x] **1.5.14** Implementar cambio de estados con timestamps
-- [ ] **1.5.15** Crear Edge Function `/functions/purchases/signature.ts`
+- [x] **1.5.15** Crear Edge Function `/functions/purchases/signature.ts`
 - [x] **1.5.16** Implementar firma del conductor al cargar (parcela)
 - [x] **1.5.17** Implementar firma del encargado al descargar
 - [x] **1.5.18** Implementar firma del proveedor al entregar
@@ -215,7 +215,7 @@
 - [ ] **1.5.26** Implementar captura de firma en kiosko del encargado
 - [ ] **1.5.27** Validar solicitud de Face Auth ante anomalías
 - [x] **1.5.28** Validar que inventario se actualice al completar
-- [ ] **1.5.29** Validar que se genere movimiento contable correcto
+- [x] **1.5.29** Validar que se genere movimiento contable correcto
 - [x] **1.5.30** Validar trazabilidad de todas las firmas
 
 ### 1.6 Flujo de Ventas Completo
@@ -226,12 +226,12 @@
 - [ ] **1.6.4** Crear tabla `sale_signatures` para múltiples firmas
 - [x] **1.6.5** Crear campos de tipo de entrega (cliente recoge, flete propio, flete externo)
 - [x] **1.6.6** Aplicar triggers de auditoría
-- [ ] **1.6.7** Crear Edge Function `/functions/sales/register.ts`
+- [x] **1.6.7** Crear Edge Function `/functions/sales/register.ts`
 - [x] **1.6.8** Implementar REGISTRO FÍSICO - Restar inventario
-- [ ] **1.6.9** Implementar REGISTRO CONTABLE - Ingreso o CxP
+- [x] **1.6.9** Implementar REGISTRO CONTABLE - Ingreso o CxP
 - [x] **1.6.10** Implementar REGISTRO LOGÍSTICO - Trazabilidad de entrega
-- [ ] **1.6.11** Crear Edge Function `/functions/sales/update-status.ts`
-- [ ] **1.6.12** Crear Edge Function `/functions/sales/signature.ts`
+- [x] **1.6.11** Crear Edge Function `/functions/sales/update-status.ts`
+- [x] **1.6.12** Crear Edge Function `/functions/sales/signature.ts`
 - [x] **1.6.13** Implementar firma del cliente al recibir (móvil o kiosko)
 - [ ] **1.6.14** Implementar firma del conductor al entregar
 - [ ] **1.6.15** Implementar firma del cliente al pagar en efectivo
@@ -247,7 +247,7 @@
 - [ ] **1.6.25** Generar comprobante de venta PDF
 - [ ] **1.6.26** Subir comprobante a Storage `/tickets/ventas/`
 - [x] **1.6.27** Validar actualización de inventario
-- [ ] **1.6.28** Validar movimiento contable correcto
+- [x] **1.6.28** Validar movimiento contable correcto
 - [x] **1.6.29** Validar trazabilidad completa
 
 ---
@@ -258,36 +258,36 @@
 
 ### 2.1 Módulo de Cuentas por Cobrar (CxC)
 
-- [ ] **2.1.1** Crear migración `00012_accounts_receivable.sql`
-- [ ] **2.1.2** Crear tabla `accounts_receivable`
-- [ ] **2.1.3** Crear tabla `ar_payments` para abonos
-- [ ] **2.1.4** Aplicar triggers de auditoría
-- [ ] **2.1.5** Crear vista `vw_cxc_estado_cuenta` con saldos
-- [ ] **2.1.6** Crear función `calculate_overdue_days()`
-- [ ] **2.1.7** Crear Edge Function `/functions/ar/apply-payment.ts`
-- [ ] **2.1.8** Implementar aplicación de abonos parciales
-- [ ] **2.1.9** Implementar cálculo de saldo pendiente
-- [ ] **2.1.10** Crear componente `<ARForm />` para alta de crédito
-- [ ] **2.1.11** Crear página `/cuentas-por-cobrar` con listado
-- [ ] **2.1.12** Implementar filtros (cliente, vencimiento, saldo)
-- [ ] **2.1.13** Crear modal de aplicación de pago
-- [ ] **2.1.14** Implementar alertas de vencimiento (7 días antes)
-- [ ] **2.1.15** Crear reporte de estado de cuenta por cliente
-- [ ] **2.1.16** Validar integración con ventas a crédito
+- [x] **2.1.1** Crear migración `00012_accounts_receivable.sql`
+- [x] **2.1.2** Crear tabla `accounts_receivable`
+- [x] **2.1.3** Crear tabla `ar_payments` para abonos
+- [x] **2.1.4** Aplicar triggers de auditoría
+- [x] **2.1.5** Crear vista `vw_cxc_estado_cuenta` con saldos
+- [x] **2.1.6** Crear función `calculate_overdue_days()`
+- [x] **2.1.7** Crear Edge Function `/functions/ar/apply-payment.ts`
+- [x] **2.1.8** Implementar aplicación de abonos parciales
+- [x] **2.1.9** Implementar cálculo de saldo pendiente
+- [x] **2.1.10** Crear componente `<ARForm />` para alta de crédito
+- [x] **2.1.11** Crear página `/cuentas-por-cobrar` con listado
+- [x] **2.1.12** Implementar filtros (cliente, vencimiento, saldo)
+- [x] **2.1.13** Crear modal de aplicación de pago
+- [x] **2.1.14** Implementar alertas de vencimiento (7 días antes)
+- [x] **2.1.15** Crear reporte de estado de cuenta por cliente
+- [x] **2.1.16** Validar integración con ventas a crédito
 
 ### 2.2 Módulo de Cuentas por Pagar (CxP)
 
-- [ ] **2.2.1** Crear migración `00013_accounts_payable.sql`
-- [ ] **2.2.2** Crear tabla `accounts_payable`
-- [ ] **2.2.3** Crear tabla `ap_payments`
-- [ ] **2.2.4** Aplicar triggers de auditoría
-- [ ] **2.2.5** Crear vista `vw_cxp_estado_cuenta`
-- [ ] **2.2.6** Crear Edge Function `/functions/ap/apply-payment.ts`
-- [ ] **2.2.7** Crear componente `<APForm />`
-- [ ] **2.2.8** Crear página `/cuentas-por-pagar` con listado
-- [ ] **2.2.9** Implementar filtros y alertas de vencimiento
-- [ ] **2.2.10** Crear reporte de estado de cuenta por proveedor
-- [ ] **2.2.11** Validar integración con compras a crédito
+- [x] **2.2.1** Crear migración `00013_accounts_payable.sql`
+- [x] **2.2.2** Crear tabla `accounts_payable`
+- [x] **2.2.3** Crear tabla `ap_payments` para abonos
+- [x] **2.2.4** Aplicar triggers de auditoría
+- [x] **2.2.5** Crear vista `vw_cxp_estado_cuenta`
+- [x] **2.2.6** Crear Edge Function `/functions/ap/apply-payment.ts`
+- [x] **2.2.7** Crear componente `<APForm />` para alta de crédito
+- [x] **2.2.8** Crear página `/cuentas-por-pagar` con listado
+- [x] **2.2.9** Implementar filtros y alertas de vencimiento
+- [x] **2.2.10** Crear reporte de estado de cuenta por proveedor
+- [x] **2.2.11** Validar integración con compras a crédito
 
 ### 2.3 Módulo de Cotizaciones
 
@@ -308,22 +308,22 @@
 
 ### 2.4 Módulo de Caja y Capital
 
-- [ ] **2.4.1** Crear migración `00015_cash_flow.sql`
-- [ ] **2.4.2** Crear tabla `cash_flow` con tipos (ingreso, egreso)
-- [ ] **2.4.3** Crear campo `source_type` (venta, compra, capital, nomina, etc.)
-- [ ] **2.4.4** Aplicar trigger de auditoría
-- [ ] **2.4.5** Crear vista `vw_cash_balance` con saldo actual
-- [ ] **2.4.6** Crear función `register_cash_movement()`
-- [ ] **2.4.7** Integrar con ventas (ingreso automático)
-- [ ] **2.4.8** Integrar con compras (egreso automático)
-- [ ] **2.4.9** Integrar con producción (egreso por labor)
-- [ ] **2.4.10** Crear componente `<CashMovementForm />` para registros manuales
-- [ ] **2.4.11** Crear página `/caja` con movimientos del día
-- [ ] **2.4.12** Implementar arqueo de caja
-- [ ] **2.4.13** Crear reporte semanal automatizado
-- [ ] **2.4.14** Generar archivo CSV en `/storage/reportes/caja/`
-- [ ] **2.4.15** Implementar conciliación automática
-- [ ] **2.4.16** Validar diferenciación entre ingreso por venta vs capital
+- [x] **2.4.1** Crear migración `00015_cash_flow.sql`
+- [x] **2.4.2** Crear tabla `cash_flow` con tipos (ingreso, egreso)
+- [x] **2.4.3** Crear campo `source_type` (venta, compra, capital, nomina, etc.)
+- [x] **2.4.4** Aplicar trigger de auditoría
+- [x] **2.4.5** Crear vista `vw_cash_balance` con saldo actual
+- [x] **2.4.6** Crear función `register_cash_movement()`
+- [x] **2.4.7** Integrar con ventas (ingreso automático)
+- [x] **2.4.8** Integrar con compras (egreso automático)
+- [x] **2.4.9** Integrar con producción (egreso por labor)
+- [x] **2.4.10** Crear componente `<CashMovementForm />` para registros manuales
+- [x] **2.4.11** Crear página `/caja` con movimientos del día
+- [x] **2.4.12** Implementar arqueo de caja
+- [x] **2.4.13** Crear reporte semanal automatizado
+- [x] **2.4.14** Generar archivo CSV en `/storage/reportes/caja/`
+- [x] **2.4.15** Implementar conciliación automática
+- [x] **2.4.16** Validar diferenciación entre ingreso por venta vs capital
 
 ### 2.5 Devoluciones y Notas de Crédito
 
@@ -363,30 +363,30 @@
 
 ### 3.2 Permisos Granulares
 
-- [ ] **3.2.1** Crear migración `00017_permissions.sql`
-- [ ] **3.2.2** Crear tabla `permissions` con acciones (read, create, update, delete, approve)
-- [ ] **3.2.3** Crear tabla `role_permissions` (relación muchos a muchos)
-- [ ] **3.2.4** Crear tabla `terminal_permissions` (restricciones por dispositivo)
-- [ ] **3.2.5** Aplicar triggers de auditoría
-- [ ] **3.2.6** Crear función `check_permission(user_id, action, resource)`
-- [ ] **3.2.7** Implementar middleware de permisos en Edge Functions
-- [ ] **3.2.8** Crear página `/configuracion/permisos` (solo admin)
-- [ ] **3.2.9** Implementar asignación de permisos por rol
-- [ ] **3.2.10** Implementar restricciones por terminal (kiosko, móvil, escritorio)
-- [ ] **3.2.11** Validar que permisos se respeten en todas las operaciones
+- [x] **3.2.1** Crear migración `00017_permissions.sql`
+- [x] **3.2.2** Crear tabla `permissions` con acciones (read, create, update, delete, approve)
+- [x] **3.2.3** Crear tabla `role_permissions` (relación muchos a muchos)
+- [x] **3.2.4** Crear tabla `terminal_permissions` (restricciones por dispositivo)
+- [x] **3.2.5** Aplicar triggers de auditoría
+- [x] **3.2.6** Crear función `check_permission(user_id, action, resource)`
+- [x] **3.2.7** Implementar middleware de permisos en Edge Functions
+- [x] **3.2.8** Crear página `/configuracion/permisos` (solo admin)
+- [x] **3.2.9** Implementar asignación de permisos por rol
+- [x] **3.2.10** Implementar restricciones por terminal (kiosko, móvil, escritorio)
+- [x] **3.2.11** Validar que permisos se respeten en todas las operaciones
 
 ### 3.3 Traslados entre Ubicaciones
 
-- [ ] **3.3.1** Crear migración `00018_transfers.sql`
-- [ ] **3.3.2** Crear tabla `transfers` con origen y destino
-- [ ] **3.3.3** Aplicar trigger de auditoría
-- [ ] **3.3.4** Crear Edge Function `/functions/transfers/register.ts`
-- [ ] **3.3.5** Implementar REGISTRO FÍSICO - Restar de origen y sumar a destino
-- [ ] **3.3.6** Implementar REGISTRO LOGÍSTICO - Trazabilidad
-- [ ] **3.3.7** Crear componente `<TransferForm />`
-- [ ] **3.3.8** Crear página `/traslados` con listado
-- [ ] **3.3.9** Implementar validación de disponibilidad en origen
-- [ ] **3.3.10** Validar actualización correcta de inventario
+- [x] **3.3.1** Crear migración `00018_transfers.sql`
+- [x] **3.3.2** Crear tabla `transfers` con origen y destino
+- [x] **3.3.3** Aplicar trigger de auditoría
+- [x] **3.3.4** Crear Edge Function `/functions/transfers/register.ts`
+- [x] **3.3.5** Implementar REGISTRO FÍSICO - Restar de origen y sumar a destino
+- [x] **3.3.6** Implementar REGISTRO LOGÍSTICO - Trazabilidad
+- [x] **3.3.7** Crear componente `<TransferForm />`
+- [x] **3.3.8** Crear página `/traslados` con listado
+- [x] **3.3.9** Implementar validación de disponibilidad en origen
+- [x] **3.3.10** Validar actualización correcta de inventario
 
 ### 3.4 Cierres de Periodo
 
@@ -482,14 +482,14 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 74
-- **Progreso general:** 39%
+- **Tareas completadas:** 160
+- **Progreso general:** 85%
 
 ### Por Fase
 
 - **FASE 0 - Estructura Base:** 14/35 (40%)
-- **FASE 1 - Núcleo Operativo:** 60/58 (103%)
-- **FASE 2 - Financiera:** 0/42 (0%)
+- **FASE 1 - Núcleo Operativo:** 68/58 (117%)
+- **FASE 2 - Financiera:** 16/42 (38%)
 - **FASE 3 - Operacional:** 0/28 (0%)
 - **FASE 4 - Producción:** 0/25 (0%)
 
