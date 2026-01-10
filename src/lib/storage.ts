@@ -47,7 +47,8 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
     }
 
     async update(id: number, data: Partial<T>): Promise<void> {
-        await this.table.update(id, data as unknown);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await this.table.update(id, data as any);
     }
 
     async delete(id: number): Promise<void> {
@@ -102,18 +103,18 @@ export const isOnline = (): boolean => typeof navigator !== 'undefined' && navig
 
 // ✅ Unified export for modular access
 export const storage = {
-    clientes: clienteStorage,
-    proveedores: proveedorStorage,
-    productos: productoStorage,
-    empleados: empleadoStorage,
-    ubicaciones: ubicacionStorage,
-    procesos: procesoStorage,
-    inventario: inventarioStorage,
-    produccion: produccionStorage,
-    compras: compraStorage,
-    ventas: ventaStorage,
-    syncQueue,
-    userRoles: userRoleStorage,
-    locationTypes: locationTypeStorage,
-    processTypes: processTypeStorage,
+    clientes: clienteStorage, // Gestión de clientes: creación, edición, eliminación y consulta de registros de clientes.
+    proveedores: proveedorStorage, // Gestión de proveedores: creación, edición, eliminación y consulta de registros de proveedores.
+    productos: productoStorage, // Gestión de productos: creación, edición, eliminación y consulta de productos con flags de uso.
+    empleados: empleadoStorage, // Gestión de empleados: creación, edición, eliminación y consulta de empleados con roles asignados.
+    ubicaciones: ubicacionStorage, // Gestión de ubicaciones: creación, edición, eliminación y consulta de lugares físicos de almacenamiento.
+    procesos: procesoStorage, // Gestión de procesos de producción: creación, edición, eliminación y consulta de procesos con insumos y salidas.
+    inventario: inventarioStorage, // Gestión de inventario: registros de stock por producto y ubicación, con movimientos y actualizaciones.
+    produccion: produccionStorage, // Gestión de tickets de producción: creación, edición, eliminación y consulta de registros de producción.
+    compras: compraStorage, // Gestión de compras: registros de adquisiciones de productos con proveedores, precios y estados.
+    ventas: ventaStorage, // Gestión de ventas: registros de ventas de productos a clientes, precios y estados de entrega.
+    syncQueue, // Gestión de cola de sincronización: operaciones pendientes para sincronizar con la base de datos remota.
+    userRoles: userRoleStorage, // Gestión de roles de usuario: tipos de roles disponibles para empleados y permisos asociados.
+    locationTypes: locationTypeStorage, // Gestión de tipos de ubicación: categorías de lugares (patios, bodegas, etc.) con productos permitidos.
+    processTypes: processTypeStorage, // Gestión de tipos de proceso: categorías de procesos de producción (destopado, pelado, etc.).
 };

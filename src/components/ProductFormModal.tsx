@@ -66,8 +66,8 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
   // Refresca tipos de lugar al abrir el modal y tras crear/editar
   const refreshTiposLugar = async () => {
     const tipos = await storage.locationTypes.getAll();
-    // Mapeo para cumplir tipado: { id, nombre }
-    setTiposLugar(tipos.map(t => ({ id: t.id, nombre: t.name })));
+    // Mapeo para cumplir tipado: { id, nombre }, filtrando undefined
+    setTiposLugar(tipos.filter(t => t.id !== undefined).map(t => ({ id: t.id!, nombre: t.name })));
   };
 
   useEffect(() => {
