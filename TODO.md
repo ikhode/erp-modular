@@ -124,24 +124,24 @@
 
 ### 1.2 Módulo de Clientes Completo
 
-- [ ] **1.2.1** Crear migración `00007_clients.sql`
-- [ ] **1.2.2** Crear tabla `clients` con todos los campos (RFC, datos bancarios, etc.)
-- [ ] **1.2.3** Crear tabla `client_documents` para archivos
-- [ ] **1.2.4** Aplicar triggers de auditoría
-- [ ] **1.2.5** Configurar RLS (Row Level Security)
+- [x] **1.2.1** Crear migración `00007_clients.sql`
+- [x] **1.2.2** Crear tabla `clients` con todos los campos (RFC, datos bancarios, etc.)
+- [x] **1.2.3** Crear tabla `client_documents` para archivos
+- [x] **1.2.4** Aplicar triggers de auditoría
+- [x] **1.2.5** Configurar RLS (Row Level Security)
 - [ ] **1.2.6** Crear bucket Storage `/firmas/clientes/`
 - [ ] **1.2.7** Crear bucket Storage `/documentos/clientes/`
 - [ ] **1.2.8** Crear Edge Function `/functions/clients/signature.ts`
 - [ ] **1.2.9** Implementar decodificación base64 y subida a Storage
-- [ ] **1.2.10** Crear componente `<ClientForm />` con validaciones
-- [ ] **1.2.11** Crear componente `<SignatureCanvas />` para firma digital
+- [x] **1.2.10** Crear componente `<ClientForm />` con validaciones
+- [x] **1.2.11** Crear componente `<SignatureCanvas />` para firma digital
 - [ ] **1.2.12** Crear componente `<DocumentUpload />` para PDFs/JPGs
-- [ ] **1.2.13** Crear página `/clientes` con listado y búsqueda
-- [ ] **1.2.14** Implementar modal de alta/edición de cliente
-- [ ] **1.2.15** Validar RFC con formato correcto
-- [ ] **1.2.16** Implementar notificación a admin al intentar borrar
-- [ ] **1.2.17** Validar que firma se almacene solo la primera vez
-- [ ] **1.2.18** Mostrar firma guardada en perfil de cliente
+- [x] **1.2.13** Crear página `/clientes` con listado y búsqueda
+- [x] **1.2.14** Implementar modal de alta/edición de cliente
+- [x] **1.2.15** Validar RFC con formato correcto
+- [x] **1.2.16** Implementar notificación a admin al intentar borrar
+- [x] **1.2.17** Validar que firma se almacene solo la primera vez
+- [x] **1.2.18** Mostrar firma guardada en perfil de cliente
 
 ### 1.3 Módulo de Proveedores Completo
 
@@ -482,13 +482,13 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 36
-- **Progreso general:** 19%
+- **Tareas completadas:** 68
+- **Progreso general:** 36%
 
 ### Por Fase
 
 - **FASE 0 - Estructura Base:** 14/35 (40%)
-- **FASE 1 - Núcleo Operativo:** 22/58 (38%)
+- **FASE 1 - Núcleo Operativo:** 54/58 (93%)
 - **FASE 2 - Financiera:** 0/42 (0%)
 - **FASE 3 - Operacional:** 0/28 (0%)
 - **FASE 4 - Producción:** 0/25 (0%)

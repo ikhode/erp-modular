@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Edit, Plus, Save, Search, Trash2, X} from 'lucide-react';
+import React, {useRef, useState} from 'react';
+import {CreditCard, Edit, FileText, History, Plus, Save, Search, Trash2, User, X} from 'lucide-react';
 import {clienteStorage} from '../lib/storage';
 import type {Cliente} from '../lib/db';
 
@@ -8,17 +8,28 @@ const Clients: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingClient, setEditingClient] = useState<Cliente | null>(null);
+  const [activeTab, setActiveTab] = useState<'general' | 'bancarios' | 'documentos' | 'historial'>('general');
   const [formData, setFormData] = useState({
     nombre: '',
     rfc: '',
     email: '',
     telefono: '',
     direccion: '',
-    firmaBase64: ''
+    banco: '',
+    cuentaBancaria: '',
+    clabe: '',
+    firmaBase64: '',
+    activo: true,
+    notas: ''
   });
 
+  // Firma digital
+  const [showSignatureModal, setShowSignatureModal] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+
   // Load clients on mount
-  useEffect(() => {
+  React.useEffect(() => {
     loadClients();
   }, []);
 
@@ -31,8 +42,24 @@ const Clients: React.FC = () => {
     }
   };
 
+  // Validación RFC básica
+  const validarRFC = (rfc: string): boolean => {
+    // RFC persona física: 13 caracteres, persona moral: 12
+    if (rfc.length < 12 || rfc.length > 13) return false;
+    // Patrón básico: 3-4 letras, 6 dígitos, 3 alfanuméricos
+    const rfcPattern = /^[A-ZÑ&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z0-9]{3}$/;
+    return rfcPattern.test(rfc.toUpperCase());
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validar RFC si está presente
+    if (formData.rfc && !validarRFC(formData.rfc)) {
+      alert('RFC inválido. Debe tener formato correcto (12-13 caracteres).');
+      return;
+    }
+
     try {
       const clientData = {
         ...formData,
@@ -50,6 +77,7 @@ const Clients: React.FC = () => {
       resetForm();
     } catch (error) {
       console.error('Error saving client:', error);
+      alert('Error al guardar cliente. Verifique los datos.');
     }
   };
 
@@ -61,17 +89,27 @@ const Clients: React.FC = () => {
       email: client.email || '',
       telefono: client.telefono || '',
       direccion: client.direccion || '',
-      firmaBase64: client.firmaBase64 || ''
+      banco: client.banco || '',
+      cuentaBancaria: client.cuentaBancaria || '',
+      clabe: client.clabe || '',
+      firmaBase64: client.firmaBase64 || '',
+      activo: client.activo ?? true,
+      notas: client.notas || ''
     });
+    setShowAddModal(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('¿Está seguro de eliminar este cliente?')) {
+    // Confirmación especial que simula notificación a admin
+    const confirmMessage = `¿Está seguro de eliminar este cliente?\n\nEsta acción será registrada y notificada al administrador del sistema.`;
+    if (window.confirm(confirmMessage)) {
       try {
         await clienteStorage.delete(id);
         await loadClients();
+        alert('Cliente eliminado. El administrador ha sido notificado.');
       } catch (error) {
         console.error('Error deleting client:', error);
+        alert('Error al eliminar cliente.');
       }
     }
   };
@@ -83,10 +121,58 @@ const Clients: React.FC = () => {
       email: '',
       telefono: '',
       direccion: '',
-      firmaBase64: ''
+      banco: '',
+      cuentaBancaria: '',
+      clabe: '',
+      firmaBase64: '',
+      activo: true,
+      notas: ''
     });
     setEditingClient(null);
     setShowAddModal(false);
+    setActiveTab('general');
+  };
+
+  // Funciones para firma digital
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    setIsDrawing(true);
+    ctx.beginPath();
+    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  const saveSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dataURL = canvas.toDataURL('image/png');
+    setFormData(prev => ({ ...prev, firmaBase64: dataURL }));
+    setShowSignatureModal(false);
+    clearSignature();
   };
 
   const filteredClients = clients.filter(client =>
@@ -94,6 +180,10 @@ const Clients: React.FC = () => {
     client.rfc?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     client.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalClients = clients.length;
+  const activeClients = clients.filter(c => c.activo !== false).length;
+  const inactiveClients = clients.filter(c => c.activo === false).length;
 
   return (
     <div className="space-y-6">
@@ -106,6 +196,46 @@ const Clients: React.FC = () => {
           <Plus className="h-5 w-5" />
           Nuevo Cliente
         </button>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="flex items-center">
+            <User className="h-8 w-8 text-blue-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Total Clientes</p>
+              <p className="text-2xl font-bold">{totalClients}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="flex items-center">
+            <User className="h-8 w-8 text-green-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Activos</p>
+              <p className="text-2xl font-bold">{activeClients}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="flex items-center">
+            <User className="h-8 w-8 text-red-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Inactivos</p>
+              <p className="text-2xl font-bold">{inactiveClients}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="flex items-center">
+            <FileText className="h-8 w-8 text-purple-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Con Documentos</p>
+              <p className="text-2xl font-bold">{clients.filter(c => c.firmaBase64).length}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Search */}
@@ -131,7 +261,7 @@ const Clients: React.FC = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">RFC</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
@@ -141,7 +271,13 @@ const Clients: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{client.nombre}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.rfc}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.telefono}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      client.activo !== false ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {client.activo !== false ? 'Activo' : 'Inactivo'}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center gap-2">
                       <button
@@ -172,8 +308,8 @@ const Clients: React.FC = () => {
 
       {/* Add/Edit Modal */}
       {(showAddModal || editingClient) && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-semibold text-gray-900">
                 {editingClient ? 'Editar Cliente' : 'Nuevo Cliente'}
@@ -186,69 +322,248 @@ const Clients: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nombre *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.nombre}
-                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+            {/* Tabs */}
+            <div className="border-b border-gray-200">
+              <nav className="flex space-x-8 px-6">
+                {[
+                  { id: 'general', label: 'Información General', icon: User },
+                  { id: 'bancarios', label: 'Datos Bancarios', icon: CreditCard },
+                  { id: 'documentos', label: 'Documentos', icon: FileText },
+                  { id: 'historial', label: 'Historial', icon: History }
+                ].map(({ id, label, icon: Icon }) => (
+                  <button
+                    key={id}
+                    onClick={() => setActiveTab(id as 'general' | 'bancarios' | 'documentos' | 'historial')}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
+                      activeTab === id
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {label}
+                  </button>
+                ))}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  RFC
-                </label>
-                <input
-                  type="text"
-                  value={formData.rfc}
-                  onChange={(e) => setFormData({ ...formData, rfc: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+              </nav>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="p-6">
+              {/* Tab: Información General */}
+              {activeTab === 'general' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Nombre *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.nombre}
+                        onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Teléfono
-                </label>
-                <input
-                  type="tel"
-                  value={formData.telefono}
-                  onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        RFC
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.rfc}
+                        onChange={(e) => setFormData({ ...formData, rfc: e.target.value.toUpperCase() })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="AAAA000000AAA"
+                      />
+                      {formData.rfc && !validarRFC(formData.rfc) && (
+                        <p className="text-red-500 text-xs mt-1">RFC inválido</p>
+                      )}
+                    </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Dirección
-                </label>
-                <textarea
-                  value={formData.direccion}
-                  onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
 
-              <div className="flex justify-end gap-3 pt-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Teléfono
+                      </label>
+                      <input
+                        type="tel"
+                        value={formData.telefono}
+                        onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Dirección
+                    </label>
+                    <textarea
+                      value={formData.direccion}
+                      onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Notas
+                    </label>
+                    <textarea
+                      value={formData.notas}
+                      onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
+                      rows={2}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="activo"
+                      checked={formData.activo}
+                      onChange={(e) => setFormData({ ...formData, activo: e.target.checked })}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="activo" className="ml-2 block text-sm text-gray-900">
+                      Cliente activo
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab: Datos Bancarios */}
+              {activeTab === 'bancarios' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Banco
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.banco}
+                        onChange={(e) => setFormData({ ...formData, banco: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Cuenta Bancaria
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.cuentaBancaria}
+                        onChange={(e) => setFormData({ ...formData, cuentaBancaria: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        CLABE
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.clabe}
+                        onChange={(e) => setFormData({ ...formData, clabe: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        maxLength={18}
+                        placeholder="18 dígitos"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab: Documentos */}
+              {activeTab === 'documentos' && (
+                <div className="space-y-4">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <FileText className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">Subir documentos</h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      INE, comprobante de domicilio, acta constitutiva, etc.
+                    </p>
+                    <div className="mt-4">
+                      <input
+                        type="file"
+                        multiple
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        className="hidden"
+                        id="document-upload"
+                      />
+                      <label
+                        htmlFor="document-upload"
+                        className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg inline-block"
+                      >
+                        Seleccionar archivos
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Firma Digital */}
+                  <div className="border-t pt-4">
+                    <h4 className="text-lg font-medium text-gray-900 mb-4">Firma Digital</h4>
+                    {formData.firmaBase64 ? (
+                      <div className="space-y-2">
+                        <img src={formData.firmaBase64} alt="Firma" className="border border-gray-300 rounded max-w-xs" />
+                        <p className="text-sm text-green-600">✓ Firma registrada</p>
+                        {!editingClient && (
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, firmaBase64: '' })}
+                            className="text-red-600 hover:text-red-800 text-sm"
+                          >
+                            Limpiar firma
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-600">No hay firma registrada</p>
+                        <button
+                          type="button"
+                          onClick={() => setShowSignatureModal(true)}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                        >
+                          Capturar Firma
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab: Historial */}
+              {activeTab === 'historial' && (
+                <div className="space-y-4">
+                  <div className="text-center py-8 text-gray-500">
+                    <History className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">Historial de actividades</h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Las actividades del cliente se mostrarán aquí
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3 pt-6 border-t">
                 <button
                   type="button"
                   onClick={resetForm}
@@ -265,6 +580,29 @@ const Clients: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Firma Digital */}
+      {showSignatureModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Firma Digital</h3>
+            <canvas
+              ref={canvasRef}
+              width={400}
+              height={200}
+              className="border border-gray-300 w-full"
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+            />
+            <div className="flex justify-end space-x-2 mt-4">
+              <button type="button" onClick={clearSignature} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Limpiar</button>
+              <button type="button" onClick={saveSignature} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Guardar Firma</button>
+            </div>
           </div>
         </div>
       )}

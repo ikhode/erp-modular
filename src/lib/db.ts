@@ -8,7 +8,15 @@ export interface Cliente {
   email?: string;
   telefono?: string;
   direccion?: string;
+  // Datos bancarios
+  banco?: string;
+  cuentaBancaria?: string;
+  clabe?: string;
+  // Firma digital (solo primera vez)
   firmaBase64?: string;
+  // Estado y control
+  activo?: boolean;
+  notas?: string;
   createdAt: Date;
   updatedAt: Date;
 }
