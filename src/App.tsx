@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import {useState} from 'react';
+import {useOnlineSync} from './hooks/useOnlineSync';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Configuration from './components/Configuration';
@@ -23,6 +24,12 @@ function App() {
   const [activeModule, setActiveModule] = useState(safeStorage.get('activeModule', 'dashboard'));
   const [userRole, setUserRole] = useState(safeStorage.get('userRole', 'admin'));
   const [isAuthenticated, setIsAuthenticated] = useState(safeStorage.get('isAuthenticated', false));
+
+  // Hook para sincronización online/offline
+  const { isOnline, isSyncing, lastSync } = useOnlineSync();
+
+  // Debug: mostrar estado de sincronización
+  console.log('Sync status:', { isOnline, isSyncing, lastSync });
 
   // Persistir cambios en localStorage de forma segura
   const handleSetActiveModule = (module: string) => {
