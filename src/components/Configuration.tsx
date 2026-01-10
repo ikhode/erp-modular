@@ -1,38 +1,50 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Plus, Save, Settings, Trash2} from 'lucide-react';
+import {safeStorage} from '../lib/safeStorage';
+
+const CONFIG_KEY = 'erp_config';
+
+const defaultConfig = {
+  general: {
+    companyName: 'Fábrica de Coco Los Cocos',
+    currency: 'MXN',
+    timezone: 'America/Mexico_City',
+    language: 'es',
+  },
+  pricing: {
+    minPurchasePrice: 0,
+    maxPurchasePrice: 1000,
+    minSalePrice: 0,
+    maxSalePrice: 2000,
+    defaultMargin: 30,
+  },
+  processes: [
+    { id: 1, name: 'Destopado', paymentType: 'por_procesado', rate: 2.5, unit: 'kg' },
+    { id: 2, name: 'Deshuesado', paymentType: 'por_generado', rate: 3.0, unit: 'kg' },
+    { id: 3, name: 'Pelado', paymentType: 'por_procesado', rate: 1.8, unit: 'kg' },
+    { id: 4, name: 'Extracción Copra', paymentType: 'por_generado', rate: 5.0, unit: 'kg' },
+  ],
+  modules: {
+    purchases: true,
+    sales: true,
+    inventory: true,
+    production: true,
+    payroll: true,
+    reports: true,
+    faceAuth: true,
+  }
+};
 
 const Configuration: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');
-  const [config, setConfig] = useState({
-    general: {
-      companyName: 'Fábrica de Coco Los Cocos',
-      currency: 'MXN',
-      timezone: 'America/Mexico_City',
-      language: 'es',
-    },
-    pricing: {
-      minPurchasePrice: 0,
-      maxPurchasePrice: 1000,
-      minSalePrice: 0,
-      maxSalePrice: 2000,
-      defaultMargin: 30,
-    },
-    processes: [
-      { id: 1, name: 'Destopado', paymentType: 'por_procesado', rate: 2.5, unit: 'kg' },
-      { id: 2, name: 'Deshuesado', paymentType: 'por_generado', rate: 3.0, unit: 'kg' },
-      { id: 3, name: 'Pelado', paymentType: 'por_procesado', rate: 1.8, unit: 'kg' },
-      { id: 4, name: 'Extracción Copra', paymentType: 'por_generado', rate: 5.0, unit: 'kg' },
-    ],
-    modules: {
-      purchases: true,
-      sales: true,
-      inventory: true,
-      production: true,
-      payroll: true,
-      reports: true,
-      faceAuth: true,
-    }
-  });
+  const [config, setConfig] = useState(defaultConfig);
+  const [saved, setSaved] = useState(false);
+
+  // Cargar configuración persistente al montar
+  useEffect(() => {
+    const stored = safeStorage.get(CONFIG_KEY, defaultConfig);
+    setConfig(stored);
+  }, []);
 
   const tabs = [
     { id: 'general', label: 'General', icon: Settings },
@@ -42,7 +54,9 @@ const Configuration: React.FC = () => {
   ];
 
   const handleSave = () => {
-    alert('Configuración guardada exitosamente');
+    safeStorage.set(CONFIG_KEY, config);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   const addProcess = () => {
@@ -286,7 +300,11 @@ const Configuration: React.FC = () => {
           <span>Guardar Cambios</span>
         </button>
       </div>
-
+      {saved && (
+        <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-sm font-medium">
+          Configuración guardada correctamente
+        </div>
+      )}
       {/* Tabs */}
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
@@ -319,3 +337,4 @@ const Configuration: React.FC = () => {
 };
 
 export default Configuration;
+

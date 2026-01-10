@@ -33,6 +33,11 @@ export interface Producto {
   precioMax: number;
   precioActual: number;
   unidad: string;
+  // Flags de uso para trazabilidad y flexibilidad
+  compra: boolean; // Se puede comprar
+  venta: boolean; // Se puede vender
+  procesoEntrada: boolean; // Puede ser insumo de proceso
+  procesoSalida: boolean; // Puede ser generado por proceso
   createdAt: Date;
   updatedAt: Date;
 }
@@ -65,6 +70,21 @@ export interface Proceso {
   tipo: string; // Reference to process_types.name
   createdAt: Date;
   updatedAt: Date;
+  // Nuevos campos estructurados para indexación y legibilidad
+  inputs: ProcessItem[];
+  outputs: ProcessItem[];
+  reglas?: unknown; // reglas de negocio, si aplica
+}
+
+export interface ProcessItem {
+  modoProducto: 'tipo' | 'producto';
+  tipoProducto?: string;
+  productId?: string;
+  productName?: string;
+  unit?: string;
+  modoUbicacion: 'tipo' | 'especifica';
+  tipoUbicacion?: number;
+  ubicacionId?: number;
 }
 
 export interface Inventario {
@@ -145,6 +165,7 @@ export interface LocationType {
   id?: number;
   name: string;
   description?: string;
+  productosPermitidos?: number[]; // IDs de productos permitidos
   createdAt: Date;
   updatedAt: Date;
 }

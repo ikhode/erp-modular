@@ -1,97 +1,89 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CreditCard as Edit, Search, Trash2, UserPlus, Users} from 'lucide-react';
-
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  position: string;
-  department: string;
-  hireDate: string;
-  status: 'Activo' | 'Inactivo';
-  salary: number;
-}
+import {storage} from '../lib/storage';
+import type {Empleado} from '../lib/db';
 
 const Employees: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [newEmployee, setNewEmployee] = useState({
-    name: '',
+  const [newEmployee, setNewEmployee] = useState<Partial<Empleado>>({
+    nombre: '',
     email: '',
-    position: '',
-    department: '',
-    salary: ''
+    rol: '',
+    telefono: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
+  const [employees, setEmployees] = useState<Empleado[]>([]);
+  const [editingEmployee, setEditingEmployee] = useState<Empleado | null>(null);
 
-  const [employees] = useState<Employee[]>([
-    {
-      id: '001',
-      name: 'Juan Pérez',
-      email: 'juan.perez@cocofactory.com',
-      position: 'Operador de Producción',
-      department: 'Producción',
-      hireDate: '2023-01-15',
-      status: 'Activo',
-      salary: 12000
-    },
-    {
-      id: '002',
-      name: 'María García',
-      email: 'maria.garcia@cocofactory.com',
-      position: 'Supervisora de Calidad',
-      department: 'Calidad',
-      hireDate: '2022-08-20',
-      status: 'Activo',
-      salary: 18000
-    },
-    {
-      id: '003',
-      name: 'Carlos López',
-      email: 'carlos.lopez@cocofactory.com',
-      position: 'Técnico de Mantenimiento',
-      department: 'Mantenimiento',
-      hireDate: '2023-03-10',
-      status: 'Activo',
-      salary: 15000
-    },
-    {
-      id: '004',
-      name: 'Ana Martínez',
-      email: 'ana.martinez@cocofactory.com',
-      position: 'Cajera',
-      department: 'Ventas',
-      hireDate: '2023-06-01',
-      status: 'Activo',
-      salary: 10000
-    }
-  ]);
+  // Refresca empleados cada vez que se cierra el modal de agregar/editar
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const empleados = await storage.empleados.getAll();
+      setEmployees(empleados);
+    };
+    fetchEmployees();
+  }, [showAddModal, editingEmployee]);
 
   const filteredEmployees = employees.filter(employee =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.department.toLowerCase().includes(searchTerm.toLowerCase())
+    (employee.nombre || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (employee.rol || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleAddEmployee = () => {
-    if (!newEmployee.name || !newEmployee.email || !newEmployee.position) {
+  const handleAddOrEditEmployee = async () => {
+    if (!newEmployee.nombre || !newEmployee.rol) {
       alert('Por favor complete todos los campos requeridos');
       return;
     }
-    
-    alert(`Empleado ${newEmployee.name} agregado exitosamente`);
-    setNewEmployee({ name: '', email: '', position: '', department: '', salary: '' });
+    if (editingEmployee) {
+      await storage.empleados.update(editingEmployee.id!, {
+        ...newEmployee,
+        updatedAt: new Date(),
+      });
+      setEditingEmployee(null);
+    } else {
+      await storage.empleados.add({
+        ...newEmployee,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as Omit<Empleado, 'id'>);
+    }
+    setNewEmployee({ nombre: '', email: '', rol: '', telefono: '', createdAt: new Date(), updatedAt: new Date() });
     setShowAddModal(false);
   };
 
-  const departments = ['Producción', 'Calidad', 'Mantenimiento', 'Ventas', 'Administración'];
-  const positions = [
-    'Operador de Producción',
-    'Supervisora de Calidad',
-    'Técnico de Mantenimiento',
-    'Cajera',
-    'Gerente',
-    'Asistente'
-  ];
+  const handleEdit = (employee: Empleado) => {
+    setEditingEmployee(employee);
+    setNewEmployee({
+      nombre: employee.nombre,
+      email: employee.email,
+      rol: employee.rol,
+      telefono: employee.telefono,
+      createdAt: employee.createdAt,
+      updatedAt: employee.updatedAt,
+    });
+    setShowAddModal(true);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (window.confirm('¿Está seguro de eliminar este empleado?')) {
+      await storage.empleados.delete(id);
+      const empleados = await storage.empleados.getAll();
+      setEmployees(empleados);
+    }
+  };
+
+  const [departments, setRoles] = useState<string[]>([]);
+  const [roles, setDepartments] = useState<string[]>([]);
+  useEffect(() => {
+    const fetchConfig = async () => {
+      const rolesDb = await storage.userRoles.getAll();
+      setDepartments(rolesDb.map(r => r.name));
+      setRoles(['Producción', 'Calidad', 'Mantenimiento', 'Ventas', 'Administración']);
+    };
+    fetchConfig();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -122,7 +114,7 @@ const Employees: React.FC = () => {
             <Users className="h-8 w-8 text-green-600 mr-3" />
             <div>
               <p className="text-sm text-gray-600">Activos</p>
-              <p className="text-2xl font-bold">{employees.filter(e => e.status === 'Activo').length}</p>
+              <p className="text-2xl font-bold">{employees.filter(e => e.rol && e.rol !== 'inactivo').length}</p>
             </div>
           </div>
         </div>
@@ -140,7 +132,7 @@ const Employees: React.FC = () => {
             <Users className="h-8 w-8 text-orange-600 mr-3" />
             <div>
               <p className="text-sm text-gray-600">Presentes Hoy</p>
-              <p className="text-2xl font-bold">24</p>
+              <p className="text-2xl font-bold">-</p>
             </div>
           </div>
         </div>
@@ -172,16 +164,13 @@ const Employees: React.FC = () => {
                   Empleado
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Puesto
+                  Rol
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Departamento
+                  Teléfono
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Estado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Salario
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acciones
@@ -193,35 +182,32 @@ const Employees: React.FC = () => {
                 <tr key={employee.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{employee.name}</div>
+                      <div className="text-sm font-medium text-gray-900">{employee.nombre}</div>
                       <div className="text-sm text-gray-500">{employee.email}</div>
                       <div className="text-xs text-gray-400">ID: {employee.id}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {employee.position}
+                    {employee.rol}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {employee.department}
+                    {employee.telefono}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      employee.status === 'Activo' 
-                        ? 'bg-green-100 text-green-800' 
+                      employee.rol && employee.rol !== 'inactivo'
+                        ? 'bg-green-100 text-green-800'
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {employee.status}
+                      {employee.rol && employee.rol !== 'inactivo' ? 'Activo' : 'Inactivo'}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${employee.salary.toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button className="text-blue-600 hover:text-blue-900" onClick={() => handleEdit(employee)}>
                         <Edit className="h-4 w-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900">
+                      <button className="text-red-600 hover:text-red-900" onClick={() => handleDelete(employee.id!)}>
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -233,12 +219,13 @@ const Employees: React.FC = () => {
         </div>
       </div>
 
-      {/* Add Employee Modal */}
+      {/* Modal de agregar/editar empleado */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Nuevo Empleado</h3>
-            
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              {editingEmployee ? 'Editar Empleado' : 'Nuevo Empleado'}
+            </h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -246,79 +233,58 @@ const Employees: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  value={newEmployee.name}
-                  onChange={(e) => setNewEmployee({...newEmployee, name: e.target.value})}
+                  value={newEmployee.nombre || ''}
+                  onChange={(e) => setNewEmployee({ ...newEmployee, nombre: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email *
+                  Email
                 </label>
                 <input
                   type="email"
-                  value={newEmployee.email}
-                  onChange={(e) => setNewEmployee({...newEmployee, email: e.target.value})}
+                  value={newEmployee.email || ''}
+                  onChange={(e) => setNewEmployee({ ...newEmployee, email: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Puesto *
+                  Rol *
                 </label>
                 <select
-                  value={newEmployee.position}
-                  onChange={(e) => setNewEmployee({...newEmployee, position: e.target.value})}
+                  value={newEmployee.rol || ''}
+                  onChange={(e) => setNewEmployee({ ...newEmployee, rol: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="">Seleccionar puesto</option>
-                  {positions.map(position => (
-                    <option key={position} value={position}>{position}</option>
+                  <option value="">Seleccionar rol</option>
+                  {roles.map(role => (
+                    <option key={role} value={role}>{role}</option>
                   ))}
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Departamento
-                </label>
-                <select
-                  value={newEmployee.department}
-                  onChange={(e) => setNewEmployee({...newEmployee, department: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Seleccionar departamento</option>
-                  {departments.map(dept => (
-                    <option key={dept} value={dept}>{dept}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Salario Mensual
+                  Teléfono
                 </label>
                 <input
-                  type="number"
-                  value={newEmployee.salary}
-                  onChange={(e) => setNewEmployee({...newEmployee, salary: e.target.value})}
+                  type="text"
+                  value={newEmployee.telefono || ''}
+                  onChange={(e) => setNewEmployee({ ...newEmployee, telefono: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="0.00"
                 />
               </div>
             </div>
-
             <div className="flex space-x-3 mt-6">
               <button
-                onClick={handleAddEmployee}
+                onClick={handleAddOrEditEmployee}
                 className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
               >
-                Agregar
+                {editingEmployee ? 'Actualizar' : 'Agregar'}
               </button>
               <button
-                onClick={() => setShowAddModal(false)}
+                onClick={() => { setShowAddModal(false); setEditingEmployee(null); setNewEmployee({ nombre: '', email: '', rol: '', telefono: '', createdAt: new Date(), updatedAt: new Date() }); }}
                 className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400 transition-colors"
               >
                 Cancelar
@@ -332,3 +298,4 @@ const Employees: React.FC = () => {
 };
 
 export default Employees;
+

@@ -1,187 +1,128 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CreditCard as Edit, MapPin, Plus, Trash2} from 'lucide-react';
-
-interface Location {
-  id: string;
-  name: string;
-  typeId: string;
-  typeName: string;
-  capacity: number;
-  unit: string;
-  currentStock: number;
-  description: string;
-  status: 'active' | 'inactive' | 'maintenance';
-  createdAt: string;
-}
+import {storage} from '../lib/storage';
+import type {Ubicacion} from '../lib/db';
 
 const Locations: React.FC = () => {
-  const locationTypes = [
-    { id: '1', name: 'Patios', color: 'green' },
-    { id: '2', name: 'Bodegas', color: 'blue' },
-    { id: '3', name: 'Tanques', color: 'cyan' },
-    { id: '4', name: 'Líneas de Producción', color: 'orange' },
-  ];
-
-  const [locations, setLocations] = useState<Location[]>([
-    {
-      id: '1',
-      name: 'Patio 1',
-      typeId: '1',
-      typeName: 'Patios',
-      capacity: 5000,
-      unit: 'kg',
-      currentStock: 3200,
-      description: 'Patio principal para coco fresco',
-      status: 'active',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '2',
-      name: 'Patio 2',
-      typeId: '1',
-      typeName: 'Patios',
-      capacity: 3000,
-      unit: 'kg',
-      currentStock: 1800,
-      description: 'Patio secundario para coco clasificado',
-      status: 'active',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '3',
-      name: 'Bodega A',
-      typeId: '2',
-      typeName: 'Bodegas',
-      capacity: 2000,
-      unit: 'kg',
-      currentStock: 850,
-      description: 'Almacén de productos terminados',
-      status: 'active',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '4',
-      name: 'Tanque Agua 1',
-      typeId: '3',
-      typeName: 'Tanques',
-      capacity: 1000,
-      unit: 'L',
-      currentStock: 750,
-      description: 'Tanque para agua de coco',
-      status: 'active',
-      createdAt: '2024-01-15'
-    }
-  ]);
-
+  const [locations, setLocations] = useState<Ubicacion[]>([]);
+  const [locationTypes, setLocationTypes] = useState<{ id: number; name: string }[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [editingLocation, setEditingLocation] = useState<Location | null>(null);
-  const [selectedType, setSelectedType] = useState('');
+  const [editingLocation, setEditingLocation] = useState<Ubicacion | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    typeId: '',
-    capacity: '',
-    unit: 'kg',
-    description: '',
-    status: 'active' as 'active' | 'inactive' | 'maintenance'
+    nombre: '',
+    tipo: '',
+    descripcion: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [selectedType, setSelectedType] = useState('');
+  const [creatingType, setCreatingType] = useState(false);
+  const [newTypeName, setNewTypeName] = useState('');
+  const [newTypeDesc, setNewTypeDesc] = useState('');
 
-  const units = [
-    { value: 'kg', label: 'Kilogramos' },
-    { value: 'L', label: 'Litros' },
-    { value: 'pz', label: 'Piezas' },
-    { value: 'm3', label: 'Metros Cúbicos' },
-  ];
+  useEffect(() => {
+    fetchLocationTypes();
+    fetchLocations();
+  }, []);
 
-  const handleSubmit = () => {
-    if (!formData.name.trim() || !formData.typeId) {
+  const fetchLocationTypes = async () => {
+    const types = await storage.locationTypes.getAll();
+    setLocationTypes(types.map(t => ({ id: t.id!, name: t.name })));
+  };
+
+  const fetchLocations = async () => {
+    setLoading(true);
+    const locs = await storage.ubicaciones.getAll();
+    setLocations(locs);
+    setLoading(false);
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.nombre.trim() || !formData.tipo) {
       alert('Nombre y tipo son requeridos');
       return;
     }
-
-    const selectedTypeData = locationTypes.find(t => t.id === formData.typeId);
-    
+    setLoading(true);
     if (editingLocation) {
-      setLocations(locations.map(location =>
-        location.id === editingLocation.id
-          ? { 
-              ...location, 
-              ...formData,
-              typeName: selectedTypeData?.name || '',
-              capacity: Number(formData.capacity)
-            }
-          : location
-      ));
+      await storage.ubicaciones.update(editingLocation.id!, {
+        nombre: formData.nombre,
+        tipo: formData.tipo,
+        descripcion: formData.descripcion,
+        updatedAt: new Date(),
+      });
+      await storage.syncQueue.add('update', 'ubicaciones', { id: editingLocation.id, ...formData });
     } else {
-      const newLocation: Location = {
-        id: Date.now().toString(),
-        ...formData,
-        typeName: selectedTypeData?.name || '',
-        capacity: Number(formData.capacity),
-        currentStock: 0,
-        createdAt: new Date().toISOString().split('T')[0]
-      };
-      setLocations([...locations, newLocation]);
+      await storage.ubicaciones.add({
+        nombre: formData.nombre,
+        tipo: formData.tipo,
+        descripcion: formData.descripcion,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await storage.syncQueue.add('create', 'ubicaciones', { ...formData });
     }
-
+    await fetchLocations();
     resetForm();
+    setLoading(false);
   };
 
   const resetForm = () => {
     setFormData({
-      name: '',
-      typeId: '',
-      capacity: '',
-      unit: 'kg',
-      description: '',
-      status: 'active'
+      nombre: '',
+      tipo: '',
+      descripcion: '',
     });
     setEditingLocation(null);
     setShowModal(false);
   };
 
-  const handleEdit = (location: Location) => {
+  const handleEdit = (location: Ubicacion) => {
     setFormData({
-      name: location.name,
-      typeId: location.typeId,
-      capacity: location.capacity.toString(),
-      unit: location.unit,
-      description: location.description,
-      status: location.status
+      nombre: location.nombre,
+      tipo: location.tipo,
+      descripcion: location.descripcion || '',
     });
     setEditingLocation(location);
     setShowModal(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id?: number) => {
+    if (!id) return;
     if (confirm('¿Está seguro de eliminar esta ubicación?')) {
-      setLocations(locations.filter(location => location.id !== id));
+      setLoading(true);
+      await storage.ubicaciones.delete(id);
+      await storage.syncQueue.add('delete', 'ubicaciones', { id });
+      await fetchLocations();
+      setLoading(false);
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-red-100 text-red-800';
-      case 'maintenance': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+  const handleCreateType = async () => {
+    if (!newTypeName.trim()) {
+      alert('El nombre del tipo es requerido');
+      return;
     }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'active': return 'Activo';
-      case 'inactive': return 'Inactivo';
-      case 'maintenance': return 'Mantenimiento';
-      default: return 'Desconocido';
+    if (locationTypes.some(t => t.name.toLowerCase() === newTypeName.trim().toLowerCase())) {
+      alert('Ya existe un tipo de lugar con ese nombre');
+      return;
     }
+    const now = new Date();
+    const id = await storage.locationTypes.add({
+      name: newTypeName.trim(),
+      description: newTypeDesc,
+      productosPermitidos: [],
+      createdAt: now,
+      updatedAt: now,
+    });
+    await storage.syncQueue.add('create', 'locationTypes', { name: newTypeName.trim(), description: newTypeDesc });
+    await fetchLocationTypes();
+    setFormData({ ...formData, tipo: String(id) });
+    setCreatingType(false);
+    setNewTypeName('');
+    setNewTypeDesc('');
   };
 
-  const getOccupancyPercentage = (current: number, capacity: number) => {
-    return capacity > 0 ? (current / capacity) * 100 : 0;
-  };
-
-  const filteredLocations = selectedType 
-    ? locations.filter(location => location.typeId === selectedType)
+  const filteredLocations = selectedType
+    ? locations.filter(location => location.tipo === selectedType)
     : locations;
 
   return (
@@ -196,8 +137,6 @@ const Locations: React.FC = () => {
           <span>Nueva Ubicación</span>
         </button>
       </div>
-
-      {/* Filter by Type */}
       <div className="bg-white p-4 rounded-lg shadow-md">
         <div className="flex items-center space-x-4">
           <label className="text-sm font-medium text-gray-700">Filtrar por tipo:</label>
@@ -213,12 +152,9 @@ const Locations: React.FC = () => {
           </select>
         </div>
       </div>
-
-      {/* Locations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredLocations.map((location) => {
-          const occupancyPercentage = getOccupancyPercentage(location.currentStock, location.capacity);
-          
+          const typeName = locationTypes.find(t => t.id === Number(location.tipo))?.name || '';
           return (
             <div key={location.id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-4">
@@ -227,8 +163,8 @@ const Locations: React.FC = () => {
                     <MapPin className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">{location.name}</h3>
-                    <p className="text-sm text-gray-500">{location.typeName}</p>
+                    <h3 className="font-semibold text-gray-900">{location.nombre}</h3>
+                    <p className="text-sm text-gray-500">{typeName}</p>
                   </div>
                 </div>
                 <div className="flex space-x-2">
@@ -246,45 +182,13 @@ const Locations: React.FC = () => {
                   </button>
                 </div>
               </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(location.status)}`}>
-                    {getStatusLabel(location.status)}
-                  </span>
-                  <div className="text-sm text-gray-600">
-                    Capacidad: {location.capacity} {location.unit}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-sm text-gray-600 mb-1">
-                    <span>Ocupación</span>
-                    <span>{location.currentStock} / {location.capacity} {location.unit}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        occupancyPercentage > 90 ? 'bg-red-500' :
-                        occupancyPercentage > 70 ? 'bg-yellow-500' : 'bg-green-500'
-                      }`}
-                      style={{ width: `${Math.min(occupancyPercentage, 100)}%` }}
-                    ></div>
-                  </div>
-                  <div className="text-right text-xs text-gray-500 mt-1">
-                    {Math.round(occupancyPercentage)}% ocupado
-                  </div>
-                </div>
-
-                {location.description && (
-                  <p className="text-sm text-gray-600">{location.description}</p>
-                )}
-              </div>
+              {location.descripcion && (
+                <p className="text-sm text-gray-600">{location.descripcion}</p>
+              )}
             </div>
           );
         })}
       </div>
-
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -292,7 +196,6 @@ const Locations: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               {editingLocation ? 'Editar Ubicación' : 'Nueva Ubicación'}
             </h3>
-            
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -300,97 +203,79 @@ const Locations: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  value={formData.nombre}
+                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Ej: Patio 1, Bodega A"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Tipo de Lugar *
                 </label>
                 <select
-                  value={formData.typeId}
-                  onChange={(e) => setFormData({...formData, typeId: e.target.value})}
+                  value={formData.tipo}
+                  onChange={e => {
+                    if (e.target.value === '__new__') {
+                      setCreatingType(true);
+                    } else {
+                      setFormData({ ...formData, tipo: e.target.value });
+                      setCreatingType(false);
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">Seleccionar tipo</option>
                   {locationTypes.map(type => (
                     <option key={type.id} value={type.id}>{type.name}</option>
                   ))}
+                  <option value="__new__">+ Crear nuevo tipo...</option>
                 </select>
+                {creatingType && (
+                  <div className="mt-2 space-y-2 bg-blue-50 p-2 rounded">
+                    <input
+                      type="text"
+                      value={newTypeName}
+                      onChange={e => setNewTypeName(e.target.value)}
+                      className="w-full px-2 py-1 border rounded"
+                      placeholder="Nombre del nuevo tipo"
+                    />
+                    <textarea
+                      value={newTypeDesc}
+                      onChange={e => setNewTypeDesc(e.target.value)}
+                      className="w-full px-2 py-1 border rounded"
+                      placeholder="Descripción (opcional)"
+                    />
+                    <button type="button" className="bg-blue-600 text-white px-3 py-1 rounded" onClick={handleCreateType}>Guardar tipo</button>
+                    <button type="button" className="ml-2 text-gray-600" onClick={() => setCreatingType(false)}>Cancelar</button>
+                  </div>
+                )}
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Capacidad
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.capacity}
-                    onChange={(e) => setFormData({...formData, capacity: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="0"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Unidad
-                  </label>
-                  <select
-                    value={formData.unit}
-                    onChange={(e) => setFormData({...formData, unit: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {units.map(unit => (
-                      <option key={unit.value} value={unit.value}>{unit.label}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Estado
-                </label>
-                <select
-                  value={formData.status}
-                  onChange={(e) => setFormData({...formData, status: e.target.value as "active" | "inactive" | "maintenance"})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="active">Activo</option>
-                  <option value="inactive">Inactivo</option>
-                  <option value="maintenance">Mantenimiento</option>
-                </select>
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Descripción
                 </label>
                 <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  value={formData.descripcion}
+                  onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   rows={3}
                   placeholder="Descripción de la ubicación"
                 />
               </div>
             </div>
-
             <div className="flex space-x-3 mt-6">
               <button
                 onClick={handleSubmit}
                 className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                disabled={loading}
               >
                 {editingLocation ? 'Actualizar' : 'Crear'}
               </button>
               <button
                 onClick={resetForm}
                 className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                disabled={loading}
               >
                 Cancelar
               </button>
@@ -403,3 +288,4 @@ const Locations: React.FC = () => {
 };
 
 export default Locations;
+

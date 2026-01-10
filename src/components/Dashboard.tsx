@@ -1,26 +1,88 @@
-import React from 'react';
-import { Users, DollarSign, Package, TrendingUp, Clock, AlertCircle } from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {AlertCircle, Clock, DollarSign, Package, TrendingUp, Users} from 'lucide-react';
+import {storage} from '../lib/storage';
 
 const Dashboard: React.FC = () => {
-  const stats = [
-    { title: 'Empleados Activos', value: '24', icon: Users, color: 'bg-blue-500' },
-    { title: 'Ventas del Día', value: '$12,450', icon: DollarSign, color: 'bg-green-500' },
-    { title: 'Productos en Stock', value: '1,247', icon: Package, color: 'bg-purple-500' },
-    { title: 'Eficiencia General', value: '89%', icon: TrendingUp, color: 'bg-orange-500' },
-  ];
+  // Estado para estadísticas y actividades recientes
+  const [stats, setStats] = useState([
+    { title: 'Empleados Activos', value: '...', icon: Users, color: 'bg-blue-500' },
+    { title: 'Ventas del Día', value: '...', icon: DollarSign, color: 'bg-green-500' },
+    { title: 'Productos en Stock', value: '...', icon: Package, color: 'bg-purple-500' },
+    { title: 'Eficiencia General', value: '...', icon: TrendingUp, color: 'bg-orange-500' },
+  ]);
+  interface RecentActivity {
+    type: 'sale' | 'production' | 'inventory';
+    user: string;
+    action: string;
+    time: string;
+  }
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
+  interface AlertItem {
+    type: string;
+    message: string;
+    level: 'info' | 'warning' | 'error';
+  }
+  const [alerts, setAlerts] = useState<AlertItem[]>([]);
 
-  const recentActivities = [
-    { type: 'checkin', user: 'Juan Pérez', action: 'Entrada registrada', time: '08:00 AM' },
-    { type: 'sale', user: 'María García', action: 'Venta procesada $450', time: '08:15 AM' },
-    { type: 'production', user: 'Carlos López', action: 'Proceso completado', time: '08:30 AM' },
-    { type: 'inventory', user: 'Sistema', action: 'Stock actualizado', time: '09:00 AM' },
-  ];
-
-  const alerts = [
-    { message: 'Stock bajo en 3 productos', type: 'warning' },
-    { message: '3 empleados pendientes de marcar salida', type: 'info' },
-    { message: 'Metas del día alcanzadas al 89%', type: 'success' },
-  ];
+  useEffect(() => {
+    // Cargar datos reales de IndexedDB
+    const fetchStats = async () => {
+      // Empleados activos
+      const empleados = await storage.empleados.getAll();
+      const activos = empleados.filter(e => e.rol && e.rol !== 'inactivo').length;
+      // Ventas del día
+      const ventas = await storage.ventas.getAll();
+      const hoy = new Date();
+      const ventasHoy = ventas.filter(v => {
+        const fecha = new Date(v.createdAt);
+        return fecha.getFullYear() === hoy.getFullYear() && fecha.getMonth() === hoy.getMonth() && fecha.getDate() === hoy.getDate();
+      });
+      const totalVentasHoy = ventasHoy.reduce((acc, v) => acc + (v.cantidad * v.precioUnitario), 0);
+      // Productos en stock
+      const inventario = await storage.inventario.getAll();
+      const totalStock = inventario.reduce((acc, i) => acc + i.cantidad, 0);
+      // Eficiencia general (placeholder: % de procesos completados)
+      const produccion = await storage.produccion.getAll();
+      const completados = produccion.filter(p => p.estado === 'completado').length;
+      const eficiencia = produccion.length > 0 ? Math.round((completados / produccion.length) * 100) : 0;
+      setStats([
+        { title: 'Empleados Activos', value: activos.toString(), icon: Users, color: 'bg-blue-500' },
+        { title: 'Ventas del Día', value: `$${totalVentasHoy.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`, icon: DollarSign, color: 'bg-green-500' },
+        { title: 'Productos en Stock', value: totalStock.toString(), icon: Package, color: 'bg-purple-500' },
+        { title: 'Eficiencia General', value: `${eficiencia}%`, icon: TrendingUp, color: 'bg-orange-500' },
+      ]);
+    };
+    // Actividades recientes (últimos movimientos de ventas, producción, inventario)
+    const fetchRecentActivities = async () => {
+      const ventas = await storage.ventas.getAll();
+      const produccion = await storage.produccion.getAll();
+      const inventario = await storage.inventario.getAll();
+      const actividades: RecentActivity[] = [];
+      ventas.slice(-3).reverse().forEach(v => actividades.push({ type: 'sale', user: 'Sistema', action: `Venta procesada $${(v.cantidad * v.precioUnitario).toFixed(2)}`, time: new Date(v.createdAt).toLocaleTimeString() }));
+      produccion.slice(-3).reverse().forEach(p => actividades.push({ type: 'production', user: 'Sistema', action: `Producción: ${p.cantidadProducida} unidades`, time: new Date(p.createdAt).toLocaleTimeString() }));
+      inventario.slice(-3).reverse().forEach(i => actividades.push({ type: 'inventory', user: 'Sistema', action: `Stock actualizado`, time: new Date(i.updatedAt).toLocaleTimeString() }));
+      actividades.sort((a, b) => b.time.localeCompare(a.time));
+      setRecentActivities(actividades.slice(0, 6));
+    };
+    // Alertas dinámicas
+    const fetchAlerts = async () => {
+      const inventario = await storage.inventario.getAll();
+      const productosBajos = inventario.filter(i => i.cantidad < 10).length;
+      const empleados = await storage.empleados.getAll();
+      // Placeholder: empleados sin salida (no implementado, ejemplo)
+      const empleadosPendientes = empleados.filter(e => e.rol && e.rol !== 'inactivo').length - 1;
+      const produccion = await storage.produccion.getAll();
+      const eficiencia = produccion.length > 0 ? Math.round((produccion.filter(p => p.estado === 'completado').length / produccion.length) * 100) : 0;
+      const alertsArr: AlertItem[] = [];
+      if (productosBajos > 0) alertsArr.push({ message: `Stock bajo en ${productosBajos} productos`, type: 'warning', level: 'warning' });
+      if (empleadosPendientes > 0) alertsArr.push({ message: `${empleadosPendientes} empleados pendientes de marcar salida`, type: 'info', level: 'info' });
+      if (eficiencia > 0) alertsArr.push({ message: `Metas del día alcanzadas al ${eficiencia}%`, type: 'success', level: 'info' });
+      setAlerts(alertsArr);
+    };
+    fetchStats();
+    fetchRecentActivities();
+    fetchAlerts();
+  }, []);
 
   return (
     <div className="space-y-6">
