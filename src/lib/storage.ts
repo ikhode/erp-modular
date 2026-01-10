@@ -47,9 +47,8 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
     }
 
     async update(id: number, data: Partial<T>): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await this.table.update(id, data as any);
-    }
+        await this.table.update(id, data);
+        }
 
     async delete(id: number): Promise<void> {
         await this.table.delete(id);
