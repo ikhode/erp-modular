@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {AlertTriangle, Package, Plus, Search, TrendingDown, TrendingUp} from 'lucide-react';
 import {storage} from '../lib/storage';
 import {Inventario, Producto} from '../lib/db';
+import ProductFormModal from './ProductFormModal';
 
 const Inventory: React.FC = () => {
   const [inventario, setInventario] = useState<Inventario[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('todos');
+  const [showProductModal, setShowProductModal] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -53,11 +55,19 @@ const Inventory: React.FC = () => {
   const lowStockItems = inventario.filter(item => item.stockActual <= item.minimo).length;
   const criticalItems = inventario.filter(item => item.stockActual <= item.minimo * 0.5).length;
 
+  const handleProductCreated = (producto: Producto & { id: number }) => {
+    setProductos([...productos, producto]);
+    setShowProductModal(false);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Inventario</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+        <button
+          onClick={() => setShowProductModal(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+        >
           <Plus className="h-5 w-5" />
           <span>Agregar Producto</span>
         </button>
@@ -215,6 +225,15 @@ const Inventory: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Product Form Modal */}
+      {showProductModal && (
+        <ProductFormModal
+          open={showProductModal}
+          onClose={() => setShowProductModal(false)}
+          onCreated={handleProductCreated}
+        />
+      )}
     </div>
   );
 };
