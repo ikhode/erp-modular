@@ -67,6 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
     const financeItems = [
       { id: 'accounts-receivable', label: 'Cuentas por Cobrar', icon: Wallet, roles: ['owner', 'admin', 'supervisor', 'cashier'] },
       { id: 'accounts-payable', label: 'Cuentas por Pagar', icon: DollarSign, roles: ['owner', 'admin', 'supervisor'] },
+      { id: 'period-closures', label: 'Cierres de Período', icon: FileText, roles: ['owner', 'admin'] },
     ];
 
     const reportItems = [
@@ -89,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
     ['purchases', 'sales', 'production', 'timetracker', 'expenses', 'transfers'].includes(item.id)
   );
   const financeItems = menuItems.filter(item =>
-    ['accounts-receivable', 'accounts-payable'].includes(item.id)
+    ['accounts-receivable', 'accounts-payable', 'period-closures'].includes(item.id)
   );
   const reportItems = menuItems.filter(item => 
     ['inventory', 'reports', 'audit'].includes(item.id)

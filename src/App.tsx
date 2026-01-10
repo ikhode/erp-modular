@@ -24,6 +24,7 @@ import AccountsReceivable from './components/AccountsReceivable';
 import AccountsPayable from './components/AccountsPayable';
 import Transfers from './components/Transfers';
 import Permissions from './components/Permissions';
+import PeriodClosures from './components/PeriodClosures';
 import {safeStorage} from './lib/safeStorage';
 
 function App() {
@@ -105,6 +106,8 @@ function App() {
         return <Transfers />;
       case 'permissions':
         return <Permissions />;
+      case 'period-closures':
+        return <PeriodClosures />;
       default:
         return <Dashboard />;
     }

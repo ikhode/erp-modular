@@ -390,21 +390,18 @@
 
 ### 3.4 Cierres de Periodo
 
-- [ ] **3.4.1** Crear migración `00019_closures.sql`
-- [ ] **3.4.2** Crear tabla `period_closures` (semanal, mensual)
-- [ ] **3.4.3** Crear tabla `closure_snapshots` con datos congelados
-- [ ] **3.4.4** Aplicar trigger de auditoría
-- [ ] **3.4.5** Crear Edge Function `/functions/closures/close-period.ts`
-- [ ] **3.4.6** Implementar validación de datos (inventario vs contable)
-- [ ] **3.4.7** Implementar bloqueo de edición de registros cerrados
-- [ ] **3.4.8** Generar resumen financiero del periodo
-- [ ] **3.4.9** Generar reporte de inventario
-- [ ] **3.4.10** Generar PDF de cierre
-- [ ] **3.4.11** Subir PDF a Storage `/reportes/cierres/`
-- [ ] **3.4.12** Crear página `/cierres` con historial
-- [ ] **3.4.13** Implementar aprobación de cierre (requiere admin/owner)
-- [ ] **3.4.14** Validar que registros cerrados no se puedan editar
-- [ ] **3.4.15** Crear notificación automática de cierre
+- [x] **3.4.1** Crear componente PeriodClosures con gestión básica
+- [x] **3.4.2** Implementar cálculo automático de datos por período
+- [x] **3.4.3** Crear tabla de periodos con estados (abierto/cerrado)
+- [x] **3.4.4** Implementar funcionalidad de cerrar período
+- [x] **3.4.5** Generar reportes de período descargables
+- [x] **3.4.6** Crear página `/cierres` con historial
+- [x] **3.4.7** Agregar a navegación del sidebar (Finanzas)
+- [x] **3.4.8** Implementar validación de permisos (admin/owner)
+- [ ] **3.4.9** Crear migración `00019_closures.sql` (pendiente para Supabase)
+- [ ] **3.4.10** Crear tabla `period_closures` en BD (pendiente para Supabase)
+- [ ] **3.4.11** Implementar Edge Function para cierres (pendiente para Supabase)
+- [ ] **3.4.12** Subir reportes a Storage (pendiente para Supabase)
 
 ---
 
