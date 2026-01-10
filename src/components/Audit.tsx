@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Activity, Calendar, Eye, Search, User } from 'lucide-react';
-import { storage } from '../lib/storage';
-import { SyncQueue } from '../lib/db';
+import React, {useEffect, useState} from 'react';
+import {Activity, Calendar, Search, User} from 'lucide-react';
+import {storage} from '../lib/storage';
+import {SyncQueue} from '../lib/db';
 
 const Audit: React.FC = () => {
   const [auditLogs, setAuditLogs] = useState<SyncQueue[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -15,14 +14,11 @@ const Audit: React.FC = () => {
   }, []);
 
   const loadAuditLogs = async () => {
-    setLoading(true);
     try {
       const logs = await storage.syncQueue.getAll();
       setAuditLogs(logs);
     } catch (error) {
       console.error('Error loading audit logs:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -42,14 +38,6 @@ const Audit: React.FC = () => {
     return synced ? 'Sincronizado' : 'Pendiente';
   };
 
-  const getActionColor = (operation: string) => {
-    switch (operation) {
-      case 'create': return 'bg-blue-100 text-blue-800';
-      case 'update': return 'bg-yellow-100 text-yellow-800';
-      case 'delete': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
 
   const formatDate = (date: Date) => {
     return date.toLocaleString('es-MX');
@@ -80,7 +68,7 @@ const Audit: React.FC = () => {
   const totalLogs = auditLogs.length;
   const successfulActions = auditLogs.filter(log => log.synced).length;
   const pendingActions = auditLogs.filter(log => !log.synced).length;
-  const uniqueUsers = new Set(auditLogs.map(log => log.userId)).size;
+  const uniqueUsers = 1; // Placeholder - SyncQueue doesn't track users yet
 
   return (
     <div className="space-y-6">
@@ -200,46 +188,40 @@ const Audit: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredLogs.map((log) => {
-                const ActionIcon = getActionIcon(log.operation);
-                return (
-                  <tr key={log.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">
-                      {formatDate(new Date(log.timestamp))}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">{log.userName}</div>
-                        <div className="text-sm text-gray-500">{log.userRole} | {log.ipAddress}</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <ActionIcon className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{log.operation}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                        {log.table}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 max-w-xs truncate" title={log.details}>
-                        {log.details}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.synced)}`}>
-                        {getStatusLabel(log.synced)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {log.terminal}
-                    </td>
-                  </tr>
-                );
-              })}
+              {filteredLogs.map((log) => (
+                <tr key={log.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">
+                    {formatDate(log.createdAt)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">Usuario {log.id}</div>
+                      <div className="text-sm text-gray-500">ID: {log.id}</div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm font-medium text-gray-900">{log.operation}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {log.table}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-900 max-w-xs truncate">
+                      {JSON.stringify(log.data).substring(0, 50)}...
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.synced)}`}>
+                      {getStatusLabel(log.synced)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Local
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

@@ -196,7 +196,7 @@ export interface Transfer {
   cantidad: number;
   ubicacionOrigenId: number;
   ubicacionDestinoId: number;
-  estado: 'pendiente' | 'en_transito' | 'completado' | 'cancelado';
+  status: 'pendiente' | 'en_transito' | 'completado' | 'cancelado';
   solicitadoPor?: number; // ID del empleado que solicita
   aprobadoPor?: number; // ID del supervisor que aprueba
   transportadoPor?: number; // ID del empleado que transporta
@@ -312,7 +312,7 @@ export class ERPDB extends Dexie {
       produccionTickets: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, estado, createdAt',
       compras: '++id, folio, proveedorId, productoId, tipo, estado, createdAt',
       ventas: '++id, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
-      transfers: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, estado, fechaSolicitud, createdAt',
+      transfers: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, status, fechaSolicitud, createdAt',
       attendance: '++id, employeeId, action, timestamp, createdAt',
       cashFlow: '++id, amount, movementType, sourceType, createdAt',
       syncQueue: '++id, operation, table, synced, createdAt',

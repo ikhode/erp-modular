@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Clock, DollarSign, Download, Factory, FileText, Package, TrendingUp, Users} from 'lucide-react';
 import {storage} from '../lib/storage';
-import {Attendance, Empleado, Inventario, ProduccionTicket, Producto, Venta} from '../lib/db';
+import {Attendance, Empleado, ProduccionTicket, Producto, Venta} from '../lib/db';
 
 const Reports: React.FC = () => {
   const [selectedReport, setSelectedReport] = useState('ventas');
@@ -9,7 +9,6 @@ const Reports: React.FC = () => {
   const [ventas, setVentas] = useState<Venta[]>([]);
   const [produccion, setProduccion] = useState<ProduccionTicket[]>([]);
   const [empleados, setEmpleados] = useState<Empleado[]>([]);
-  const [inventario, setInventario] = useState<Inventario[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [asistencia, setAsistencia] = useState<Attendance[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,9 +40,6 @@ const Reports: React.FC = () => {
       setLoading(false);
     }
   };
-
-  const getProducto = (id: number) => productos.find(p => p.id === id);
-  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
 
   const reportTypes = [
     { id: 'ventas', name: 'Reporte de Ventas', icon: DollarSign, description: 'Análisis detallado de ventas por período' },

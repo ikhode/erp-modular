@@ -50,6 +50,7 @@ const Configuration: React.FC = () => {
     { id: 'general', label: 'General', icon: Settings },
     { id: 'pricing', label: 'Precios', icon: Settings },
     { id: 'processes', label: 'Procesos', icon: Settings },
+    { id: 'locations', label: 'Ubicaciones', icon: Settings },
     { id: 'modules', label: 'Módulos', icon: Settings },
   ];
 
@@ -244,6 +245,65 @@ const Configuration: React.FC = () => {
     </div>
   );
 
+  const renderLocationsTab = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-900">Ubicaciones</h3>
+        <button
+          onClick={() => {}}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Agregar Ubicación</span>
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {/* Aquí puedes mapear las ubicaciones existentes en la configuración */}
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nombre de la Ubicación
+              </label>
+              <input
+                type="text"
+                value=""
+                onChange={() => {}}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Dirección
+              </label>
+              <input
+                type="text"
+                value=""
+                onChange={() => {}}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tipo de Ubicación
+              </label>
+              <select
+                value=""
+                onChange={() => {}}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="almacen">Almacén</option>
+                <option value="tienda">Tienda</option>
+                <option value="oficina">Oficina</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderModulesTab = () => (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-gray-900">Módulos del Sistema</h3>
@@ -281,6 +341,8 @@ const Configuration: React.FC = () => {
         return renderPricingTab();
       case 'processes':
         return renderProcessesTab();
+      case 'locations':
+        return renderLocationsTab();
       case 'modules':
         return renderModulesTab();
       default:

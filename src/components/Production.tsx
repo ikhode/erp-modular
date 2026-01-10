@@ -2,13 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {AlertCircle, CheckCircle, Clock, Factory, Pause, Play, Target} from 'lucide-react';
 import ProductionTicket from './ProductionTicket';
 import {storage} from '../lib/storage';
-import {Empleado, Proceso, ProduccionTicket, Producto} from '../lib/db';
+import {Proceso, ProduccionTicket, Producto} from '../lib/db';
 
 const Production: React.FC = () => {
   const [productionTickets, setProductionTickets] = useState<ProduccionTicket[]>([]);
   const [procesos, setProcesos] = useState<Proceso[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [empleados, setEmpleados] = useState<Empleado[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProceso, setSelectedProceso] = useState<Proceso | null>(null);
 
@@ -19,16 +18,14 @@ const Production: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [ticketsData, procesosData, productosData, empleadosData] = await Promise.all([
+      const [ticketsData, procesosData, productosData] = await Promise.all([
         storage.produccion.getAll(),
         storage.procesos.getAll(),
         storage.productos.getAll(),
-        storage.empleados.getAll()
       ]);
       setProductionTickets(ticketsData);
       setProcesos(procesosData);
       setProductos(productosData);
-      setEmpleados(empleadosData);
     } catch (error) {
       console.error('Error loading production data:', error);
     } finally {
@@ -37,7 +34,6 @@ const Production: React.FC = () => {
   };
 
   const getProducto = (id: number) => productos.find(p => p.id === id);
-  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
   const getProceso = (id: number) => procesos.find(p => p.id === id);
 
   // Adaptador para convertir Proceso (de storage) a Process (de ProductionTicket)

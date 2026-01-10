@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {ArrowRight, Ban, CheckCircle, Clock, MapPin, Package, Play, XCircle} from 'lucide-react';
-import {transferStorage} from '../lib/storage';
-import {Transfer} from '../lib/db';
+import {productoStorage, transferStorage, ubicacionStorage} from '../lib/storage';
+import {Producto, Transfer, Ubicacion} from '../lib/db';
 import TransferForm from './TransferForm';
 
 export default function Transfers() {
   const [transfers, setTransfers] = useState<Transfer[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
-  const [empleados, setEmpleados] = useState<Empleado[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
@@ -19,16 +18,14 @@ export default function Transfers() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [transfersData, productosData, ubicacionesData, empleadosData] = await Promise.all([
+      const [transfersData, productosData, ubicacionesData] = await Promise.all([
         transferStorage.getAll(),
         productoStorage.getAll(),
         ubicacionStorage.getAll(),
-        empleadoStorage.getAll()
       ]);
       setTransfers(transfersData);
       setProductos(productosData);
       setUbicaciones(ubicacionesData);
-      setEmpleados(empleadosData);
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
@@ -38,7 +35,6 @@ export default function Transfers() {
 
   const getProducto = (id: number) => productos.find(p => p.id === id);
   const getUbicacion = (id: number) => ubicaciones.find(u => u.id === id);
-  const getEmpleado = (id: number) => empleados.find(e => e.id === id);
 
   const handleProcessTransfer = async (transferId: number) => {
     if (!confirm('¿Está seguro de procesar este traslado? Esta acción no se puede deshacer.')) {

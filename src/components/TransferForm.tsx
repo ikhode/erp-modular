@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ArrowRight, FileText, MapPin, Package} from 'lucide-react';
 import {folioGenerator, inventarioStorage, productoStorage, transferStorage, ubicacionStorage} from '../lib/storage';
 import {Inventario, Producto, Ubicacion} from '../lib/db';
@@ -25,26 +25,7 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
     loadData();
   }, []);
 
-  useEffect(() => {
-    if (selectedProductId) {
-      loadInventoryForProduct();
-    }
-  }, [selectedProductId]);
-
-  const loadData = async () => {
-    try {
-      const [productosData, ubicacionesData] = await Promise.all([
-        productoStorage.getAll(),
-        ubicacionStorage.getAll()
-      ]);
-      setProductos(productosData);
-      setUbicaciones(ubicacionesData);
-    } catch (error) {
-      console.error('Error loading data:', error);
-    }
-  };
-
-  const loadInventoryForProduct = async () => {
+  const loadInventoryForProduct = useCallback(async () => {
     if (!selectedProductId) return;
 
     try {
@@ -66,6 +47,25 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
       setInventario(inventoryWithLocationInfo);
     } catch (error) {
       console.error('Error loading inventory:', error);
+    }
+  }, [selectedProductId, ubicaciones]);
+
+  useEffect(() => {
+    if (selectedProductId) {
+      loadInventoryForProduct();
+    }
+  }, [selectedProductId, loadInventoryForProduct]);
+
+  const loadData = async () => {
+    try {
+      const [productosData, ubicacionesData] = await Promise.all([
+        productoStorage.getAll(),
+        ubicacionStorage.getAll()
+      ]);
+      setProductos(productosData);
+      setUbicaciones(ubicacionesData);
+    } catch (error) {
+      console.error('Error loading data:', error);
     }
   };
 

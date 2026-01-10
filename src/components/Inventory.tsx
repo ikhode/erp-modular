@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {AlertTriangle, Package, Plus, Search, TrendingDown, TrendingUp} from 'lucide-react';
 import {storage} from '../lib/storage';
-import {Inventario, Producto, Ubicacion} from '../lib/db';
+import {Inventario, Producto} from '../lib/db';
 
 const Inventory: React.FC = () => {
   const [inventario, setInventario] = useState<Inventario[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('todos');
 
@@ -16,25 +14,19 @@ const Inventory: React.FC = () => {
   }, []);
 
   const loadData = async () => {
-    setLoading(true);
     try {
-      const [inventarioData, productosData, ubicacionesData] = await Promise.all([
+      const [inventarioData, productosData] = await Promise.all([
         storage.inventario.getAll(),
         storage.productos.getAll(),
-        storage.ubicaciones.getAll()
       ]);
       setInventario(inventarioData);
       setProductos(productosData);
-      setUbicaciones(ubicacionesData);
     } catch (error) {
       console.error('Error loading inventory data:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const getProducto = (id: number) => productos.find(p => p.id === id);
-  const getUbicacion = (id: number) => ubicaciones.find(u => u.id === id);
 
   const filteredInventory = inventario.filter(item => {
     const producto = getProducto(item.productoId);

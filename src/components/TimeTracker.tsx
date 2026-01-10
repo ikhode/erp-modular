@@ -8,7 +8,6 @@ const TimeTracker: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Attendance['action']>('entrada');
   const [attendances, setAttendances] = useState<Attendance[]>([]);
   const [empleados, setEmpleados] = useState<Empleado[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   const actions = [
@@ -25,7 +24,6 @@ const TimeTracker: React.FC = () => {
   }, []);
 
   const loadData = async () => {
-    setLoading(true);
     try {
       const [attendancesData, empleadosData] = await Promise.all([
         attendanceStorage.getAll(),
@@ -35,8 +33,6 @@ const TimeTracker: React.FC = () => {
       setEmpleados(empleadosData);
     } catch (error) {
       console.error('Error loading data:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

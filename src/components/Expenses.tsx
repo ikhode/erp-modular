@@ -5,34 +5,22 @@ import {CashFlow} from '../lib/db';
 
 const Expenses: React.FC = () => {
   const [cashFlows, setCashFlows] = useState<CashFlow[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingCashFlow, setEditingCashFlow] = useState<CashFlow | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('month');
 
-  const [formData, setFormData] = useState({
-    amount: 0,
-    movementType: 'ingreso' as 'ingreso' | 'egreso',
-    sourceType: 'gasto' as CashFlow['sourceType'],
-    description: '',
-    paymentMethod: 'efectivo' as CashFlow['paymentMethod']
-  });
-
   useEffect(() => {
     loadCashFlows();
   }, []);
 
   const loadCashFlows = async () => {
-    setLoading(true);
     try {
       const data = await cashFlowStorage.getAll();
       setCashFlows(data);
     } catch (error) {
       console.error('Error loading cash flows:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
