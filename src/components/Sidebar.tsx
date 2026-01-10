@@ -40,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
       { id: 'processes', label: 'Procesos', icon: Cog, roles: ['owner', 'admin'] },
       { id: 'employees', label: 'Empleados', icon: Users, roles: ['owner', 'admin', 'supervisor'] },
       { id: 'clients', label: 'Clientes', icon: Users, roles: ['owner', 'admin', 'supervisor', 'cashier'] },
+      { id: 'providers', label: 'Proveedores', icon: Building2, roles: ['owner', 'admin', 'supervisor'] },
       { id: 'terminals', label: 'Terminales', icon: Monitor, roles: ['owner', 'admin'] },
     ];
 
@@ -65,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
 
   const dashboardItem = menuItems.find(item => item.id === 'dashboard');
   const configItems = menuItems.filter(item => 
-    ['configuration', 'location-types', 'locations', 'products', 'processes', 'employees', 'clients', 'terminals'].includes(item.id)
+    ['configuration', 'location-types', 'locations', 'products', 'processes', 'employees', 'clients', 'providers', 'terminals'].includes(item.id)
   );
   const operationItems = menuItems.filter(item => 
     ['purchases', 'sales', 'production', 'timetracker', 'expenses'].includes(item.id)

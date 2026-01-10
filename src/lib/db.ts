@@ -29,6 +29,15 @@ export interface Proveedor {
   telefono?: string;
   direccion?: string;
   firmaBase64?: string;
+  // Datos bancarios
+  banco?: string;
+  cuentaBancaria?: string;
+  clabe?: string;
+  // Estado y control
+  activo?: boolean;
+  tipoProveedor?: 'proveedor' | 'transportista' | 'servicio';
+  categoria?: string;
+  notas?: string;
   createdAt: Date;
   updatedAt: Date;
 }

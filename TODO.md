@@ -145,17 +145,17 @@
 
 ### 1.3 Módulo de Proveedores Completo
 
-- [ ] **1.3.1** Crear migración `00008_providers.sql`
-- [ ] **1.3.2** Crear tabla `providers` (estructura similar a clients)
-- [ ] **1.3.3** Crear tabla `provider_documents`
-- [ ] **1.3.4** Aplicar triggers de auditoría y RLS
+- [x] **1.3.1** Crear migración `00008_providers.sql`
+- [x] **1.3.2** Crear tabla `providers` (estructura similar a clients)
+- [x] **1.3.3** Crear tabla `provider_documents`
+- [x] **1.3.4** Aplicar triggers de auditoría y RLS
 - [ ] **1.3.5** Crear bucket Storage `/firmas/proveedores/`
 - [ ] **1.3.6** Crear bucket Storage `/documentos/proveedores/`
 - [ ] **1.3.7** Reutilizar Edge Function de firmas (parametrizada)
-- [ ] **1.3.8** Crear componente `<ProviderForm />`
-- [ ] **1.3.9** Crear página `/proveedores` con CRUD
-- [ ] **1.3.10** Implementar mismas validaciones que clientes
-- [ ] **1.3.11** Validar notificación a admin en borrados
+- [x] **1.3.8** Crear componente `<ProviderForm />`
+- [x] **1.3.9** Crear página `/proveedores` con CRUD
+- [x] **1.3.10** Implementar mismas validaciones que clientes
+- [x] **1.3.11** Validar notificación a admin en borrados
 
 ### 1.4 Flujo de Producción (Triple Registro)
 
@@ -482,13 +482,13 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 68
-- **Progreso general:** 36%
+- **Tareas completadas:** 74
+- **Progreso general:** 39%
 
 ### Por Fase
 
 - **FASE 0 - Estructura Base:** 14/35 (40%)
-- **FASE 1 - Núcleo Operativo:** 54/58 (93%)
+- **FASE 1 - Núcleo Operativo:** 60/58 (103%)
 - **FASE 2 - Financiera:** 0/42 (0%)
 - **FASE 3 - Operacional:** 0/28 (0%)
 - **FASE 4 - Producción:** 0/25 (0%)

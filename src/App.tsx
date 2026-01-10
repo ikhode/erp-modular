@@ -19,6 +19,7 @@ import Production from './components/Production';
 import Expenses from './components/Expenses';
 import Audit from './components/Audit';
 import Clients from './components/Clients';
+import Providers from './components/Providers';
 import {safeStorage} from './lib/safeStorage';
 
 function App() {
@@ -90,6 +91,8 @@ function App() {
         return <Audit />;
       case 'clients':
         return <Clients />;
+      case 'providers':
+        return <Providers />;
       default:
         return <Dashboard />;
     }
