@@ -17,11 +17,34 @@ import Terminals from './components/Terminals';
 import Production from './components/Production';
 import Expenses from './components/Expenses';
 import Audit from './components/Audit';
+import {safeStorage} from './lib/safeStorage';
 
 function App() {
-  const [activeModule, setActiveModule] = useState('dashboard');
-  const [userRole, setUserRole] = useState('admin'); // owner, admin, supervisor, cashier, employee
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [activeModule, setActiveModule] = useState(safeStorage.get('activeModule', 'dashboard'));
+  const [userRole, setUserRole] = useState(safeStorage.get('userRole', 'admin'));
+  const [isAuthenticated, setIsAuthenticated] = useState(safeStorage.get('isAuthenticated', false));
+
+  // Persistir cambios en localStorage de forma segura
+  const handleSetActiveModule = (module: string) => {
+    setActiveModule(module);
+    safeStorage.set('activeModule', module);
+  };
+
+  const handleSetUserRole = (role: string) => {
+    setUserRole(role);
+    safeStorage.set('userRole', role);
+  };
+
+  const handleSetAuthenticated = (authenticated: boolean) => {
+    setIsAuthenticated(authenticated);
+    safeStorage.set('isAuthenticated', authenticated);
+  };
+
+  const handleLogout = () => {
+    handleSetAuthenticated(false);
+    handleSetActiveModule('dashboard');
+    safeStorage.remove('userRole');
+  };
 
   const renderModule = () => {
     switch (activeModule) {
@@ -63,16 +86,16 @@ function App() {
   };
 
   if (!isAuthenticated) {
-    return <FaceAuth onAuthenticated={() => setIsAuthenticated(true)} onRoleSet={setUserRole} />;
+    return <FaceAuth onAuthenticated={() => handleSetAuthenticated(true)} onRoleSet={handleSetUserRole} />;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar 
         activeModule={activeModule} 
-        setActiveModule={setActiveModule}
-        userRole={userRole} 
-        onLogout={() => setIsAuthenticated(false)}
+        setActiveModule={handleSetActiveModule}
+        userRole={userRole}
+        onLogout={handleLogout}
       />
       <main className="flex-1 ml-64 p-8">
         {renderModule()}

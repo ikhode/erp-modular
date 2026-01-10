@@ -37,9 +37,9 @@
 - [x] **0.1.3** Inicializar proyecto React con TypeScript
 - [x] **0.1.4** Configurar Tailwind CSS
 - [x] **0.1.5** Configurar variables de entorno (.env.example y .env.local)
-- [ ] **0.1.6** Crear archivo CHANGELOG.md
-- [ ] **0.1.7** Crear archivo README.md con instrucciones de instalación
-- [ ] **0.1.8** Configurar ESLint y Prettier
+- [x] **0.1.6** Crear archivo CHANGELOG.md
+- [x] **0.1.7** Crear archivo README.md con instrucciones de instalación
+- [x] **0.1.8** Configurar ESLint y Prettier
 - [ ] **0.1.9** Configurar Git hooks (pre-commit, pre-push)
 - [ ] **0.1.10** Crear cuenta y proyecto en Supabase
 - [ ] **0.1.11** Validar conectividad con Supabase
@@ -482,12 +482,12 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 0
-- **Progreso general:** 0%
+- **Tareas completadas:** 8
+- **Progreso general:** 4%
 
 ### Por Fase
 
-- **FASE 0 - Estructura Base:** 0/35 (0%)
+- **FASE 0 - Estructura Base:** 8/35 (23%)
 - **FASE 1 - Núcleo Operativo:** 0/58 (0%)
 - **FASE 2 - Financiera:** 0/42 (0%)
 - **FASE 3 - Operacional:** 0/28 (0%)
