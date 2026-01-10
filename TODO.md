@@ -187,36 +187,36 @@
 
 ### 1.5 Flujo de Compras Completo
 
-- [ ] **1.5.1** Crear migración `00010_purchases.sql`
-- [ ] **1.5.2** Crear tabla `purchases` con todos los campos
-- [ ] **1.5.3** Crear tabla `purchase_freight` para datos de flete
-- [ ] **1.5.4** Crear tabla `purchase_signatures` para múltiples firmas
-- [ ] **1.5.5** Crear campos de estados y horarios (salida, carga, regreso, etc.)
-- [ ] **1.5.6** Aplicar triggers de auditoría
+- [x] **1.5.1** Crear migración `00010_purchases.sql`
+- [x] **1.5.2** Crear tabla `purchases` con todos los campos
+- [x] **1.5.3** Crear tabla `purchase_freight` para datos de flete
+- [x] **1.5.4** Crear tabla `purchase_signatures` para múltiples firmas
+- [x] **1.5.5** Crear campos de estados y horarios (salida, carga, regreso, etc.)
+- [x] **1.5.6** Aplicar triggers de auditoría
 - [ ] **1.5.7** Crear Edge Function `/functions/purchases/register.ts`
-- [ ] **1.5.8** Implementar lógica para compra en parcela
-- [ ] **1.5.9** Implementar lógica para compra en planta/puerta
-- [ ] **1.5.10** Implementar REGISTRO FÍSICO - Sumar inventario
+- [x] **1.5.8** Implementar lógica para compra en parcela
+- [x] **1.5.9** Implementar lógica para compra en planta/puerta
+- [x] **1.5.10** Implementar REGISTRO FÍSICO - Sumar inventario
 - [ ] **1.5.11** Implementar REGISTRO CONTABLE - Egreso o CxP
-- [ ] **1.5.12** Implementar REGISTRO LOGÍSTICO - Trazabilidad de transporte
+- [x] **1.5.12** Implementar REGISTRO LOGÍSTICO - Trazabilidad de transporte
 - [ ] **1.5.13** Crear Edge Function `/functions/purchases/update-status.ts`
-- [ ] **1.5.14** Implementar cambio de estados con timestamps
+- [x] **1.5.14** Implementar cambio de estados con timestamps
 - [ ] **1.5.15** Crear Edge Function `/functions/purchases/signature.ts`
-- [ ] **1.5.16** Implementar firma del conductor al cargar (parcela)
-- [ ] **1.5.17** Implementar firma del encargado al descargar
-- [ ] **1.5.18** Implementar firma del proveedor al entregar
-- [ ] **1.5.19** Crear componente `<PurchaseForm />`
-- [ ] **1.5.20** Crear selector de proveedor y producto
-- [ ] **1.5.21** Crear selector de tipo: parcela o planta
-- [ ] **1.5.22** Crear sección de flete (vehículo, conductor) condicional
-- [ ] **1.5.23** Crear página `/compras` con listado y filtros
+- [x] **1.5.16** Implementar firma del conductor al cargar (parcela)
+- [x] **1.5.17** Implementar firma del encargado al descargar
+- [x] **1.5.18** Implementar firma del proveedor al entregar
+- [x] **1.5.19** Crear componente `<PurchaseForm />`
+- [x] **1.5.20** Crear selector de proveedor y producto
+- [x] **1.5.21** Crear selector de tipo: parcela o planta
+- [x] **1.5.22** Crear sección de flete (vehículo, conductor) condicional
+- [x] **1.5.23** Crear página `/compras` con listado y filtros
 - [ ] **1.5.24** Crear vista móvil para conductores con estados
 - [ ] **1.5.25** Implementar captura de firma digital en móvil del conductor
 - [ ] **1.5.26** Implementar captura de firma en kiosko del encargado
 - [ ] **1.5.27** Validar solicitud de Face Auth ante anomalías
-- [ ] **1.5.28** Validar que inventario se actualice al completar
+- [x] **1.5.28** Validar que inventario se actualice al completar
 - [ ] **1.5.29** Validar que se genere movimiento contable correcto
-- [ ] **1.5.30** Validar trazabilidad de todas las firmas
+- [x] **1.5.30** Validar trazabilidad de todas las firmas
 
 ### 1.6 Flujo de Ventas Completo
 
@@ -482,13 +482,13 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 27
-- **Progreso general:** 14%
+- **Tareas completadas:** 36
+- **Progreso general:** 19%
 
 ### Por Fase
 
 - **FASE 0 - Estructura Base:** 14/35 (40%)
-- **FASE 1 - Núcleo Operativo:** 13/58 (22%)
+- **FASE 1 - Núcleo Operativo:** 22/58 (38%)
 - **FASE 2 - Financiera:** 0/42 (0%)
 - **FASE 3 - Operacional:** 0/28 (0%)
 - **FASE 4 - Producción:** 0/25 (0%)

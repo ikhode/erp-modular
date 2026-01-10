@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {CreditCard as Edit, DollarSign, Plus, Receipt, Search, ShoppingCart, Trash2} from 'lucide-react';
-import {clienteStorage, productoStorage, ventaStorage} from '../lib/storage';
+import {clienteStorage, productoStorage, storage, ventaStorage} from '../lib/storage';
 import {Cliente, Producto, Venta} from '../lib/db';
 
 const initialForm: Omit<Venta, 'id' | 'createdAt' | 'updatedAt'> = {

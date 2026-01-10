@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {CreditCard as Edit, Plus, Search, ShoppingBag, Trash2} from 'lucide-react';
-import {compraStorage, productoStorage, proveedorStorage} from '../lib/storage';
+import {compraStorage, folioGenerator, productoStorage, proveedorStorage, storage} from '../lib/storage';
 import {Compra, Producto, Proveedor} from '../lib/db';
 
 const initialForm: Omit<Compra, 'id' | 'createdAt' | 'updatedAt'> = {
@@ -10,6 +10,9 @@ const initialForm: Omit<Compra, 'id' | 'createdAt' | 'updatedAt'> = {
   precioUnitario: 0,
   tipo: 'planta',
   estado: 'salida',
+  vehiculo: '',
+  conductor: '',
+  notes: '',
 };
 
 const Purchases: React.FC = () => {
@@ -134,8 +137,12 @@ const Purchases: React.FC = () => {
     if (editingPurchase) {
       await compraStorage.update(editingPurchase.id!, { ...form, updatedAt: now });
     } else {
+      // Generar folio automático
+      const folio = await folioGenerator.generateFolio('COMP');
+
       await compraStorage.add({
         ...form,
+        folio,
         firmaConductorBase64: signatures.conductor,
         firmaEncargadoBase64: signatures.encargado,
         firmaProveedorBase64: signatures.proveedor,
@@ -430,6 +437,33 @@ const Purchases: React.FC = () => {
                     <option value="regreso">Regreso</option>
                     <option value="completado">Completado</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Vehículo</label>
+                  <input
+                    type="text"
+                    className="w-full border rounded px-2 py-1"
+                    value={form.vehiculo}
+                    onChange={e => setForm(f => ({ ...f, vehiculo: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Conductor</label>
+                  <input
+                    type="text"
+                    className="w-full border rounded px-2 py-1"
+                    value={form.conductor}
+                    onChange={e => setForm(f => ({ ...f, conductor: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Notas</label>
+                  <textarea
+                    className="w-full border rounded px-2 py-1"
+                    value={form.notes}
+                    onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                    rows={2}
+                  />
                 </div>
               </div>
 

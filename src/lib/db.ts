@@ -113,10 +113,12 @@ export interface ProduccionTicket {
 
 export interface Compra {
   id?: number;
+  folio?: string; // Nuevo campo para folio automático
   proveedorId: number;
   productoId: number;
   cantidad: number;
   precioUnitario: number;
+  totalAmount?: number; // Calculado automáticamente
   tipo: 'parcela' | 'planta';
   vehiculo?: string;
   conductor?: string;
@@ -124,6 +126,12 @@ export interface Compra {
   firmaEncargadoBase64?: string;
   firmaProveedorBase64?: string;
   estado: 'salida' | 'carga' | 'regreso' | 'completado';
+  // Timestamps por estado
+  departureTime?: Date;
+  loadingTime?: Date;
+  returnTime?: Date;
+  completionTime?: Date;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
