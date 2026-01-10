@@ -14,9 +14,12 @@ import {
     Package,
     Search,
     Settings,
+    Shield,
     ShoppingBag,
     ShoppingCart,
-    Users
+    Truck,
+    Users,
+    Wallet
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -42,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
       { id: 'clients', label: 'Clientes', icon: Users, roles: ['owner', 'admin', 'supervisor', 'cashier'] },
       { id: 'providers', label: 'Proveedores', icon: Building2, roles: ['owner', 'admin', 'supervisor'] },
       { id: 'terminals', label: 'Terminales', icon: Monitor, roles: ['owner', 'admin'] },
+      { id: 'permissions', label: 'Permisos', icon: Shield, roles: ['owner', 'admin'] },
     ];
 
     const operationItems = [
@@ -50,6 +54,12 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
       { id: 'production', label: 'Producción', icon: Factory, roles: ['owner', 'admin', 'supervisor'] },
       { id: 'timetracker', label: 'Control de Tiempo', icon: Clock, roles: ['owner', 'admin', 'supervisor', 'employee'] },
       { id: 'expenses', label: 'Gastos', icon: DollarSign, roles: ['owner', 'admin', 'supervisor'] },
+      { id: 'transfers', label: 'Traslados', icon: Truck, roles: ['owner', 'admin', 'supervisor'] },
+    ];
+
+    const financeItems = [
+      { id: 'accounts-receivable', label: 'Cuentas por Cobrar', icon: Wallet, roles: ['owner', 'admin', 'supervisor', 'cashier'] },
+      { id: 'accounts-payable', label: 'Cuentas por Pagar', icon: DollarSign, roles: ['owner', 'admin', 'supervisor'] },
     ];
 
     const reportItems = [
@@ -58,7 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
       { id: 'audit', label: 'Auditoría', icon: Search, roles: ['owner', 'admin'] },
     ];
 
-    return [...baseItems, ...configItems, ...operationItems, ...reportItems]
+    return [...baseItems, ...configItems, ...operationItems, ...financeItems, ...reportItems]
       .filter(item => item.roles.includes(userRole));
   };
 
@@ -66,10 +76,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
 
   const dashboardItem = menuItems.find(item => item.id === 'dashboard');
   const configItems = menuItems.filter(item => 
-    ['configuration', 'location-types', 'locations', 'products', 'processes', 'employees', 'clients', 'providers', 'terminals'].includes(item.id)
+    ['configuration', 'location-types', 'locations', 'products', 'processes', 'employees', 'clients', 'providers', 'terminals', 'permissions'].includes(item.id)
   );
   const operationItems = menuItems.filter(item => 
-    ['purchases', 'sales', 'production', 'timetracker', 'expenses'].includes(item.id)
+    ['purchases', 'sales', 'production', 'timetracker', 'expenses', 'transfers'].includes(item.id)
+  );
+  const financeItems = menuItems.filter(item =>
+    ['accounts-receivable', 'accounts-payable'].includes(item.id)
   );
   const reportItems = menuItems.filter(item => 
     ['inventory', 'reports', 'audit'].includes(item.id)
@@ -138,6 +151,32 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
               </h3>
             </div>
             {operationItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveModule(item.id)}
+                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
+                    activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Finance Section */}
+        {financeItems.length > 0 && (
+          <div className="mb-6">
+            <div className="px-6 py-2">
+              <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                Finanzas
+              </h3>
+            </div>
+            {financeItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button

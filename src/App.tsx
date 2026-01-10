@@ -20,6 +20,10 @@ import Expenses from './components/Expenses';
 import Audit from './components/Audit';
 import Clients from './components/Clients';
 import Providers from './components/Providers';
+import AccountsReceivable from './components/AccountsReceivable';
+import AccountsPayable from './components/AccountsPayable';
+import Transfers from './components/Transfers';
+import Permissions from './components/Permissions';
 import {safeStorage} from './lib/safeStorage';
 
 function App() {
@@ -93,6 +97,14 @@ function App() {
         return <Clients />;
       case 'providers':
         return <Providers />;
+      case 'accounts-receivable':
+        return <AccountsReceivable />;
+      case 'accounts-payable':
+        return <AccountsPayable />;
+      case 'transfers':
+        return <Transfers />;
+      case 'permissions':
+        return <Permissions />;
       default:
         return <Dashboard />;
     }

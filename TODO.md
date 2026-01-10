@@ -482,8 +482,8 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 160
-- **Progreso general:** 85%
+- **Tareas completadas:** 171
+- **Progreso general:** 91%
 
 ### Por Fase
 
