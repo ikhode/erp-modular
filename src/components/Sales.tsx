@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {CreditCard as Edit, DollarSign, Plus, Receipt, Search, ShoppingCart, Trash2} from 'lucide-react';
 import {clienteStorage, folioGenerator, productoStorage, storage, ventaStorage} from '../lib/storage';
 import {Cliente, Producto, Venta} from '../lib/db';
+import PrintButton from './PrintButton';
 
 const initialForm: Omit<Venta, 'id' | 'createdAt' | 'updatedAt'> = {
   clienteId: 0,
@@ -176,6 +177,32 @@ const Sales: React.FC = () => {
     }
   };
 
+  const generateSaleTicketData = (sale: Venta) => {
+    const cliente = clientes.find(c => c.id === sale.clienteId);
+    const producto = productos.find(p => p.id === sale.productoId);
+    const subtotal = sale.cantidad * sale.precioUnitario;
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+
+    return {
+      type: 'sale' as const,
+      folio: sale.folio || `VENT-${sale.id}`,
+      date: sale.createdAt ? new Date(sale.createdAt).toLocaleDateString('es-MX') : new Date().toLocaleDateString('es-MX'),
+      customer: cliente?.nombre || 'Cliente no especificado',
+      items: [{
+        description: producto?.nombre || 'Producto no especificado',
+        quantity: sale.cantidad,
+        unit: 'pieza', // TODO: obtener de la configuración del producto
+        price: sale.precioUnitario,
+        total: subtotal
+      }],
+      subtotal,
+      tax: iva,
+      total,
+      notes: sale.notes || ''
+    };
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -313,6 +340,13 @@ const Sales: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
+                      <PrintButton
+                        data={generateSaleTicketData(sale)}
+                        type="thermal"
+                        size="sm"
+                        variant="outline"
+                        showOptions={false}
+                      />
                       <button
                         onClick={() => handleEdit(sale)}
                         className="text-blue-600 hover:text-blue-900"

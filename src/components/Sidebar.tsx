@@ -123,6 +123,21 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
     setIsFinanceOpen(false);
   };
 
+  const handleModuleClick = (moduleId: string) => {
+    setActiveModule(moduleId);
+
+    // Auto-expand the section containing the selected module
+    if (configItems.some(item => item.id === moduleId) && !isConfigOpen) {
+      toggleConfig();
+    } else if (operationItems.some(item => item.id === moduleId) && !isOperationsOpen) {
+      toggleOperations();
+    } else if (financeItems.some(item => item.id === moduleId) && !isFinanceOpen) {
+      toggleFinance();
+    } else if (reportItems.some(item => item.id === moduleId) && !isReportsOpen) {
+      toggleReports();
+    }
+  };
+
   return (
     <div className="fixed left-0 top-0 h-full w-64 bg-blue-900 text-white shadow-lg">
       <div className="p-6">
@@ -140,7 +155,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
         {dashboardItem && (
           <div className="mb-6">
             <button
-              onClick={() => setActiveModule(dashboardItem.id)}
+              onClick={() => handleModuleClick(dashboardItem.id)}
               className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
                 activeModule === dashboardItem.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
               }`}
@@ -160,21 +175,25 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
               </h3>
               {isConfigOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {isConfigOpen && configItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveModule(item.id)}
-                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
-                    activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
+            {isConfigOpen && (
+              <div className="transition-all duration-300 ease-in-out">
+                {configItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleModuleClick(item.id)}
+                      className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
+                        activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
@@ -187,21 +206,25 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
               </h3>
               {isOperationsOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {isOperationsOpen && operationItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveModule(item.id)}
-                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
-                    activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
+            {isOperationsOpen && (
+              <div className="transition-all duration-300 ease-in-out">
+                {operationItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleModuleClick(item.id)}
+                      className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
+                        activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
@@ -214,21 +237,25 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
               </h3>
               {isFinanceOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {isFinanceOpen && financeItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveModule(item.id)}
-                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
-                    activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
+            {isFinanceOpen && (
+              <div className="transition-all duration-300 ease-in-out">
+                {financeItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleModuleClick(item.id)}
+                      className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
+                        activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
@@ -241,21 +268,25 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
               </h3>
               {isReportsOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {isReportsOpen && reportItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveModule(item.id)}
-                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
-                    activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
+            {isReportsOpen && (
+              <div className="transition-all duration-300 ease-in-out">
+                {reportItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleModuleClick(item.id)}
+                      className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors hover:bg-blue-800 ${
+                        activeModule === item.id ? 'bg-blue-800 border-r-4 border-orange-400' : ''
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
       </nav>

@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react';
-import {CreditCard as Edit, Plus, Search, ShoppingBag, Trash2} from 'lucide-react';
+import {CreditCard, Edit, Plus, Search, ShoppingBag, Trash2} from 'lucide-react';
 import {compraStorage, folioGenerator, productoStorage, proveedorStorage, storage} from '../lib/storage';
 import {Compra, Producto, Proveedor} from '../lib/db';
+import PrintButton from './PrintButton';
 
 const initialForm: Omit<Compra, 'id' | 'createdAt' | 'updatedAt'> = {
   proveedorId: 0,
@@ -186,6 +187,29 @@ const Purchases: React.FC = () => {
     }
   };
 
+  const generatePurchaseTicketData = (purchase: Compra) => {
+    const proveedor = proveedores.find(p => p.id === purchase.proveedorId);
+    const producto = productos.find(p => p.id === purchase.productoId);
+    const subtotal = purchase.cantidad * purchase.precioUnitario;
+
+    return {
+      type: 'purchase' as const,
+      folio: purchase.folio || `COMP-${purchase.id}`,
+      date: purchase.createdAt ? new Date(purchase.createdAt).toLocaleDateString('es-MX') : new Date().toLocaleDateString('es-MX'),
+      provider: proveedor?.nombre || 'Proveedor no especificado',
+      items: [{
+        description: producto?.nombre || 'Producto no especificado',
+        quantity: purchase.cantidad,
+        unit: producto?.unidad || 'pieza',
+        total: subtotal
+      }],
+      subtotal,
+      tax: 0, // Las compras no incluyen IVA calculado automáticamente
+      total: subtotal,
+      notes: purchase.notes || `Tipo: ${purchase.tipo} | Vehículo: ${purchase.vehiculo || 'N/A'} | Conductor: ${purchase.conductor || 'N/A'}`
+    };
+  };
+
   const totalPurchases = purchases.reduce((sum, p) => sum + (p.cantidad * p.precioUnitario), 0);
   const pendingPurchases = purchases.filter(p => p.estado === 'salida').length;
   const receivedPurchases = purchases.filter(p => p.estado === 'completado').length;
@@ -319,6 +343,13 @@ const Purchases: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
+                      <PrintButton
+                        data={generatePurchaseTicketData(purchase)}
+                        type="thermal"
+                        size="sm"
+                        variant="outline"
+                        showOptions={false}
+                      />
                       <button
                         onClick={() => handleEdit(purchase)}
                         className="text-blue-600 hover:text-blue-900"
@@ -462,156 +493,264 @@ const Purchases: React.FC = () => {
                     className="w-full border rounded px-2 py-1"
                     value={form.notes}
                     onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                    rows={2}
+                    rows={3}
                   />
                 </div>
               </div>
 
-              {/* Sección de firmas */}
-              {form.tipo === 'parcela' && (
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Firmas Digitales (Parcela)</h4>
-                  <div className="flex space-x-2">
-                    <button type="button" onClick={() => requestSignature('conductor')} className={`px-3 py-1 rounded ${signatures.conductor ? 'bg-green-200' : 'bg-gray-200'}`}>Conductor</button>
-                    <button type="button" onClick={() => requestSignature('encargado')} className={`px-3 py-1 rounded ${signatures.encargado ? 'bg-green-200' : 'bg-gray-200'}`}>Encargado</button>
-                    <button type="button" onClick={() => requestSignature('proveedor')} className={`px-3 py-1 rounded ${signatures.proveedor ? 'bg-green-200' : 'bg-gray-200'}`}>Proveedor</button>
+              {/* Firmas */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Firmas</label>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => requestSignature('conductor')}
+                      className="w-full bg-gray-100 border rounded px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <img src={signatures.conductor} alt="Firma Conductor" className="h-8" />
+                      <span>Firma Conductor</span>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => requestSignature('encargado')}
+                      className="w-full bg-gray-100 border rounded px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <img src={signatures.encargado} alt="Firma Encargado" className="h-8" />
+                      <span>Firma Encargado</span>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => requestSignature('proveedor')}
+                      className="w-full bg-gray-100 border rounded px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <img src={signatures.proveedor} alt="Firma Proveedor" className="h-8" />
+                      <span>Firma Proveedor</span>
+                    </button>
                   </div>
                 </div>
-              )}
-              {form.tipo === 'planta' && (
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Firmas Digitales (Planta)</h4>
-                  <div className="flex space-x-2">
-                    <button type="button" onClick={() => requestSignature('encargado')} className={`px-3 py-1 rounded ${signatures.encargado ? 'bg-green-200' : 'bg-gray-200'}`}>Encargado</button>
-                    <button type="button" onClick={() => requestSignature('proveedor')} className={`px-3 py-1 rounded ${signatures.proveedor ? 'bg-green-200' : 'bg-gray-200'}`}>Proveedor</button>
-                  </div>
-                </div>
-              )}
+              </div>
 
-              <div className="flex justify-end space-x-2 mt-4">
+              <div className="flex justify-end space-x-4">
                 <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    setEditingPurchase(null);
-                    setForm(initialForm);
-                  }}
+                  onClick={() => setShowModal(false)}
                   className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
                 >
-                  Guardar
+                  <span>Guardar Compra</span>
                 </button>
               </div>
             </form>
+
+            {/* Nueva sección para creación rápida de proveedor/producto */}
+            {showNewProveedor && (
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg shadow-md">
+                <h4 className="text-md font-semibold text-gray-800 mb-3">Nuevo Proveedor</h4>
+                <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    // Guardar nuevo proveedor
+                    proveedorStorage.add({
+                      ...nuevoProveedor,
+                      createdAt: new Date(),
+                      updatedAt: new Date(),
+                    }).then(() => {
+                      setNuevoProveedor({ nombre: '', rfc: '', createdAt: new Date(), updatedAt: new Date() });
+                      setProveedores(await proveedorStorage.getAll());
+                    });
+                  }}
+                  className="grid grid-cols-1 gap-4"
+                >
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input
+                      type="text"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProveedor.nombre}
+                      onChange={e => setNuevoProveedor(n => ({ ...n, nombre: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">RFC</label>
+                    <input
+                      type="text"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProveedor.rfc}
+                      onChange={e => setNuevoProveedor(n => ({ ...n, rfc: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      onClick={() => setShowNewProveedor(false)}
+                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      Guardar Proveedor
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+            {showNewProducto && (
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg shadow-md">
+                <h4 className="text-md font-semibold text-gray-800 mb-3">Nuevo Producto</h4>
+                <form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    // Guardar nuevo producto
+                    productoStorage.add({
+                      ...nuevoProducto,
+                      createdAt: new Date(),
+                      updatedAt: new Date(),
+                    }).then(() => {
+                      setNuevoProducto({ nombre: '', precioMin: 0, precioMax: 0, precioActual: 0, unidad: '', compra: true, venta: false, procesoEntrada: false, procesoSalida: false, createdAt: new Date(), updatedAt: new Date() });
+                      setProductos(await productoStorage.getAll());
+                    });
+                  }}
+                  className="grid grid-cols-1 gap-4"
+                >
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input
+                      type="text"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProducto.nombre}
+                      onChange={e => setNuevoProducto(n => ({ ...n, nombre: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Precio Mínimo</label>
+                    <input
+                      type="number"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProducto.precioMin}
+                      onChange={e => setNuevoProducto(n => ({ ...n, precioMin: Number(e.target.value) }))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Precio Máximo</label>
+                    <input
+                      type="number"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProducto.precioMax}
+                      onChange={e => setNuevoProducto(n => ({ ...n, precioMax: Number(e.target.value) }))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Precio Actual</label>
+                    <input
+                      type="number"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProducto.precioActual}
+                      onChange={e => setNuevoProducto(n => ({ ...n, precioActual: Number(e.target.value) }))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Unidad</label>
+                    <input
+                      type="text"
+                      className="w-full border rounded px-2 py-1"
+                      value={nuevoProducto.unidad}
+                      onChange={e => setNuevoProducto(n => ({ ...n, unidad: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      onClick={() => setShowNewProducto(false)}
+                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      Guardar Producto
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Modal para alta rápida de proveedor */}
-      {showNewProveedor && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Nuevo Proveedor</h3>
-            <form onSubmit={async e => {
-              e.preventDefault();
-              const now = new Date();
-              const prov = { ...nuevoProveedor, createdAt: now, updatedAt: now };
-              await proveedorStorage.add(prov);
-              setProveedores(await proveedorStorage.getAll());
-              setShowNewProveedor(false);
-              setNuevoProveedor({ nombre: '', rfc: '', createdAt: new Date(), updatedAt: new Date() });
-            }} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                <input className="w-full border rounded px-2 py-1" value={nuevoProveedor.nombre} onChange={e => setNuevoProveedor(p => ({ ...p, nombre: e.target.value }))} required />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">RFC</label>
-                <input className="w-full border rounded px-2 py-1" value={nuevoProveedor.rfc} onChange={e => setNuevoProveedor(p => ({ ...p, rfc: e.target.value }))} />
-              </div>
-              <div className="flex justify-end space-x-2 mt-4">
-                <button type="button" onClick={() => setShowNewProveedor(false)} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Cancelar</button>
-                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Guardar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal para alta rápida de producto */}
-      {showNewProducto && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Nuevo Producto</h3>
-            <form onSubmit={async e => {
-              e.preventDefault();
-              const now = new Date();
-              const prod = { ...nuevoProducto, createdAt: now, updatedAt: now };
-              await productoStorage.add(prod);
-              setProductos(await productoStorage.getAll());
-              setShowNewProducto(false);
-              setNuevoProducto({ nombre: '', precioMin: 0, precioMax: 0, precioActual: 0, unidad: '', compra: true, venta: false, procesoEntrada: false, procesoSalida: false, createdAt: new Date(), updatedAt: new Date() });
-            }} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                <input className="w-full border rounded px-2 py-1" value={nuevoProducto.nombre} onChange={e => setNuevoProducto(p => ({ ...p, nombre: e.target.value }))} required />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Unidad</label>
-                <input className="w-full border rounded px-2 py-1" value={nuevoProducto.unidad} onChange={e => setNuevoProducto(p => ({ ...p, unidad: e.target.value }))} required />
-              </div>
-              <div className="flex space-x-2">
-                <div>
-                  <label className="block text-xs">Precio Mín</label>
-                  <input type="number" className="w-full border rounded px-2 py-1" value={nuevoProducto.precioMin} onChange={e => setNuevoProducto(p => ({ ...p, precioMin: Number(e.target.value) }))} />
-                </div>
-                <div>
-                  <label className="block text-xs">Precio Máx</label>
-                  <input type="number" className="w-full border rounded px-2 py-1" value={nuevoProducto.precioMax} onChange={e => setNuevoProducto(p => ({ ...p, precioMax: Number(e.target.value) }))} />
-                </div>
-                <div>
-                  <label className="block text-xs">Precio Actual</label>
-                  <input type="number" className="w-full border rounded px-2 py-1" value={nuevoProducto.precioActual} onChange={e => setNuevoProducto(p => ({ ...p, precioActual: Number(e.target.value) }))} />
-                </div>
-              </div>
-              <div className="flex justify-end space-x-2 mt-4">
-                <button type="button" onClick={() => setShowNewProducto(false)} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Cancelar</button>
-                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Guardar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de firma digital */}
+      {/* Modal de firma */}
       {showSignature && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Firma Digital - {signatureType.charAt(0).toUpperCase() + signatureType.slice(1)}</h3>
-            <canvas
-              ref={canvasRef}
-              width={400}
-              height={200}
-              className="border border-gray-300 w-full"
-              onMouseDown={startDrawing}
-              onMouseMove={draw}
-              onMouseUp={stopDrawing}
-              onMouseLeave={stopDrawing}
-            />
-            <div className="flex justify-end space-x-2 mt-4">
-              <button type="button" onClick={clearSignature} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Limpiar</button>
-              <button type="button" onClick={saveSignature} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Guardar Firma</button>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Firma {signatureType.charAt(0).toUpperCase() + signatureType.slice(1)}
+            </h3>
+            <div className="mb-4">
+              <canvas
+                ref={canvasRef}
+                className="w-full h-32 border rounded"
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={stopDrawing}
+                onTouchStart={startDrawing}
+                onTouchMove={draw}
+                onTouchEnd={stopDrawing}
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={clearSignature}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                Limpiar
+              </button>
+              <button
+                onClick={saveSignature}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Guardar Firma
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Print Ticket Button - Solo para pruebas */}
+      <div className="fixed bottom-4 right-4">
+        <button
+          onClick={() => {
+            if (purchases.length === 0) return alert('No hay compras para generar ticket.');
+            const ticketData = generatePurchaseTicketData(purchases[0]);
+            console.log('Datos del ticket de compra:', ticketData);
+            alert('Datos del ticket de compra generados en consola.');
+          }}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+        >
+          <CreditCard className="h-5 w-5" />
+          <span>Generar Ticket de Compra</span>
+        </button>
+      </div>
     </div>
   );
 };
 
 export default Purchases;
+

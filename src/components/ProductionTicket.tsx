@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {folioGenerator, storage} from '../lib/storage';
 import {ProduccionTicket} from '../lib/db';
+import PrintButton from './PrintButton';
 
 interface ProcessItem {
   productId?: string; // opcional si es por tipo
@@ -216,6 +217,29 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
     alert('Ticket registrado y inventario actualizado.');
   };
 
+  // Nueva función para generar datos del ticket de producción
+  const generateProductionTicketData = () => {
+    return {
+      folio: '', // Se genera automáticamente
+      procesoId: proceso.id,
+      empleadoId: 1, // TODO: obtener del contexto de usuario
+      insumos: insumos.map(i => ({
+        productoId: Number(i.productId),
+        cantidad: i.cantidad,
+        ubicacionId: i.ubicacionId,
+      })),
+      productosGenerados: productosGenerados.map(p => ({
+        productoId: Number(p.productId),
+        cantidad: p.cantidad,
+        ubicacionDestinoId: p.ubicacionDestinoId,
+      })),
+      firmaEmpleadoBase64: signatureData,
+      estado: 'completado',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+  };
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Ejecución de Proceso: {proceso.name}</h2>
@@ -293,6 +317,13 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
         ))}
       </div>
       <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={handleSave}>Registrar Ticket</button>
+      <PrintButton
+        data={generateProductionTicketData()}
+        type="thermal"
+        size="sm"
+        variant="outline"
+        showOptions={false}
+      />
 
       {/* Modal de firma digital */}
       {showSignature && (
