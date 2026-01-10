@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { Factory, Play, Pause, CheckCircle, AlertCircle, Clock, Target } from 'lucide-react';
+import React, {useState} from 'react';
+import {AlertCircle, CheckCircle, Clock, Factory, Pause, Play, Target} from 'lucide-react';
+import ProductionTicket from './ProductionTicket';
+import {storage} from '../lib/storage';
+import {Proceso} from '../lib/db';
 
 interface ProductionLine {
   id: string;
@@ -53,6 +56,48 @@ const Production: React.FC = () => {
       estimatedCompletion: '20:00'
     }
   ]);
+  const [procesos, setProcesos] = useState<Proceso[]>([]);
+  const [selectedProceso, setSelectedProceso] = useState<Proceso | null>(null);
+
+  React.useEffect(() => {
+    storage.procesos.getAll().then(setProcesos);
+  }, []);
+
+  // Adaptador para convertir Proceso (de storage) a Process (de ProductionTicket)
+  type ProcessTicketItem = {
+    productId?: string;
+    productTypeId?: number;
+    productName: string;
+    productTypeName?: string;
+    quantity: number;
+    unit: string;
+    allowedLocationTypes?: number[];
+  };
+  type ProcessTicketType = {
+    id: string;
+    name: string;
+    description: string;
+    inputs: ProcessTicketItem[];
+    outputs: ProcessTicketItem[];
+  };
+  function procesoToProcess(p: Proceso): ProcessTicketType {
+    const mapItem = (item: Partial<ProcessTicketItem>): ProcessTicketItem => ({
+      productId: item.productId,
+      productTypeId: item.productTypeId,
+      productName: item.productName || '',
+      productTypeName: item.productTypeName,
+      quantity: 0, // default para ticket
+      unit: item.unit || '',
+      allowedLocationTypes: item.allowedLocationTypes || [],
+    });
+    return {
+      id: String(p.id),
+      name: p.nombre,
+      description: p.descripcion || '',
+      inputs: (p.inputs || []).map(mapItem),
+      outputs: (p.outputs || []).map(mapItem),
+    };
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -80,9 +125,6 @@ const Production: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Producción</h1>
-        <div className="text-sm text-gray-500">
-          Turno: Matutino | Supervisor: Ana Rodríguez
-        </div>
       </div>
 
       {/* Production Stats */}
@@ -236,6 +278,24 @@ const Production: React.FC = () => {
           ))}
         </div>
       </div>
+
+      <div className="bg-white p-4 rounded shadow mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Selecciona un proceso</label>
+        <select
+          className="border rounded px-2 py-1"
+          value={selectedProceso?.id || ''}
+          onChange={e => {
+            const p = procesos.find(pr => pr.id === Number(e.target.value));
+            setSelectedProceso(p || null);
+          }}
+        >
+          <option value="">-- Selecciona --</option>
+          {procesos.map(p => (
+            <option key={p.id} value={p.id}>{p.nombre}</option>
+          ))}
+        </select>
+      </div>
+      {selectedProceso && <ProductionTicket proceso={procesoToProcess(selectedProceso)} />}
     </div>
   );
 };

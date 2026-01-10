@@ -440,11 +440,11 @@
 - [ ] **4.3.1** Configurar framework de testing (Jest, Vitest)
 - [ ] **4.3.2** Crear tests unitarios para funciones críticas
 - [ ] **4.3.3** Crear tests de integración para flujos completos
-- [ ] **4.3.4** Implementar tests E2E con Playwright o Cypress
+- [ ] **4.3.4** Implementar tests E2E with Playwright o Cypress
 - [ ] **4.3.5** Crear suite de tests para Edge Functions
 - [ ] **4.3.6** Validar cobertura de código (mínimo 70%)
 - [ ] **4.3.7** Implementar CI/CD with GitHub Actions
-- [ ] **4.3.8** Configurar pre-push hooks con tests obligatorios
+- [ ] **4.3.8** Configurar pre-push hooks with tests obligatorios
 
 ### 4.4 Documentación Final
 

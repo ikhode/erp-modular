@@ -1,88 +1,51 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {CreditCard as Edit, DollarSign, Plus, Receipt, Search, ShoppingCart, Trash2} from 'lucide-react';
+import {clienteStorage, productoStorage, ventaStorage} from '../lib/storage';
+import {Cliente, Producto, Venta} from '../lib/db';
 
-interface Sale {
-  id: string;
-  date: string;
-  customer?: string;
-  products: SaleItem[];
-  subtotal: number;
-  tax: number;
-  total: number;
-  paymentMethod: 'cash' | 'card' | 'transfer';
-  status: 'completed' | 'pending' | 'cancelled';
-  ticketNumber: string;
-  soldBy: string;
-  notes?: string;
-}
-
-interface SaleItem {
-  productId: string;
-  productName: string;
-  quantity: number;
-  unitPrice: number;
-  subtotal: number;
-}
+const initialForm: Omit<Venta, 'id' | 'createdAt' | 'updatedAt'> = {
+  clienteId: 0,
+  productoId: 0,
+  cantidad: 0,
+  precioUnitario: 0,
+  tipoEntrega: 'cliente_recoge',
+  estado: 'pendiente',
+};
 
 const Sales: React.FC = () => {
-  const [sales, setSales] = useState<Sale[]>([
-    {
-      id: '1',
-      date: '2024-01-15',
-      customer: 'Cliente General',
-      products: [
-        { productId: '1', productName: 'Coco Rallado 500g', quantity: 2, unitPrice: 35.00, subtotal: 70.00 },
-        { productId: '2', productName: 'Aceite de Coco 250ml', quantity: 1, unitPrice: 120.00, subtotal: 120.00 }
-      ],
-      subtotal: 190.00,
-      tax: 30.40,
-      total: 220.40,
-      paymentMethod: 'cash',
-      status: 'completed',
-      ticketNumber: 'TICKET-001',
-      soldBy: 'Ana Martínez'
-    },
-    {
-      id: '2',
-      date: '2024-01-15',
-      customer: 'Tienda La Providencia',
-      products: [
-        { productId: '1', productName: 'Coco Rallado 500g', quantity: 20, unitPrice: 35.00, subtotal: 700.00 }
-      ],
-      subtotal: 700.00,
-      tax: 112.00,
-      total: 812.00,
-      paymentMethod: 'transfer',
-      status: 'completed',
-      ticketNumber: 'TICKET-002',
-      soldBy: 'Ana Martínez'
-    },
-    {
-      id: '3',
-      date: '2024-01-14',
-      customer: 'Restaurante El Sabor',
-      products: [
-        { productId: '2', productName: 'Aceite de Coco 250ml', quantity: 10, unitPrice: 120.00, subtotal: 1200.00 }
-      ],
-      subtotal: 1200.00,
-      tax: 192.00,
-      total: 1392.00,
-      paymentMethod: 'card',
-      status: 'completed',
-      ticketNumber: 'TICKET-003',
-      soldBy: 'María García'
-    }
-  ]);
-
+  const [sales, setSales] = useState<Venta[]>([]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [editingSale, setEditingSale] = useState<Sale | null>(null);
+  const [editingSale, setEditingSale] = useState<Venta | null>(null);
+  const [form, setForm] = useState(initialForm);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showSignature, setShowSignature] = useState(false);
+  const [signatureData, setSignatureData] = useState<string>('');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
-  const filteredSales = sales.filter(sale =>
-    sale.customer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sale.ticketNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sale.soldBy.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  React.useEffect(() => {
+    async function fetchData() {
+      setClientes(await clienteStorage.getAll());
+      setProductos(await productoStorage.getAll());
+      setSales(await ventaStorage.getAll());
+    }
+    fetchData();
+  }, []);
+
+  // Filtrado corregido
+  const filteredSales = sales.filter(sale => {
+    const cliente = clientes.find(c => c.id === sale.clienteId)?.nombre || '';
+    const producto = productos.find(p => p.id === sale.productoId)?.nombre || '';
+    return cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           producto.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  // Estadísticas corregidas
+  const totalSales = sales.filter(s => s.estado === 'entregado').reduce((sum, s) => sum + (s.cantidad * s.precioUnitario * 1.16), 0);
+  const completedSales = sales.filter(s => s.estado === 'entregado').length;
+  const totalItems = sales.reduce((sum, s) => sum + s.cantidad, 0);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -111,20 +74,100 @@ const Sales: React.FC = () => {
     }
   };
 
-  const handleEdit = (sale: Sale) => {
+  // Funciones para firma digital
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    setIsDrawing(true);
+    ctx.beginPath();
+    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setSignatureData('');
+  };
+
+  const saveSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dataURL = canvas.toDataURL('image/png');
+    setSignatureData(dataURL);
+    setShowSignature(false);
+  };
+
+  // Modificar handleSave para incluir firma
+  const handleSave = async () => {
+    if (!form.clienteId || !form.productoId || !form.cantidad || !form.precioUnitario) return;
+
+    // Validar firma si es entrega al cliente
+    if (form.tipoEntrega === 'cliente_recoge' && form.estado === 'entregado' && !signatureData) {
+      alert('Se requiere la firma digital del cliente para entregas.');
+      setShowSignature(true);
+      return;
+    }
+
+    const now = new Date();
+    if (editingSale) {
+      await ventaStorage.update(editingSale.id!, { ...form, updatedAt: now });
+    } else {
+      await ventaStorage.add({
+        ...form,
+        firmaClienteBase64: signatureData,
+        createdAt: now,
+        updatedAt: now
+      });
+      // Restar inventario al completar venta
+      if (form.estado === 'entregado') {
+        const inventario = await storage.inventario.getAll();
+        const item = inventario.find(inv => inv.productoId === form.productoId && inv.ubicacionId === 1); // TODO: ubicación configurable
+        if (item && item.cantidad >= form.cantidad) {
+          await storage.inventario.update(item.id!, { cantidad: item.cantidad - form.cantidad, updatedAt: now });
+        } else {
+          alert('Stock insuficiente para completar la venta.');
+          return;
+        }
+      }
+    }
+    setSales(await ventaStorage.getAll());
+    setShowModal(false);
+    setEditingSale(null);
+    setForm(initialForm);
+    setSignatureData('');
+  };
+
+  const handleEdit = (sale: Venta) => {
     setEditingSale(sale);
+    setForm({ ...sale });
     setShowModal(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: number) => {
     if (confirm('¿Está seguro de eliminar esta venta?')) {
-      setSales(sales.filter(s => s.id !== id));
+      await ventaStorage.delete(id);
+      setSales(await ventaStorage.getAll());
     }
   };
-
-  const totalSales = sales.filter(s => s.status === 'completed').reduce((sum, s) => sum + s.total, 0);
-  const completedSales = sales.filter(s => s.status === 'completed').length;
-  const totalItems = sales.reduce((sum, s) => sum + s.products.reduce((pSum, p) => pSum + p.quantity, 0), 0);
 
   return (
     <div className="space-y-6">
@@ -233,40 +276,32 @@ const Sales: React.FC = () => {
                 <tr key={sale.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{sale.date}</div>
-                      <div className="text-sm text-gray-500">{sale.ticketNumber}</div>
-                      <div className="text-xs text-gray-400">Por: {sale.soldBy}</div>
+                      <div className="text-sm font-medium text-gray-900">{sale.createdAt ? new Date(sale.createdAt).toLocaleDateString() : ''}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {sale.customer || 'N/A'}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">
-                      {sale.products.map((item, idx) => (
-                        <div key={idx} className="mb-1">
-                          {item.productName} x{item.quantity}
-                        </div>
-                      ))}
-                    </div>
+                    {clientes.find(c => c.id === sale.clienteId)?.nombre || 'N/A'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${sale.subtotal.toFixed(2)}
+                    {productos.find(p => p.id === sale.productoId)?.nombre || 'N/A'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${sale.tax.toFixed(2)}
+                    ${(sale.cantidad * sale.precioUnitario).toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    ${((sale.cantidad * sale.precioUnitario) * 0.16).toFixed(2)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
-                    ${sale.total.toLocaleString()}
+                    ${(sale.cantidad * sale.precioUnitario * 1.16).toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                      {getPaymentMethodLabel(sale.paymentMethod)}
+                      {getPaymentMethodLabel(sale.tipoEntrega)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(sale.status)}`}>
-                      {getStatusLabel(sale.status)}
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(sale.estado)}`}>
+                      {getStatusLabel(sale.estado)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -278,7 +313,7 @@ const Sales: React.FC = () => {
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => handleDelete(sale.id)}
+                        onClick={() => sale.id && handleDelete(sale.id)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -292,25 +327,151 @@ const Sales: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal placeholder */}
+      {/* Modal de alta/edición de venta */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-4xl">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               {editingSale ? 'Editar Venta' : 'Nueva Venta'}
             </h3>
-            <p className="text-gray-600 mb-4">
-              Funcionalidad completa del modal en desarrollo...
-            </p>
-            <button
-              onClick={() => {
-                setShowModal(false);
-                setEditingSale(null);
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                handleSave();
               }}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+              className="space-y-4"
             >
-              Cerrar
-            </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Cliente</label>
+                  <select
+                    className="w-full border rounded px-2 py-1"
+                    value={form.clienteId}
+                    onChange={e => setForm(f => ({ ...f, clienteId: Number(e.target.value) }))}
+                    required
+                  >
+                    <option value={0}>Selecciona cliente</option>
+                    {clientes.map(c => (
+                      <option key={c.id} value={c.id}>{c.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Producto</label>
+                  <select
+                    className="w-full border rounded px-2 py-1"
+                    value={form.productoId}
+                    onChange={e => setForm(f => ({ ...f, productoId: Number(e.target.value) }))}
+                    required
+                  >
+                    <option value={0}>Selecciona producto</option>
+                    {productos.map(p => (
+                      <option key={p.id} value={p.id}>{p.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Cantidad</label>
+                  <input
+                    type="number"
+                    className="w-full border rounded px-2 py-1"
+                    value={form.cantidad}
+                    min={1}
+                    onChange={e => setForm(f => ({ ...f, cantidad: Number(e.target.value) }))}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Precio Unitario</label>
+                  <input
+                    type="number"
+                    className="w-full border rounded px-2 py-1"
+                    value={form.precioUnitario}
+                    min={0}
+                    step={0.01}
+                    onChange={e => setForm(f => ({ ...f, precioUnitario: Number(e.target.value) }))}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Tipo de entrega</label>
+                  <select
+                    className="w-full border rounded px-2 py-1"
+                    value={form.tipoEntrega}
+                    onChange={e => setForm(f => ({ ...f, tipoEntrega: e.target.value as Venta['tipoEntrega'] }))}
+                  >
+                    <option value="cliente_recoge">Cliente recoge</option>
+                    <option value="flete_propio">Flete propio</option>
+                    <option value="flete_externo">Flete externo</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Estado</label>
+                  <select
+                    className="w-full border rounded px-2 py-1"
+                    value={form.estado}
+                    onChange={e => setForm(f => ({ ...f, estado: e.target.value as Venta['estado'] }))}
+                  >
+                    <option value="pendiente">Pendiente</option>
+                    <option value="en_preparacion">En preparación</option>
+                    <option value="en_transito">En tránsito</option>
+                    <option value="entregado">Entregado</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2 mt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setEditingSale(null);
+                    setForm(initialForm);
+                  }}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Sección de firma si es entrega al cliente */}
+      {form.tipoEntrega === 'cliente_recoge' && form.estado === 'entregado' && (
+        <div className="space-y-2">
+          <h4 className="font-semibold">Firma Digital del Cliente</h4>
+          <div className="flex space-x-2">
+            <button type="button" onClick={() => setShowSignature(true)} className={`px-3 py-1 rounded ${signatureData ? 'bg-green-200' : 'bg-gray-200'}`}>Firmar</button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de firma digital */}
+      {showSignature && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Firma Digital del Cliente</h3>
+            <canvas
+              ref={canvasRef}
+              width={400}
+              height={200}
+              className="border border-gray-300 w-full"
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+            />
+            <div className="flex justify-end space-x-2 mt-4">
+              <button type="button" onClick={clearSignature} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Limpiar</button>
+              <button type="button" onClick={saveSignature} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Guardar Firma</button>
+            </div>
           </div>
         </div>
       )}

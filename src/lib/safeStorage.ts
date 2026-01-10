@@ -108,7 +108,6 @@ class SafeStorage {
 
 export const safeStorage = new SafeStorage();
 
-// Limpiar en desarrollo para evitar conflictos con HMR
-if (import.meta.env.DEV) {
-  safeStorage.clearAllInDev();
-}
+// Elimina el borrado global de localStorage en modo desarrollo para evitar perder datos entre recargas
+// Si se requiere limpiar, hacerlo manualmente desde consola o con una función específica
+// import.meta.env.DEV && safeStorage.clearAllInDev(); // <-- Comentado para evitar problemas de renderizado

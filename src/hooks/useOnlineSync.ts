@@ -2,11 +2,9 @@ import {useCallback, useEffect, useState} from 'react';
 import {isOnline, syncQueue} from '../lib/storage';
 
 // Placeholder for Supabase sync functions
-// These would be implemented when connecting to Supabase
 const syncToSupabase = async (operation: string, table: string, data: Record<string, unknown>) => {
   // TODO: Implement Supabase sync
   console.log('Syncing to Supabase:', { operation, table, data });
-  // Simulate async operation
   await new Promise(resolve => setTimeout(resolve, 100));
   return true;
 };
@@ -14,6 +12,34 @@ const syncToSupabase = async (operation: string, table: string, data: Record<str
 export const useOnlineSync = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
+
+  // Declare performSync BEFORE useEffect hooks
+  const performSync = useCallback(async () => {
+    if (isSyncing) return;
+
+    setIsSyncing(true);
+    try {
+      const pendingItems = await syncQueue.getPending();
+
+      for (const item of pendingItems) {
+        try {
+          const success = await syncToSupabase(item.operation, item.table, item.data);
+          if (success) {
+            await syncQueue.markSynced(item.id!);
+          }
+        } catch (error) {
+          console.error('Sync failed for item:', item, error);
+        }
+      }
+
+      setLastSync(new Date());
+      console.log(`Synced ${pendingItems.length} items`);
+    } catch (error) {
+      console.error('Sync process failed:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [isSyncing]);
 
   // Sync when coming online
   useEffect(() => {
@@ -29,7 +55,6 @@ export const useOnlineSync = () => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Initial sync if online
     if (isOnline()) {
       performSync();
     }
@@ -46,38 +71,10 @@ export const useOnlineSync = () => {
       if (isOnline()) {
         performSync();
       }
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [performSync]);
-
-  const performSync = useCallback(async () => {
-    if (isSyncing) return;
-
-    setIsSyncing(true);
-    try {
-      const pendingItems = await syncQueue.getPending();
-
-      for (const item of pendingItems) {
-        try {
-          const success = await syncToSupabase(item.operation, item.table, item.data);
-          if (success) {
-            await syncQueue.markSynced(item.id!);
-          }
-        } catch (error) {
-          console.error('Sync failed for item:', item, error);
-          // Could implement retry logic here
-        }
-      }
-
-      setLastSync(new Date());
-      console.log(`Synced ${pendingItems.length} items`);
-    } catch (error) {
-      console.error('Sync process failed:', error);
-    } finally {
-      setIsSyncing(false);
-    }
-  }, [isSyncing]);
 
   const forceSync = () => {
     if (isOnline()) {

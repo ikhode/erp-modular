@@ -17,6 +17,13 @@ import type {
 import {db} from './db';
 import type Dexie from 'dexie';
 
+// Utilidad para limpiar undefined y asegurar objeto plano
+function toPlainObject<T>(data: Partial<T>): Partial<T> {
+    return Object.fromEntries(
+        Object.entries(data).filter(([, v]) => v !== undefined)
+    ) as Partial<T>;
+}
+
 // Generic storage interface
 interface StorageService<T> {
     getAll(): Promise<T[]>;
@@ -47,7 +54,8 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
     }
 
     async update(id: number, data: Partial<T>): Promise<void> {
-        await this.table.update(id, data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await this.table.update(id, toPlainObject(data) as any);
         }
 
     async delete(id: number): Promise<void> {

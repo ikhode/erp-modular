@@ -74,16 +74,16 @@ const Employees: React.FC = () => {
     }
   };
 
-  const [departments, setRoles] = useState<string[]>([]);
-  const [roles, setDepartments] = useState<string[]>([]);
+  const [roles, setRoles] = useState<string[]>([]);
+  const [newRole, setNewRole] = useState('');
+  const [showNewRoleInput, setShowNewRoleInput] = useState(false);
   useEffect(() => {
     const fetchConfig = async () => {
       const rolesDb = await storage.userRoles.getAll();
-      setDepartments(rolesDb.map(r => r.name));
-      setRoles(['Producción', 'Calidad', 'Mantenimiento', 'Ventas', 'Administración']);
+      setRoles(rolesDb.map(r => r.name));
     };
     fetchConfig();
-  }, []);
+  }, [showNewRoleInput]);
 
   return (
     <div className="space-y-6">
@@ -123,7 +123,7 @@ const Employees: React.FC = () => {
             <Users className="h-8 w-8 text-purple-600 mr-3" />
             <div>
               <p className="text-sm text-gray-600">Departamentos</p>
-              <p className="text-2xl font-bold">{departments.length}</p>
+              <p className="text-2xl font-bold">{roles.length}</p>
             </div>
           </div>
         </div>
@@ -253,16 +253,44 @@ const Employees: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Rol *
                 </label>
-                <select
-                  value={newEmployee.rol || ''}
-                  onChange={(e) => setNewEmployee({ ...newEmployee, rol: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Seleccionar rol</option>
-                  {roles.map(role => (
-                    <option key={role} value={role}>{role}</option>
-                  ))}
-                </select>
+                <div className="flex space-x-2">
+                  <select
+                    value={newEmployee.rol || ''}
+                    onChange={e => {
+                      if (e.target.value === '__nuevo__') {
+                        setShowNewRoleInput(true);
+                      } else {
+                        setNewEmployee({ ...newEmployee, rol: e.target.value });
+                        setShowNewRoleInput(false);
+                      }
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Seleccionar rol</option>
+                    {roles.map(role => (
+                      <option key={role} value={role}>{role}</option>
+                    ))}
+                    <option value="__nuevo__">+ Crear nuevo rol</option>
+                  </select>
+                  {showNewRoleInput && (
+                    <input
+                      type="text"
+                      value={newRole}
+                      onChange={e => setNewRole(e.target.value)}
+                      placeholder="Nuevo rol"
+                      className="w-32 px-2 py-1 border rounded"
+                      onBlur={async () => {
+                        if (newRole.trim()) {
+                          await storage.userRoles.add({ name: newRole.trim(), createdAt: new Date(), updatedAt: new Date() });
+                          setRoles(prev => [...prev, newRole.trim()]);
+                          setNewEmployee({ ...newEmployee, rol: newRole.trim() });
+                          setShowNewRoleInput(false);
+                          setNewRole('');
+                        }
+                      }}
+                    />
+                  )}
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -19,9 +19,10 @@ export default function FaceAuth({ onAuthenticated, onRoleSet }: FaceAuthProps) 
   useEffect(() => {
     const loadModels = async () => {
       try {
-        await faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights/');
-        await faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights/');
-        await faceapi.nets.faceRecognitionNet.loadFromUri('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights/');
+        // Cambia la ruta de carga de modelos para usar /models en vez de la CDN
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/models')
+        await faceapi.nets.faceLandmark68Net.loadFromUri('/models')
+        await faceapi.nets.faceRecognitionNet.loadFromUri('/models')
         setModelsLoaded(true);
       } catch (err) {
         console.error('Error loading face-api models:', err);
