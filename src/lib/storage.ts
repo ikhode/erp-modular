@@ -86,6 +86,8 @@ export const syncQueueStorage = new DexieStorage<SyncQueue>(db.syncQueue);
 export const folioSequenceStorage = new DexieStorage<FolioSequence>(db.folioSequences);
 export const transferStorage = new DexieStorage<Transfer>(db.transfers);
 export const attendanceStorage = new DexieStorage<Attendance>(db.attendance);
+export const productoVariacionStorage = new DexieStorage<ProductoVariacion>(db.productoVariaciones);
+export const productoConfigStorage = new DexieStorage<ProductoConfig>(db.productoConfigs);
 
 // ✅ Sync queue management
 export const syncQueue = {
@@ -169,4 +171,6 @@ export const storage = {
     processTypes: processTypeStorage, // Gestión de tipos de proceso: categorías de procesos de producción (destopado, pelado, etc.).
     transfers: transferStorage, // Gestión de traslados: registros de movimientos de productos entre ubicaciones.
     asistencia: attendanceStorage, // Gestión de asistencia: registros de entrada y salida de empleados, con horarios y estados.
+    productoVariacion: productoVariacionStorage, // Gestión de variaciones de productos: seguimiento de diferentes versiones o variantes de un producto.
+    productoConfig: productoConfigStorage, // Gestión de configuraciones de productos: opciones y ajustes específicos para cada producto.
 };

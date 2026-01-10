@@ -243,6 +243,36 @@ export interface CashFlow {
   updatedAt: Date;
 }
 
+// Nuevas interfaces para variaciones y configuraciones de productos
+export interface ProductoVariacion {
+  id?: number;
+  productoId: number;
+  nombre: string;
+  aplicaCompra: boolean;
+  aplicaProceso: boolean;
+  aplicaVenta: boolean;
+  seConsumeEnProceso: boolean;
+  seProduceEnProceso: boolean;
+  precioCompraMin?: number;
+  precioCompraMax?: number;
+  precioCompraFijo?: number;
+  precioVentaMin?: number;
+  precioVentaMax?: number;
+  precioVentaFijo?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ProductoConfig {
+  id?: number;
+  productoId: number;
+  mermable: boolean;
+  procesosAsignados: number[];
+  tiposLugarAsignados: number[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Interfaces para las tablas de configuración
 export interface UserRole {
   id?: number;
@@ -298,10 +328,12 @@ export class ERPDB extends Dexie {
   locationTypes!: Table<LocationType>;
   processTypes!: Table<ProcessType>;
   folioSequences!: Table<FolioSequence>;
+  productoVariaciones!: Table<ProductoVariacion>;
+  productoConfigs!: Table<ProductoConfig>;
 
   constructor() {
     super('erp_modular');
-    this.version(6).stores({
+    this.version(7).stores({
       clientes: '++id, nombre, rfc, email, createdAt',
       proveedores: '++id, nombre, rfc, email, createdAt',
       productos: '++id, nombre, precioActual, createdAt',
@@ -320,6 +352,8 @@ export class ERPDB extends Dexie {
       locationTypes: '++id, name, createdAt',
       processTypes: '++id, name, createdAt',
       folioSequences: '++id, prefix, currentNumber, createdAt',
+      productoVariaciones: '++id, productoId, nombre, createdAt',
+      productoConfigs: '++id, productoId, mermable, createdAt',
     });
   }
 }

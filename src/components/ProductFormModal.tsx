@@ -63,14 +63,41 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
   const [tiposLugarAsignados, setTiposLugarAsignados] = useState<number[]>([]);
   const [showTypeOfPlaceModal, setShowTypeOfPlaceModal] = useState(false);
 
+  // Cargar datos reales de la base de datos
+  const loadData = async () => {
+    try {
+      const [procesosData, lugaresData, tiposLugarData] = await Promise.all([
+        storage.procesos.getAll(),
+        storage.ubicaciones.getAll(),
+        storage.locationTypes.getAll()
+      ]);
+
+      setProcesos(procesosData.map(p => ({ id: p.id!, nombre: p.nombre })));
+      setLugares(lugaresData.map(l => ({
+        id: l.id!,
+        nombre: l.nombre,
+        tipoId: 1 // TODO: Mapear tipo correcto cuando se implemente
+      })));
+      setTiposLugar(tiposLugarData.filter(t => t.id !== undefined).map(t => ({
+        id: t.id!,
+        nombre: t.name
+      })));
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  };
+
   // Refresca tipos de lugar al abrir el modal y tras crear/editar
   const refreshTiposLugar = async () => {
     const tipos = await storage.locationTypes.getAll();
-    // Mapeo para cumplir tipado: { id, nombre }, filtrando undefined
     setTiposLugar(tipos.filter(t => t.id !== undefined).map(t => ({ id: t.id!, nombre: t.name })));
   };
 
   useEffect(() => {
+    if (open) {
+      loadData();
+    }
+
     setFormData({
       ...defaultForm,
       ...initialData,
@@ -83,17 +110,6 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
     setMermable(false);
     setProcesosAsignados([]);
     setTiposLugarAsignados([]);
-    setLugares([
-      { id: 1, nombre: 'Patio Norte', tipoId: 1 },
-      { id: 2, nombre: 'Bodega Central', tipoId: 2 },
-      { id: 3, nombre: 'Transporte 1', tipoId: 3 },
-      { id: 4, nombre: 'Patio Sur', tipoId: 1 },
-    ]);
-    setProcesos([
-      { id: 1, nombre: 'Destopado' },
-      { id: 2, nombre: 'Secado' },
-      { id: 3, nombre: 'Empaque' },
-    ]);
     refreshTiposLugar();
   }, [initialData, open]);
 
@@ -126,27 +142,66 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const productoBase: Omit<ProductoBase, 'id'> = {
-      nombre: formData.nombre ? String(formData.nombre) : '',
-      descripcion: formData.descripcion || '',
-      unidad: formData.unidad || '',
-      precioMin: Number(formData.precioMin) || 0,
-      precioMax: Number(formData.precioMax) || 0,
-      precioActual: Number(formData.precioActual) || 0,
-      compra: !!formData.compra,
-      venta: !!formData.venta,
-      procesoEntrada: !!formData.procesoEntrada,
-      procesoSalida: !!formData.procesoSalida,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    const id = await storage.productos.add(productoBase);
-    // Guardar extras en localStorage para trazabilidad
-    const extras = { variaciones, mermable, procesosAsignados, tiposLugarAsignados };
-    localStorage.setItem(`producto_extras_${productoBase.nombre}`, JSON.stringify(extras));
-    setLoading(false);
-    onCreated({ ...productoBase, id } as ProductoBase & { id: number });
-    onClose();
+
+    try {
+      const productoBase: Omit<ProductoBase, 'id'> = {
+        nombre: formData.nombre ? String(formData.nombre) : '',
+        descripcion: formData.descripcion || '',
+        unidad: formData.unidad || '',
+        precioMin: Number(formData.precioMin) || 0,
+        precioMax: Number(formData.precioMax) || 0,
+        precioActual: Number(formData.precioActual) || 0,
+        compra: !!formData.compra,
+        venta: !!formData.venta,
+        procesoEntrada: !!formData.procesoEntrada,
+        procesoSalida: !!formData.procesoSalida,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const id = await storage.productos.add(productoBase);
+
+      // Guardar variaciones en IndexedDB si existen
+      if (tieneVariaciones && variaciones.length > 0) {
+        for (const variacion of variaciones) {
+          await storage.productoVariacion.add({
+            productoId: id,
+            nombre: variacion.nombre,
+            aplicaCompra: variacion.aplicaCompra,
+            aplicaProceso: variacion.aplicaProceso,
+            aplicaVenta: variacion.aplicaVenta,
+            seConsumeEnProceso: variacion.seConsumeEnProceso,
+            seProduceEnProceso: variacion.seProduceEnProceso,
+            precioCompraMin: variacion.precioCompraMin ? Number(variacion.precioCompraMin) : undefined,
+            precioCompraMax: variacion.precioCompraMax ? Number(variacion.precioCompraMax) : undefined,
+            precioCompraFijo: variacion.precioCompraFijo ? Number(variacion.precioCompraFijo) : undefined,
+            precioVentaMin: variacion.precioVentaMin ? Number(variacion.precioVentaMin) : undefined,
+            precioVentaMax: variacion.precioVentaMax ? Number(variacion.precioVentaMax) : undefined,
+            precioVentaFijo: variacion.precioVentaFijo ? Number(variacion.precioVentaFijo) : undefined,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          });
+        }
+      }
+
+      // Guardar configuración del producto en IndexedDB
+      await storage.productoConfig.add({
+        productoId: id,
+        mermable,
+        procesosAsignados,
+        tiposLugarAsignados,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      setLoading(false);
+      onCreated({ ...productoBase, id } as ProductoBase & { id: number });
+      onClose();
+    } catch (error) {
+      console.error('Error saving product:', error);
+      setLoading(false);
+      alert('Error al guardar el producto');
+    }
   };
 
   const handleTypeOfPlaceSaved = async () => {
