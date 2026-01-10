@@ -2,6 +2,7 @@ import type {
     Cliente,
     Compra,
     Empleado,
+    FolioSequence,
     Inventario,
     LocationType,
     Proceso,
@@ -78,6 +79,7 @@ export const userRoleStorage = new DexieStorage<UserRole>(db.userRoles);
 export const locationTypeStorage = new DexieStorage<LocationType>(db.locationTypes);
 export const processTypeStorage = new DexieStorage<ProcessType>(db.processTypes);
 export const syncQueueStorage = new DexieStorage<SyncQueue>(db.syncQueue);
+export const folioSequenceStorage = new DexieStorage<FolioSequence>(db.folioSequences);
 
 // ✅ Sync queue management
 export const syncQueue = {
@@ -107,6 +109,41 @@ export const syncQueue = {
 
 // ✅ Utility
 export const isOnline = (): boolean => typeof navigator !== 'undefined' && navigator.onLine;
+
+// ✅ Folio generation utility
+export const folioGenerator = {
+    async generateFolio(prefix: string): Promise<string> {
+        const sequence = await db.folioSequences.where('prefix').equals(prefix).first();
+        if (!sequence) {
+            throw new Error(`Prefijo de folio no encontrado: ${prefix}`);
+        }
+
+        const nextNumber = sequence.currentNumber + 1;
+        const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        const folio = `${dateStr}-${nextNumber.toString().padStart(5, '0')}`;
+
+        await db.folioSequences.update(sequence.id!, { currentNumber: nextNumber, updatedAt: new Date() });
+
+        return folio;
+    },
+
+    async initializeSequences(): Promise<void> {
+        const existing = await db.folioSequences.toArray();
+        const prefixes = ['PROD', 'COMP', 'VENT', 'TRAS', 'DEV'];
+
+        for (const prefix of prefixes) {
+            if (!existing.find(s => s.prefix === prefix)) {
+                await db.folioSequences.add({
+                    prefix,
+                    description: `Folios para ${prefix === 'PROD' ? 'producción' : prefix === 'COMP' ? 'compras' : prefix === 'VENT' ? 'ventas' : prefix === 'TRAS' ? 'traslados' : 'devoluciones'}`,
+                    currentNumber: 0,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                });
+            }
+        }
+    },
+};
 
 // ✅ Unified export for modular access
 export const storage = {

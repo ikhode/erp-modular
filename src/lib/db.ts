@@ -98,6 +98,7 @@ export interface Inventario {
 
 export interface ProduccionTicket {
   id?: number;
+  folio?: string; // Nuevo campo para folio automático
   procesoId: number;
   empleadoId: number;
   insumos: { productoId: number; cantidad: number }[];
@@ -178,6 +179,15 @@ export interface ProcessType {
   updatedAt: Date;
 }
 
+export interface FolioSequence {
+  id?: number;
+  prefix: string;
+  description?: string;
+  currentNumber: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Base de datos Dexie
 export class ERPDB extends Dexie {
   clientes!: Table<Cliente>;
@@ -194,6 +204,7 @@ export class ERPDB extends Dexie {
   userRoles!: Table<UserRole>;
   locationTypes!: Table<LocationType>;
   processTypes!: Table<ProcessType>;
+  folioSequences!: Table<FolioSequence>;
 
   constructor() {
     super('erp_modular');
@@ -212,6 +223,7 @@ export class ERPDB extends Dexie {
       userRoles: '++id, name, createdAt',
       locationTypes: '++id, name, createdAt',
       processTypes: '++id, name, createdAt',
+      folioSequences: '++id, prefix, currentNumber, createdAt',
     });
   }
 }

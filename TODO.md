@@ -115,12 +115,12 @@
 
 ### 1.1 Sistema de Folios Automáticos
 
-- [ ] **1.1.1** Crear migración `00006_folios.sql`
-- [ ] **1.1.2** Crear tabla `folio_sequences` con prefijos
-- [ ] **1.1.3** Insertar secuencias: PROD, COMP, VENT, TRAS, DEV
-- [ ] **1.1.4** Crear función `generate_folio(prefix)` con formato YYYYMMDD
-- [ ] **1.1.5** Probar generación con diferentes prefijos
-- [ ] **1.1.6** Documentar formato en README
+- [x] **1.1.1** Crear migración `00006_folios.sql`
+- [x] **1.1.2** Crear tabla `folio_sequences` con prefijos
+- [x] **1.1.3** Insertar secuencias: PROD, COMP, VENT, TRAS, DEV
+- [x] **1.1.4** Crear función `generate_folio(prefix)` con formato YYYYMMDD
+- [x] **1.1.5** Probar generación con diferentes prefijos
+- [x] **1.1.6** Documentar formato en README
 
 ### 1.2 Módulo de Clientes Completo
 

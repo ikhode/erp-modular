@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {storage} from '../lib/storage';
+import {folioGenerator, storage} from '../lib/storage';
 import {ProduccionTicket} from '../lib/db';
 
 interface ProcessItem {
@@ -165,8 +165,12 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
       return;
     }
 
-    // Crear ticket de producción con firma
+    // Generar folio automático
+    const folio = await folioGenerator.generateFolio('PROD');
+
+    // Crear ticket de producción con firma y folio
     const ticket: Omit<ProduccionTicket, 'id'> = {
+      folio,
       procesoId: Number(proceso.id),
       empleadoId: 1, // TODO: obtener del contexto de usuario
       insumos: insumos.map(i => ({ productoId: Number(i.productId), cantidad: i.cantidad })),
