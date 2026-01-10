@@ -21,6 +21,7 @@
         "@eslint/js": "^9.9.1",
         "@types/react": "^18.3.5",
         "@types/react-dom": "^18.3.0",
+        "@types/web": "^0.0.315",
         "@vitejs/plugin-react": "^4.3.1",
         "autoprefixer": "^10.4.18",
         "eslint": "^9.9.1",
@@ -279,6 +280,8 @@
     "@types/signature_pad": ["@types/signature_pad@2.3.6", "", {}, "sha512-v3j92gCQJoxomHhd+yaG4Vsf8tRS/XbzWKqDv85UsqjMGy4zhokuwKe4b6vhbgncKkh+thF+gpz6+fypTtnFqQ=="],
 
     "@types/trusted-types": ["@types/trusted-types@2.0.7", "", {}, "sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw=="],
+
+    "@types/web": ["@types/web@0.0.315", "", {}, "sha512-7w2xxj/25D/JWQQOyGe7jd+YftLnE9Hku2PUzNLRnnBvHmcORe9xoUU3IvlKJTfUMCZdfZEZJOrLKugZq+GJCQ=="],
 
     "@types/webgl-ext": ["@types/webgl-ext@0.0.30", "", {}, "sha512-LKVgNmBxN0BbljJrVUwkxwRYqzsAEPcZOe6S2T6ZaBDIrFp0qu4FNlpc5sM1tGbXUYFgdVQIoeLk1Y1UoblyEg=="],
 

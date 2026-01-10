@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Building2,
+    ChevronDown,
+    ChevronRight,
     Clock,
     Cog,
     DollarSign,
@@ -30,6 +32,11 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRole, onLogout }) => {
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [isOperationsOpen, setIsOperationsOpen] = useState(false);
+  const [isFinanceOpen, setIsFinanceOpen] = useState(false);
+  const [isReportsOpen, setIsReportsOpen] = useState(false);
+
   const getMenuItems = () => {
     const baseItems = [
       { id: 'dashboard', label: 'Dashboard', icon: Home, roles: ['owner', 'admin', 'supervisor', 'cashier'] },
@@ -88,6 +95,34 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
     ['inventory', 'reports', 'audit'].includes(item.id)
   );
 
+  const toggleConfig = () => {
+    setIsConfigOpen(!isConfigOpen);
+    setIsOperationsOpen(false);
+    setIsFinanceOpen(false);
+    setIsReportsOpen(false);
+  };
+
+  const toggleOperations = () => {
+    setIsOperationsOpen(!isOperationsOpen);
+    setIsConfigOpen(false);
+    setIsFinanceOpen(false);
+    setIsReportsOpen(false);
+  };
+
+  const toggleFinance = () => {
+    setIsFinanceOpen(!isFinanceOpen);
+    setIsConfigOpen(false);
+    setIsOperationsOpen(false);
+    setIsReportsOpen(false);
+  };
+
+  const toggleReports = () => {
+    setIsReportsOpen(!isReportsOpen);
+    setIsConfigOpen(false);
+    setIsOperationsOpen(false);
+    setIsFinanceOpen(false);
+  };
+
   return (
     <div className="fixed left-0 top-0 h-full w-64 bg-blue-900 text-white shadow-lg">
       <div className="p-6">
@@ -119,12 +154,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
         {/* Configuration Section */}
         {configItems.length > 0 && (
           <div className="mb-6">
-            <div className="px-6 py-2">
+            <div className="px-6 py-2 flex justify-between items-center cursor-pointer" onClick={toggleConfig}>
               <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
                 Configuración
               </h3>
+              {isConfigOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {configItems.map((item) => {
+            {isConfigOpen && configItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button
@@ -145,12 +181,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
         {/* Operations Section */}
         {operationItems.length > 0 && (
           <div className="mb-6">
-            <div className="px-6 py-2">
+            <div className="px-6 py-2 flex justify-between items-center cursor-pointer" onClick={toggleOperations}>
               <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
                 Operaciones
               </h3>
+              {isOperationsOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {operationItems.map((item) => {
+            {isOperationsOpen && operationItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button
@@ -171,12 +208,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
         {/* Finance Section */}
         {financeItems.length > 0 && (
           <div className="mb-6">
-            <div className="px-6 py-2">
+            <div className="px-6 py-2 flex justify-between items-center cursor-pointer" onClick={toggleFinance}>
               <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
                 Finanzas
               </h3>
+              {isFinanceOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {financeItems.map((item) => {
+            {isFinanceOpen && financeItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button
@@ -197,12 +235,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
         {/* Reports Section */}
         {reportItems.length > 0 && (
           <div className="mb-6">
-            <div className="px-6 py-2">
+            <div className="px-6 py-2 flex justify-between items-center cursor-pointer" onClick={toggleReports}>
               <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
                 Reportes
               </h3>
+              {isReportsOpen ? <ChevronDown className="h-4 w-4 text-blue-300" /> : <ChevronRight className="h-4 w-4 text-blue-300" />}
             </div>
-            {reportItems.map((item) => {
+            {isReportsOpen && reportItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button

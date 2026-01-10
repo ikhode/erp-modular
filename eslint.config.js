@@ -24,5 +24,23 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
+  },
+  // Configuración específica para archivos de Supabase Edge Functions (Deno)
+  {
+    files: ['supabase/functions/**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.browser,
+        Deno: 'readonly', // Agregar objeto global Deno
+        console: 'readonly', // Console está disponible en Deno
+      },
+    },
+    rules: {
+      // Deshabilitar reglas que no aplican en Deno
+      '@typescript-eslint/no-unused-vars': 'off', // Deno maneja imports de forma diferente
+      '@typescript-eslint/no-explicit-any': 'off', // Permitir any en funciones de Deno por flexibilidad
+      'no-undef': 'off', // Deno tiene APIs globales no definidas en ESLint
+    },
   }
 );

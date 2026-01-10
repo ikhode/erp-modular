@@ -70,14 +70,22 @@ serve(async (req) => {
     if (action === 'get_user_permissions') {
       const { userId } = permissionData
 
-      // Obtener permisos del usuario
+      // Obtener el role_id del usuario especificado
+      const { data: userData, error: userError } = await supabaseClient
+        .from('users')
+        .select('role_id')
+        .eq('id', userId)
+        .single()
+
+      if (userError) throw userError
+
+      // Obtener permisos del rol del usuario
       const { data: permissions, error } = await supabaseClient
         .from('role_permissions')
         .select(`
           permissions(name, resource, action, description)
         `)
-        .eq('role_id', supabaseClient.auth.user()?.user_metadata?.role_id)
-        .eq('user_id', userId) // This needs to be adjusted based on your user-role relationship
+        .eq('role_id', userData.role_id)
 
       if (error) throw error
 
