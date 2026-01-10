@@ -171,19 +171,19 @@
 - [ ] **1.4.10** Implementar paso 4: REGISTRO CONTABLE - Egreso en caja por labor
 - [ ] **1.4.11** Implementar paso 5: REGISTRO LOGÍSTICO - Rastreo de movimientos
 - [ ] **1.4.12** Crear Edge Function `/functions/production/complete.ts`
-- [ ] **1.4.13** Implementar solicitud de firma digital del empleado
-- [ ] **1.4.14** Implementar Face Auth si proceso es sensible
-- [ ] **1.4.15** Generar comprobante PDF para pago en caja
-- [ ] **1.4.16** Crear componente `<ProductionForm />`
-- [ ] **1.4.17** Crear selector de proceso y empleado
-- [ ] **1.4.18** Crear selector de insumos con ubicaciones
-- [ ] **1.4.19** Crear selector de producto terminado y ubicación destino
-- [ ] **1.4.20** Crear página `/produccion` con listado de tickets
-- [ ] **1.4.21** Implementar estados del ticket (pendiente, en_proceso, completado)
-- [ ] **1.4.22** Crear interfaz de kiosko para firma del empleado
-- [ ] **1.4.23** Validar que inventario se actualice correctamente
-- [ ] **1.4.24** Validar que se genere movimiento contable
-- [ ] **1.4.25** Validar trazabilidad completa en auditoría
+- [x] **1.4.13** Implementar solicitud de firma digital del empleado
+- [x] **1.4.14** Implementar Face Auth si proceso es sensible
+- [x] **1.4.15** Generar comprobante PDF para pago en caja
+- [x] **1.4.16** Crear componente `<ProductionForm />`
+- [x] **1.4.17** Crear selector de proceso y empleado
+- [x] **1.4.18** Crear selector de insumos con ubicaciones
+- [x] **1.4.19** Crear selector de producto terminado y ubicación destino
+- [x] **1.4.20** Crear página `/produccion` con listado de tickets
+- [x] **1.4.21** Implementar estados del ticket (pendiente, en_proceso, completado)
+- [x] **1.4.22** Crear interfaz de kiosko para firma del empleado
+- [x] **1.4.23** Validar que inventario se actualice correctamente
+- [x] **1.4.24** Validar que se genere movimiento contable
+- [x] **1.4.25** Validar trazabilidad completa en auditoría
 
 ### 1.5 Flujo de Compras Completo
 
@@ -482,13 +482,13 @@
 ### Estadísticas Generales
 
 - **Total de tareas:** 188
-- **Tareas completadas:** 14
-- **Progreso general:** 6%
+- **Tareas completadas:** 27
+- **Progreso general:** 14%
 
 ### Por Fase
 
 - **FASE 0 - Estructura Base:** 14/35 (40%)
-- **FASE 1 - Núcleo Operativo:** 0/58 (0%)
+- **FASE 1 - Núcleo Operativo:** 13/58 (22%)
 - **FASE 2 - Financiera:** 0/42 (0%)
 - **FASE 3 - Operacional:** 0/28 (0%)
 - **FASE 4 - Producción:** 0/25 (0%)
