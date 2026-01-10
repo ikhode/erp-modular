@@ -138,16 +138,23 @@ export interface Compra {
 
 export interface Venta {
   id?: number;
+  folio?: string; // Nuevo campo para folio automático
   clienteId: number;
   productoId: number;
   cantidad: number;
   precioUnitario: number;
+  totalAmount?: number; // Calculado automáticamente
   tipoEntrega: 'cliente_recoge' | 'flete_propio' | 'flete_externo';
   vehiculo?: string;
   conductor?: string;
   firmaClienteBase64?: string;
   firmaConductorBase64?: string;
   estado: 'pendiente' | 'en_preparacion' | 'en_transito' | 'entregado';
+  // Timestamps por estado
+  preparationTime?: Date;
+  transitTime?: Date;
+  deliveryTime?: Date;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 }

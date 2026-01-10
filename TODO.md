@@ -220,35 +220,35 @@
 
 ### 1.6 Flujo de Ventas Completo
 
-- [ ] **1.6.1** Crear migración `00011_sales.sql`
-- [ ] **1.6.2** Crear tabla `sales` con todos los campos
-- [ ] **1.6.3** Crear tabla `sale_freight` para entregas
-- [ ] **1.6.4** Crear tabla `sale_signatures`
-- [ ] **1.6.5** Crear campos de tipo de entrega (cliente recoge, flete propio, flete externo)
-- [ ] **1.6.6** Aplicar triggers de auditoría
+- [x] **1.6.1** Crear migración `00011_sales.sql`
+- [x] **1.6.2** Crear tabla `sales` con todos los campos
+- [x] **1.6.3** Crear tabla `sale_freight` para entregas
+- [ ] **1.6.4** Crear tabla `sale_signatures` para múltiples firmas
+- [x] **1.6.5** Crear campos de tipo de entrega (cliente recoge, flete propio, flete externo)
+- [x] **1.6.6** Aplicar triggers de auditoría
 - [ ] **1.6.7** Crear Edge Function `/functions/sales/register.ts`
-- [ ] **1.6.8** Implementar REGISTRO FÍSICO - Restar inventario
-- [ ] **1.6.9** Implementar REGISTRO CONTABLE - Ingreso o CxC
-- [ ] **1.6.10** Implementar REGISTRO LOGÍSTICO - Trazabilidad de entrega
+- [x] **1.6.8** Implementar REGISTRO FÍSICO - Restar inventario
+- [ ] **1.6.9** Implementar REGISTRO CONTABLE - Ingreso o CxP
+- [x] **1.6.10** Implementar REGISTRO LOGÍSTICO - Trazabilidad de entrega
 - [ ] **1.6.11** Crear Edge Function `/functions/sales/update-status.ts`
 - [ ] **1.6.12** Crear Edge Function `/functions/sales/signature.ts`
-- [ ] **1.6.13** Implementar firma del cliente al recibir (móvil o kiosko)
+- [x] **1.6.13** Implementar firma del cliente al recibir (móvil o kiosko)
 - [ ] **1.6.14** Implementar firma del conductor al entregar
 - [ ] **1.6.15** Implementar firma del cliente al pagar en efectivo
-- [ ] **1.6.16** Crear componente `<SaleForm />`
-- [ ] **1.6.17** Crear selector de cliente y producto
-- [ ] **1.6.18** Crear selector de tipo de entrega
-- [ ] **1.6.19** Crear sección de flete condicional
-- [ ] **1.6.20** Crear validación de disponibilidad de inventario
-- [ ] **1.6.21** Crear página `/ventas` con listado
-- [ ] **1.6.22** Implementar estados (pendiente, en_preparacion, en_transito, entregado)
+- [x] **1.6.16** Crear componente `<SaleForm />`
+- [x] **1.6.17** Crear selector de cliente y producto
+- [x] **1.6.18** Crear selector de tipo de entrega
+- [x] **1.6.19** Crear sección de flete condicional
+- [x] **1.6.20** Crear validación de disponibilidad de inventario
+- [x] **1.6.21** Crear página `/ventas` con listado
+- [x] **1.6.22** Implementar estados (pendiente, en_preparacion, en_transito, entregado)
 - [ ] **1.6.23** Crear vista móvil para conductores
-- [ ] **1.6.24** Validar firma del cliente en punto correcto
+- [x] **1.6.24** Validar firma del cliente en punto correcto
 - [ ] **1.6.25** Generar comprobante de venta PDF
 - [ ] **1.6.26** Subir comprobante a Storage `/tickets/ventas/`
-- [ ] **1.6.27** Validar actualización de inventario
+- [x] **1.6.27** Validar actualización de inventario
 - [ ] **1.6.28** Validar movimiento contable correcto
-- [ ] **1.6.29** Validar trazabilidad completa
+- [x] **1.6.29** Validar trazabilidad completa
 
 ---
 
