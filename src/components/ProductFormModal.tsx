@@ -58,7 +58,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
   const [activeTab, setActiveTab] = useState<'general' | 'procesos' | 'tiposLugar'>('general');
   const [procesos, setProcesos] = useState<{ id: number; nombre: string }[]>([]);
   const [procesosAsignados, setProcesosAsignados] = useState<number[]>([]);
-  const [lugares, setLugares] = useState<{ id: number; nombre: string, tipoId: number }[]>([]);
+  const [lugares, setLugares] = useState<{ id: number; nombre: string, tipoId: number, tipoNombre: string }[]>([]);
   const [tiposLugar, setTiposLugar] = useState<{ id: number; nombre: string }[]>([]);
   const [tiposLugarAsignados, setTiposLugarAsignados] = useState<number[]>([]);
   const [showTypeOfPlaceModal, setShowTypeOfPlaceModal] = useState(false);
@@ -73,11 +73,16 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
       ]);
 
       setProcesos(procesosData.map(p => ({ id: p.id!, nombre: p.nombre })));
-      setLugares(lugaresData.map(l => ({
-        id: l.id!,
-        nombre: l.nombre,
-        tipoId: 1 // TODO: Mapear tipo correcto cuando se implemente
-      })));
+      // Mapear lugares con su tipo correcto basado en location_types
+      setLugares(lugaresData.map(l => {
+        const tipoEncontrado = tiposLugarData.find(t => t.name === l.tipo);
+        return {
+          id: l.id!,
+          nombre: l.nombre,
+          tipoId: tipoEncontrado?.id || 0, // Usar ID real del tipo
+          tipoNombre: l.tipo // Mantener el nombre del tipo también
+        };
+      }));
       setTiposLugar(tiposLugarData.filter(t => t.id !== undefined).map(t => ({
         id: t.id!,
         nombre: t.name
