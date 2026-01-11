@@ -100,7 +100,6 @@ const Production: React.FC = () => {
   };
 
   // Function to start a ticket
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startTicket = async (ticket: ProduccionTicket) => {
     try {
       await storage.produccionTickets.update(ticket.id, {
@@ -116,7 +115,6 @@ const Production: React.FC = () => {
   };
 
   // Function to pause a ticket
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pauseTicket = async (ticket: ProduccionTicket) => {
     try {
       await storage.produccionTickets.update(ticket.id, {
@@ -131,7 +129,6 @@ const Production: React.FC = () => {
   };
 
   // Function to complete a ticket
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const completeTicket = async (ticket: ProduccionTicket) => {
     try {
       // Update inventory first
@@ -151,7 +148,6 @@ const Production: React.FC = () => {
   };
 
   // Function to cancel a ticket
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cancelTicket = async (ticket: ProduccionTicket) => {
     try {
       await storage.produccionTickets.update(ticket.id, {
@@ -166,13 +162,11 @@ const Production: React.FC = () => {
   };
 
   // Function to edit a ticket
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const editTicket = (ticket: ProduccionTicket) => {
     setEditingTicket(ticket);
   };
 
   // Function to delete a ticket
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const deleteTicket = (ticket: ProduccionTicket) => {
     setTicketToDelete(ticket);
     setShowDeleteModal(true);

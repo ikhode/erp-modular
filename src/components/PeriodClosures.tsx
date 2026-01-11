@@ -4,7 +4,8 @@ import {storage} from '../lib/storage';
 
 interface PeriodClosure {
   id?: number;
-  period: string; // YYYY-MM
+  period: string; // YYYY-MM-DD for daily, YYYY-MM for monthly, etc.
+  frequency: 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'yearly';
   startDate: string;
   endDate: string;
   status: 'open' | 'closed' | 'processing';
@@ -97,6 +98,7 @@ const PeriodClosures: React.FC = () => {
 
       return {
         period,
+        frequency: 'monthly',
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
         status: 'open',
@@ -111,6 +113,7 @@ const PeriodClosures: React.FC = () => {
       console.error('Error calculating period data:', error);
       return {
         period,
+        frequency: 'monthly',
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
         status: 'open',

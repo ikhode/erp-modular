@@ -8,7 +8,7 @@ interface LocationType {
   id?: number;
   name: string;
   description?: string;
-  productosPermitidos?: number[];
+  _productosPermitidos?: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -108,9 +108,9 @@ const LocationTypes: React.FC = () => {
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm">{type.description}</p>
-                {type.productosPermitidos && type.productosPermitidos.length > 0 && (
+                {type._productosPermitidos && type._productosPermitidos.length > 0 && (
                   <div className="mt-2 text-xs text-gray-500">
-                    Productos permitidos: {type.productosPermitidos.map((pid: number) => productos.find(p => p.id === pid)?.nombre).filter(Boolean).join(', ')}
+                    Productos permitidos: {type._productosPermitidos.map((pid: number) => productos.find(p => p.id === pid)?.nombre).filter(Boolean).join(', ')}
                   </div>
                 )}
               </div>

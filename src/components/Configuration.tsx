@@ -61,6 +61,14 @@ const defaultConfig = {
     frequency: 'monthly', // 'daily', 'weekly', 'biweekly', 'monthly', 'quarterly', 'yearly'
     autoClose: false,
     closeDay: 1, // Día del mes para cierre mensual, día de la semana para semanal, etc.
+    frequencies: [
+      { type: 'daily', enabled: true, closeDay: 1, closeTime: '23:59' },
+      { type: 'weekly', enabled: false, closeDay: 1, closeTime: '23:59' },
+      { type: 'biweekly', enabled: false, closeDay: 15, closeTime: '23:59' },
+      { type: 'monthly', enabled: true, closeDay: 1, closeTime: '23:59' },
+      { type: 'quarterly', enabled: false, closeDay: 1, closeTime: '23:59' },
+      { type: 'yearly', enabled: false, closeDay: 1, closeTime: '23:59' },
+    ],
   }
 };
 
@@ -858,62 +866,93 @@ const Configuration: React.FC = () => {
 
         {config.periodClosures.enabled && (
           <>
-            {/* Frecuencia */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Frecuencia de Cierre
-                </label>
-                <select
-                  value={config.periodClosures.frequency}
-                  onChange={(e) => setConfig({
-                    ...config,
-                    periodClosures: { ...config.periodClosures, frequency: e.target.value as 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'yearly' }
-                  })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="daily">Diario</option>
-                  <option value="weekly">Semanal</option>
-                  <option value="biweekly">Quincenal</option>
-                  <option value="monthly">Mensual</option>
-                  <option value="quarterly">Trimestral</option>
-                  <option value="yearly">Anual</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Día de Cierre
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max={config.periodClosures.frequency === 'monthly' ? 31 :
-                        config.periodClosures.frequency === 'weekly' ? 7 :
-                        config.periodClosures.frequency === 'biweekly' ? 15 : 365}
-                  value={config.periodClosures.closeDay}
-                  onChange={(e) => setConfig({
-                    ...config,
-                    periodClosures: { ...config.periodClosures, closeDay: Number(e.target.value) }
-                  })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  {config.periodClosures.frequency === 'monthly' && 'Día del mes (1-31)'}
-                  {config.periodClosures.frequency === 'weekly' && 'Día de la semana (1=Lunes, 7=Domingo)'}
-                  {config.periodClosures.frequency === 'biweekly' && 'Día del mes para quincena (1-15)'}
-                  {config.periodClosures.frequency === 'yearly' && 'Día del año (1-365)'}
-                  {config.periodClosures.frequency === 'quarterly' && 'Día del trimestre (1-90)'}
-                  {config.periodClosures.frequency === 'daily' && 'No aplica (cierre diario)'}
-                </p>
-              </div>
+            {/* Frecuencias */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium text-gray-900">Frecuencias de Cierre</h4>
+              {config.periodClosures.frequencies.map((freq, index) => (
+                <div key={freq.type} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={freq.enabled}
+                        onChange={(e) => {
+                          const newFrequencies = [...config.periodClosures.frequencies];
+                          newFrequencies[index] = { ...freq, enabled: e.target.checked };
+                          setConfig({
+                            ...config,
+                            periodClosures: { ...config.periodClosures, frequencies: newFrequencies }
+                          });
+                        }}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                    <div>
+                      <div className="font-medium text-gray-900 capitalize">{freq.type}</div>
+                      <div className="text-sm text-gray-600">
+                        {freq.type === 'daily' && 'Cierre diario'}
+                        {freq.type === 'weekly' && 'Cierre semanal'}
+                        {freq.type === 'biweekly' && 'Cierre quincenal'}
+                        {freq.type === 'monthly' && 'Cierre mensual'}
+                        {freq.type === 'quarterly' && 'Cierre trimestral'}
+                        {freq.type === 'yearly' && 'Cierre anual'}
+                      </div>
+                    </div>
+                  </div>
+                  {freq.enabled && (
+                    <div className="flex items-center space-x-2">
+                      {freq.type === 'daily' ? (
+                        <input
+                          type="time"
+                          value={freq.closeTime || '23:59'}
+                          onChange={(e) => {
+                            const newFrequencies = [...config.periodClosures.frequencies];
+                            newFrequencies[index] = { ...freq, closeTime: e.target.value };
+                            setConfig({
+                              ...config,
+                              periodClosures: { ...config.periodClosures, frequencies: newFrequencies }
+                            });
+                          }}
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <input
+                          type="number"
+                          min="1"
+                          max={freq.type === 'monthly' ? 31 : freq.type === 'weekly' ? 7 : freq.type === 'biweekly' ? 15 : freq.type === 'quarterly' ? 90 : 365}
+                          value={freq.closeDay}
+                          onChange={(e) => {
+                            const newCloseDay = Number(e.target.value);
+                            const newFrequencies = [...config.periodClosures.frequencies];
+                            newFrequencies[index] = { ...freq, closeDay: newCloseDay };
+                            setConfig({
+                              ...config,
+                              periodClosures: { ...config.periodClosures, frequencies: newFrequencies }
+                            });
+                          }}
+                          className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      )}
+                      <span className="text-sm text-gray-600">
+                        {freq.type === 'daily' && 'Hora'}
+                        {freq.type === 'weekly' && 'Día semana'}
+                        {freq.type === 'biweekly' && 'Día mes'}
+                        {freq.type === 'monthly' && 'Día mes'}
+                        {freq.type === 'quarterly' && 'Día trimestre'}
+                        {freq.type === 'yearly' && 'Día año'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
             {/* Cierre Automático */}
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div>
                 <h4 className="text-sm font-medium text-gray-900">Cierre Automático</h4>
-                <p className="text-sm text-gray-600">Realizar cierres automáticamente según la frecuencia configurada</p>
+                <p className="text-sm text-gray-600">Realizar cierres automáticamente según las frecuencias configuradas</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -929,13 +968,18 @@ const Configuration: React.FC = () => {
               </label>
             </div>
 
-            {/* Información del Próximo Cierre */}
+            {/* Información de Próximos Cierres */}
             <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-900 mb-2">Próximo Cierre Programado</h4>
-              <div className="text-sm text-gray-600">
-                <p>Frecuencia: <span className="font-medium capitalize">{config.periodClosures.frequency}</span></p>
-                <p>Día: <span className="font-medium">{config.periodClosures.closeDay}</span></p>
-                <p>Automático: <span className="font-medium">{config.periodClosures.autoClose ? 'Sí' : 'No'}</span></p>
+              <h4 className="text-sm font-medium text-gray-900 mb-2">Próximos Cierres Programados</h4>
+              <div className="space-y-2">
+                {config.periodClosures.frequencies.filter(f => f.enabled).map(freq => (
+                  <div key={freq.type} className="text-sm text-gray-600">
+                    <span className="font-medium capitalize">{freq.type}:</span> {freq.type === 'daily' ? `a las ${freq.closeTime}` : `día ${freq.closeDay}`}
+                  </div>
+                ))}
+                <div className="text-sm text-gray-600">
+                  <span className="font-medium">Automático:</span> {config.periodClosures.autoClose ? 'Sí' : 'No'}
+                </div>
               </div>
             </div>
           </>

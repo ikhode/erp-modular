@@ -74,7 +74,7 @@ const TableWidget = <T extends Record<string, unknown>>({
                     >
                       {column.render
                         ? column.render(row[column.key], row)
-                        : row[column.key]
+                        : (row[column.key] as React.ReactNode)
                       }
                     </td>
                   ))}

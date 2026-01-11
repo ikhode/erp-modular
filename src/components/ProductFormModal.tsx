@@ -59,7 +59,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
   const [procesos, setProcesos] = useState<{ id: number; nombre: string }[]>([]);
   const [procesosAsignados, setProcesosAsignados] = useState<number[]>([]);
   const [lugares, setLugares] = useState<{ id: number; nombre: string, tipoId: number, tipoNombre: string }[]>([]);
-  const [tiposLugar, setTiposLugar] = useState<{ id: number; nombre: string }[]>([]);
+  const [tiposLugar, setTiposLugar] = useState<{ id: number; name: string }[]>([]);
   const [tiposLugarAsignados, setTiposLugarAsignados] = useState<number[]>([]);
   const [showTypeOfPlaceModal, setShowTypeOfPlaceModal] = useState(false);
 
@@ -85,7 +85,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
       }));
       setTiposLugar(tiposLugarData.filter(t => t.id !== undefined).map(t => ({
         id: t.id!,
-        nombre: t.name
+        name: t.name
       })));
     } catch (error) {
       console.error('Error loading data:', error);
@@ -97,7 +97,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
     const tipos = await storage.locationTypes.getAll();
     const lugaresData = await storage.ubicaciones.getAll();
 
-    setTiposLugar(tipos.filter(t => t.id !== undefined).map(t => ({ id: t.id!, nombre: t.name })));
+    setTiposLugar(tipos.filter(t => t.id !== undefined).map(t => ({ id: t.id!, name: t.name })));
 
     // Recargar lugares con los tipos actualizados
     setLugares(lugaresData.map(l => {
@@ -511,7 +511,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
                         }
                       }}
                     />
-                    <span className="ml-2 text-sm">{tipo.nombre}</span>
+                    <span className="ml-2 text-sm">{tipo.name}</span>
                   </label>
                 ))}
                 <button
@@ -528,7 +528,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
                 <div className="font-semibold text-xs text-gray-700 mb-1">Lugares existentes por tipo asignado:</div>
                 {tiposLugar.filter(tipo => tiposLugarAsignados.includes(tipo.id)).map(tipo => (
                   <div key={tipo.id} className="mb-2">
-                    <div className="text-xs font-bold text-blue-700">{tipo.nombre}</div>
+                    <div className="text-xs font-bold text-blue-700">{tipo.name}</div>
                     <ul className="ml-4 list-disc text-xs text-gray-600">
                       {lugares.filter(l => l.tipoId === tipo.id).length === 0 && (
                         <li className="italic text-gray-400">Sin lugares registrados</li>

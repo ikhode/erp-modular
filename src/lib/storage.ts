@@ -18,7 +18,7 @@ import type {
     Venta,
 } from './db';
 import {db} from './db';
-import type Dexie from 'dexie';
+import Dexie, type {UpdateSpec} from 'dexie';
 
 // Generic storage interface
 interface StorageService<T> {
@@ -54,8 +54,7 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
     }
 
     async update(id: number, data: Partial<T>): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await this.table.update(id, data as any);
+        await this.table.update(id, data as UpdateSpec<T>);
     }
 
     async delete(id: number): Promise<void> {
@@ -73,6 +72,10 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
     // Método específico para ProduccionTicket
     async getAllByEmployeeId(employeeId: number): Promise<T[]> {
         return this.table.where('employeeId').equals(employeeId).toArray();
+    }
+
+    async where(condition: string): Promise<T[]> {
+        return this.table.where(condition).toArray();
     }
 }
 
