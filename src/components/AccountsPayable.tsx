@@ -1,6 +1,18 @@
 import {useEffect, useState} from 'react';
-import {supabase} from '../lib/supabase';
-import {AlertTriangle, CheckCircle, Clock, CreditCard, DollarSign, Plus, XCircle} from 'lucide-react';
+import {
+    AlertTriangle,
+    CheckCircle,
+    Clock,
+    CreditCard,
+    DollarSign,
+    Edit,
+    Eye,
+    Filter,
+    Plus,
+    Search,
+    Trash2,
+    XCircle
+} from 'lucide-react';
 import APForm from './APForm';
 
 interface AccountPayable {
@@ -38,6 +50,11 @@ export default function AccountsPayable() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [statement, setStatement] = useState<Statement | null>(null);
+  const [editingAccount, setEditingAccount] = useState<AccountPayable | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('todos');
+  const [showFilters, setShowFilters] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
     loadAccounts();
@@ -83,23 +100,78 @@ export default function AccountsPayable() {
     }
   };
 
-  const loadProviderStatement = async (providerId: string) => {
+  const handleRegisterPayment = async (accountId: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('ap/apply-payment', {
-        body: {
-          action: 'get_account_statement',
-          paymentData: { providerId }
-        }
-      });
+      setActionLoading(`payment-${accountId}`);
+      const account = accounts.find(a => a.id === accountId);
+      if (!account) return;
 
-      if (error) throw error;
+      const paymentAmount = prompt(`Monto a pagar para ${account.folio}:`, account.balance.toString());
+      if (!paymentAmount || isNaN(Number(paymentAmount))) return;
 
-      if (data.success) {
-        setStatement(data.statement);
+      const amount = Number(paymentAmount);
+      if (amount <= 0 || amount > account.balance) {
+        alert('Monto inválido');
+        return;
       }
+
+      // Mock payment registration
+      const newPaidAmount = account.paid_amount + amount;
+      const newBalance = account.amount - newPaidAmount;
+      const newStatus = newBalance === 0 ? 'pagado' : newBalance < account.amount ? 'parcial' : 'pendiente';
+
+      // Update account in mock data
+      setAccounts(prev => prev.map(acc =>
+        acc.id === accountId
+          ? { ...acc, paid_amount: newPaidAmount, balance: newBalance, status: newStatus as AccountPayable['status'] }
+          : acc
+      ));
+
+      alert(`Pago registrado exitosamente: ${formatCurrency(amount)}`);
     } catch (error) {
-      console.error('Error loading statement:', error);
+      console.error('Error registering payment:', error);
+      alert('Error al registrar el pago');
+    } finally {
+      setActionLoading(null);
     }
+  };
+
+  const handleEditAccount = (account: AccountPayable) => {
+    setEditingAccount(account);
+    setShowForm(true);
+  };
+
+  const handleDeleteAccount = async (accountId: string) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta cuenta por pagar?')) return;
+
+    try {
+      setActionLoading(`delete-${accountId}`);
+      // Mock deletion
+      setAccounts(prev => prev.filter(acc => acc.id !== accountId));
+      alert('Cuenta eliminada exitosamente');
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      alert('Error al eliminar la cuenta');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleViewStatement = (account: AccountPayable) => {
+    // Mock statement data
+    const mockStatement: Statement = {
+      provider_id: account.providers.rfc,
+      provider_name: account.providers.name,
+      provider_rfc: account.providers.rfc,
+      total_cuentas: 1,
+      total_credito: account.amount,
+      total_pagado: account.paid_amount,
+      saldo_pendiente: account.balance,
+      cuentas_vencidas: account.status === 'vencido' ? 1 : 0,
+      cuentas_pendientes: account.status === 'pendiente' ? 1 : 0,
+      proxima_fecha_vencimiento: account.due_date
+    };
+    setStatement(mockStatement);
   };
 
   const getStatusIcon = (status: string) => {
@@ -138,6 +210,14 @@ export default function AccountsPayable() {
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('es-MX');
   };
+
+  const filteredAccounts = accounts.filter(account => {
+    const matchesSearch = account.folio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         account.providers.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         account.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'todos' || account.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   if (loading) {
     return (
@@ -242,13 +322,61 @@ export default function AccountsPayable() {
       {/* Lista de Cuentas */}
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <div className="px-4 py-5 sm:p-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-            Cuentas por Pagar
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Cuentas por Pagar
+            </h3>
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              Filtros
+            </button>
+          </div>
+
+          {/* Filtros */}
+          {showFilters && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Buscar
+                  </label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Folio, proveedor, descripción..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Estado
+                  </label>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="todos">Todos los estados</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="parcial">Pago Parcial</option>
+                    <option value="pagado">Pagado</option>
+                    <option value="vencido">Vencido</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="space-y-4">
-            {accounts.map((account) => (
-              <div key={account.id} className="border border-gray-200 rounded-lg p-4">
+            {filteredAccounts.map((account) => (
+              <div key={account.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     {getStatusIcon(account.status)}
@@ -293,18 +421,65 @@ export default function AccountsPayable() {
                   </p>
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => loadProviderStatement(account.providers ? '' : account.id)}
-                      className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+                      onClick={() => handleViewStatement(account)}
+                      disabled={actionLoading === `statement-${account.id}`}
+                      className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      aria-label={`Ver estado de cuenta de ${account.providers.name}`}
                     >
+                      {actionLoading === `statement-${account.id}` ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2"></div>
+                      ) : (
+                        <Eye className="h-4 w-4 mr-2" />
+                      )}
                       Ver Estado
                     </button>
-                    <button className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded">
+                    <button
+                      onClick={() => handleRegisterPayment(account.id)}
+                      disabled={actionLoading === `payment-${account.id}` || account.balance === 0}
+                      className="inline-flex items-center px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      aria-label={`Registrar pago para ${account.folio}`}
+                    >
+                      {actionLoading === `payment-${account.id}` ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      ) : (
+                        <DollarSign className="h-4 w-4 mr-2" />
+                      )}
                       Registrar Pago
+                    </button>
+                    <button
+                      onClick={() => handleEditAccount(account)}
+                      disabled={actionLoading === `edit-${account.id}`}
+                      className="inline-flex items-center px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      aria-label={`Editar cuenta ${account.folio}`}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAccount(account.id)}
+                      disabled={actionLoading === `delete-${account.id}`}
+                      className="inline-flex items-center px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      aria-label={`Eliminar cuenta ${account.folio}`}
+                    >
+                      {actionLoading === `delete-${account.id}` ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
                     </button>
                   </div>
                 </div>
               </div>
             ))}
+
+            {filteredAccounts.length === 0 && accounts.length > 0 && (
+              <div className="text-center py-12">
+                <Search className="mx-auto h-12 w-12 text-gray-400" />
+                <h3 className="mt-2 text-sm font-medium text-gray-900">No se encontraron cuentas</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  Intenta ajustar los filtros de búsqueda.
+                </p>
+              </div>
+            )}
 
             {accounts.length === 0 && (
               <div className="text-center py-12">
@@ -321,11 +496,16 @@ export default function AccountsPayable() {
 
       {showForm && (
         <APForm
-          onClose={() => setShowForm(false)}
+          onClose={() => {
+            setShowForm(false);
+            setEditingAccount(null);
+          }}
           onSuccess={() => {
             loadAccounts();
             setShowForm(false);
+            setEditingAccount(null);
           }}
+          editingAccount={editingAccount}
         />
       )}
     </div>

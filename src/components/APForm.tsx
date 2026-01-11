@@ -8,12 +8,30 @@ interface Provider {
   rfc: string;
 }
 
+interface AccountPayable {
+  id: string;
+  folio: string;
+  amount: number;
+  paid_amount: number;
+  balance: number;
+  due_date: string;
+  status: 'pendiente' | 'parcial' | 'pagado' | 'vencido';
+  description: string;
+  terms: string;
+  created_at: string;
+  providers: {
+    name: string;
+    rfc: string;
+  };
+}
+
 interface APFormProps {
   onClose: () => void;
   onSuccess: () => void;
+  editingAccount?: AccountPayable | null;
 }
 
-export default function APForm({ onClose, onSuccess }: APFormProps) {
+export default function APForm({ onClose, onSuccess, editingAccount }: APFormProps) {
   const [providers, setProviders] = useState<Provider[]>([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,6 +45,24 @@ export default function APForm({ onClose, onSuccess }: APFormProps) {
   useEffect(() => {
     loadProviders();
   }, []);
+
+  useEffect(() => {
+    if (editingAccount) {
+      // Find the provider ID that matches the account's provider
+      const matchingProvider = providers.find(p =>
+        p.name === editingAccount.providers.name &&
+        p.rfc === editingAccount.providers.rfc
+      );
+
+      setFormData({
+        providerId: matchingProvider?.id || '',
+        amount: editingAccount.amount.toString(),
+        dueDate: editingAccount.due_date.split('T')[0],
+        description: editingAccount.description,
+        terms: editingAccount.terms
+      });
+    }
+  }, [editingAccount, providers]);
 
   const loadProviders = async () => {
     try {
@@ -49,8 +85,9 @@ export default function APForm({ onClose, onSuccess }: APFormProps) {
     try {
       const { data, error } = await supabase.functions.invoke('ap/apply-payment', {
         body: {
-          action: 'create_credit',
+          action: editingAccount ? 'update_credit' : 'create_credit',
           paymentData: {
+            id: editingAccount?.id,
             providerId: formData.providerId,
             amount: parseFloat(formData.amount),
             dueDate: formData.dueDate,
@@ -103,7 +140,9 @@ export default function APForm({ onClose, onSuccess }: APFormProps) {
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center space-x-2">
             <CreditCard className="h-6 w-6 text-blue-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Crear Cuenta por Pagar</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              {editingAccount ? 'Editar Cuenta por Pagar' : 'Crear Cuenta por Pagar'}
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -217,7 +256,7 @@ export default function APForm({ onClose, onSuccess }: APFormProps) {
               disabled={loading}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Creando...' : 'Crear Crédito'}
+              {loading ? 'Guardando...' : editingAccount ? 'Actualizar Crédito' : 'Crear Crédito'}
             </button>
           </div>
         </form>
