@@ -42,8 +42,8 @@ const Dashboard: React.FC = () => {
       const inventario = await storage.inventario.getAll();
       const totalStock = inventario.reduce((acc, i) => acc + i.cantidad, 0);
       // Eficiencia general (placeholder: % de procesos completados)
-      const produccion = await storage.produccion.getAll();
-      const completados = produccion.filter(p => p.estado === 'completado').length;
+      const produccion = await storage.produccionTickets.getAll();
+      const completados = produccion.filter((p: any) => p.estado === 'completado').length;
       const eficiencia = produccion.length > 0 ? Math.round((completados / produccion.length) * 100) : 0;
       setStats([
         { title: 'Empleados Activos', value: activos.toString(), icon: Users, color: 'bg-blue-500' },
@@ -55,11 +55,11 @@ const Dashboard: React.FC = () => {
     // Actividades recientes (últimos movimientos de ventas, producción, inventario)
     const fetchRecentActivities = async () => {
       const ventas = await storage.ventas.getAll();
-      const produccion = await storage.produccion.getAll();
+      const produccion = await storage.produccionTickets.getAll();
       const inventario = await storage.inventario.getAll();
       const actividades: RecentActivity[] = [];
       ventas.slice(-3).reverse().forEach(v => actividades.push({ type: 'sale', user: 'Sistema', action: `Venta procesada $${(v.cantidad * v.precioUnitario).toFixed(2)}`, time: new Date(v.createdAt).toLocaleTimeString() }));
-      produccion.slice(-3).reverse().forEach(p => actividades.push({ type: 'production', user: 'Sistema', action: `Producción: ${p.cantidadProducida} unidades`, time: new Date(p.createdAt).toLocaleTimeString() }));
+      produccion.slice(-3).reverse().forEach((p: any) => actividades.push({ type: 'production', user: 'Sistema', action: `Producción: ${p.cantidadProducida} unidades`, time: new Date(p.createdAt).toLocaleTimeString() }));
       inventario.slice(-3).reverse().forEach(i => actividades.push({ type: 'inventory', user: 'Sistema', action: `Stock actualizado`, time: new Date(i.updatedAt).toLocaleTimeString() }));
       actividades.sort((a, b) => b.time.localeCompare(a.time));
       setRecentActivities(actividades.slice(0, 6));
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
       const empleados = await storage.empleados.getAll();
       // Placeholder: empleados sin salida (no implementado, ejemplo)
       const empleadosPendientes = empleados.filter(e => e.rol && e.rol !== 'inactivo').length - 1;
-      const produccion = await storage.produccion.getAll();
+      const produccion = await storage.produccionTickets.getAll();
       const eficiencia = produccion.length > 0 ? Math.round((produccion.filter(p => p.estado === 'completado').length / produccion.length) * 100) : 0;
       const alertsArr: AlertItem[] = [];
       if (productosBajos > 0) alertsArr.push({ message: `Stock bajo en ${productosBajos} productos`, type: 'warning', level: 'warning' });

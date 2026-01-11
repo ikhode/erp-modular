@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "nombre": "Cafetería Central",
+    "rfc": "CCE200101GHI",
+    "email": "compras@cafeteriacentral.com.mx",
+    "telefono": "+52 55 3456 7890",
+    "direccion": "Paseo de la Reforma 123, Col. Juárez, CDMX",
+    "banco": "Santander",
+    "cuentaBancaria": "0765432109",
+    "clabe": "014345678901234567",
+    "activo": true,
+    "notas": "Cliente mayorista, cadena de cafeterías, paga a 15 días",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Distribuidora de Café Gourmet",
+    "rfc": "DCG200201JKL",
+    "email": "pedidos@cafegourmet.mx",
+    "telefono": "+52 33 4567 8901",
+    "direccion": "Av. Vallarta 567, Col. Lafayette, Guadalajara, Jalisco",
+    "banco": "Banamex",
+    "cuentaBancaria": "0654321098",
+    "clabe": "002345678901234567",
+    "activo": true,
+    "notas": "Distribuidor especializado en café premium",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

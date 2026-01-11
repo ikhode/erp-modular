@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "nombre": "Almacén Materias Primas",
+    "tipo": "Almacén",
+    "direccion": "Zona Industrial, Tuxtla Gutiérrez, Chiapas",
+    "capacidad": 5000,
+    "unidadCapacidad": "kg",
+    "activo": true,
+    "notas": "Almacenamiento de café verde y granos",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Área de Producción",
+    "tipo": "Producción",
+    "direccion": "Planta Industrial, Tuxtla Gutiérrez, Chiapas",
+    "capacidad": 2000,
+    "unidadCapacidad": "kg",
+    "activo": true,
+    "notas": "Tostado y molienda de café",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Almacén Productos Terminados",
+    "tipo": "Almacén",
+    "direccion": "Zona Industrial, Tuxtla Gutiérrez, Chiapas",
+    "capacidad": 3000,
+    "unidadCapacidad": "kg",
+    "activo": true,
+    "notas": "Café tostado y molido listo para distribución",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

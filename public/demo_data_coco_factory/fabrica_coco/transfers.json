@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "folio": "TRANS-00045",
+    "productoId": 3,
+    "cantidad": 30,
+    "ubicacionOrigenId": 7,
+    "ubicacionDestinoId": 5,
+    "status": "completado",
+    "solicitadoPor": 1,
+    "aprobadoPor": 1,
+    "transportadoPor": 4,
+    "fechaSolicitud": "2026-01-09T10:00:00.000Z",
+    "fechaAprobacion": "2026-01-09T10:15:00.000Z",
+    "fechaTransporte": "2026-01-09T11:00:00.000Z",
+    "fechaCompletado": "2026-01-09T11:30:00.000Z",
+    "motivoCancelacion": null,
+    "notas": "Transferencia de pulpa fresca al área de secado",
+    "createdAt": "2026-01-09T10:00:00.000Z",
+    "updatedAt": "2026-01-09T11:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "folio": "TRANS-00044",
+    "productoId": 4,
+    "cantidad": 25,
+    "ubicacionOrigenId": 6,
+    "ubicacionDestinoId": 8,
+    "status": "completado",
+    "solicitadoPor": 1,
+    "aprobadoPor": 1,
+    "transportadoPor": 8,
+    "fechaSolicitud": "2026-01-08T15:00:00.000Z",
+    "fechaAprobacion": "2026-01-08T15:15:00.000Z",
+    "fechaTransporte": "2026-01-08T16:00:00.000Z",
+    "fechaCompletado": "2026-01-08T16:30:00.000Z",
+    "motivoCancelacion": null,
+    "notas": "Preparación para entrega a cliente",
+    "createdAt": "2026-01-08T15:00:00.000Z",
+    "updatedAt": "2026-01-08T16:30:00.000Z"
+  }
+]

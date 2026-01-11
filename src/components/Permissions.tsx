@@ -1,5 +1,4 @@
-import {useEffect, useState} from 'react';
-import {supabase} from '../lib/supabase';
+import {useCallback, useEffect, useState} from 'react';
 import {Monitor, Smartphone, Users} from 'lucide-react';
 
 interface Permission {
@@ -53,15 +52,49 @@ export default function Permissions() {
 
   const loadPermissions = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('permissions/manage', {
-        body: { action: 'get_all_permissions' }
-      });
+      // Mock permissions data for local development
+      const mockPermissions = {
+        productos: [
+          { id: 'prod_read', name: 'Ver Productos', description: 'Permite ver la lista de productos', resource: 'productos', action: 'read' },
+          { id: 'prod_create', name: 'Crear Productos', description: 'Permite crear nuevos productos', resource: 'productos', action: 'create' },
+          { id: 'prod_update', name: 'Editar Productos', description: 'Permite editar productos existentes', resource: 'productos', action: 'update' },
+          { id: 'prod_delete', name: 'Eliminar Productos', description: 'Permite eliminar productos', resource: 'productos', action: 'delete' },
+        ],
+        ventas: [
+          { id: 'ventas_read', name: 'Ver Ventas', description: 'Permite ver las ventas realizadas', resource: 'ventas', action: 'read' },
+          { id: 'ventas_create', name: 'Crear Ventas', description: 'Permite registrar nuevas ventas', resource: 'ventas', action: 'create' },
+          { id: 'ventas_update', name: 'Editar Ventas', description: 'Permite modificar ventas existentes', resource: 'ventas', action: 'update' },
+        ],
+        compras: [
+          { id: 'compras_read', name: 'Ver Compras', description: 'Permite ver las compras realizadas', resource: 'compras', action: 'read' },
+          { id: 'compras_create', name: 'Crear Compras', description: 'Permite registrar nuevas compras', resource: 'compras', action: 'create' },
+          { id: 'compras_update', name: 'Editar Compras', description: 'Permite modificar compras existentes', resource: 'compras', action: 'update' },
+        ],
+        inventario: [
+          { id: 'inv_read', name: 'Ver Inventario', description: 'Permite ver el estado del inventario', resource: 'inventario', action: 'read' },
+          { id: 'inv_update', name: 'Actualizar Inventario', description: 'Permite modificar niveles de inventario', resource: 'inventario', action: 'update' },
+        ],
+        produccion: [
+          { id: 'prod_read', name: 'Ver Producción', description: 'Permite ver tickets de producción', resource: 'produccion', action: 'read' },
+          { id: 'prod_create', name: 'Crear Producción', description: 'Permite iniciar nuevos procesos de producción', resource: 'produccion', action: 'create' },
+          { id: 'prod_update', name: 'Editar Producción', description: 'Permite modificar tickets de producción', resource: 'produccion', action: 'update' },
+        ],
+        empleados: [
+          { id: 'emp_read', name: 'Ver Empleados', description: 'Permite ver la lista de empleados', resource: 'empleados', action: 'read' },
+          { id: 'emp_create', name: 'Crear Empleados', description: 'Permite registrar nuevos empleados', resource: 'empleados', action: 'create' },
+          { id: 'emp_update', name: 'Editar Empleados', description: 'Permite modificar datos de empleados', resource: 'empleados', action: 'update' },
+        ],
+        reportes: [
+          { id: 'rep_read', name: 'Ver Reportes', description: 'Permite acceder a reportes del sistema', resource: 'reportes', action: 'read' },
+          { id: 'rep_export', name: 'Exportar Reportes', description: 'Permite exportar reportes a archivos', resource: 'reportes', action: 'export' },
+        ],
+        configuracion: [
+          { id: 'config_read', name: 'Ver Configuración', description: 'Permite ver la configuración del sistema', resource: 'configuracion', action: 'read' },
+          { id: 'config_update', name: 'Editar Configuración', description: 'Permite modificar la configuración del sistema', resource: 'configuracion', action: 'update' },
+        ]
+      };
 
-      if (error) throw error;
-
-      if (data.success) {
-        setPermissions(data.permissions);
-      }
+      setPermissions(mockPermissions);
     } catch (error) {
       console.error('Error loading permissions:', error);
     }
@@ -69,54 +102,72 @@ export default function Permissions() {
 
   const loadRoles = async () => {
     try {
-      const { data, error } = await supabase
-        .from('roles')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      setRoles(data || []);
+      // Mock roles data for local development
+      const mockRoles = [
+        { id: 'admin', name: 'Administrador', description: 'Acceso completo al sistema' },
+        { id: 'manager', name: 'Gerente', description: 'Gestión de operaciones diarias' },
+        { id: 'supervisor', name: 'Supervisor', description: 'Supervisión de producción' },
+        { id: 'operator', name: 'Operador', description: 'Operaciones básicas de producción' },
+        { id: 'accountant', name: 'Contador', description: 'Gestión financiera y reportes' },
+        { id: 'warehouse', name: 'Almacén', description: 'Control de inventario y almacén' },
+      ];
+      setRoles(mockRoles);
     } catch (error) {
       console.error('Error loading roles:', error);
     }
   };
 
-  const loadRolePermissions = async () => {
+  const loadRolePermissions = useCallback(async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('permissions/manage', {
-        body: {
-          action: 'get_role_permissions',
-          permissionData: { roleId: selectedRole }
-        }
-      });
+      // Mock role permissions data for local development
+      const mockRolePermissions = [
+        { permission_id: 'prod_read', permissions: { id: 'prod_read', name: 'Ver Productos', description: 'Permite ver la lista de productos', resource: 'productos', action: 'read' } },
+        { permission_id: 'prod_create', permissions: { id: 'prod_create', name: 'Crear Productos', description: 'Permite crear nuevos productos', resource: 'productos', action: 'create' } },
+        { permission_id: 'ventas_read', permissions: { id: 'ventas_read', name: 'Ver Ventas', description: 'Permite ver las ventas realizadas', resource: 'ventas', action: 'read' } },
+        { permission_id: 'compras_read', permissions: { id: 'compras_read', name: 'Ver Compras', description: 'Permite ver las compras realizadas', resource: 'compras', action: 'read' } },
+        { permission_id: 'inv_read', permissions: { id: 'inv_read', name: 'Ver Inventario', description: 'Permite ver el estado del inventario', resource: 'inventario', action: 'read' } },
+        { permission_id: 'prod_read', permissions: { id: 'prod_read', name: 'Ver Producción', description: 'Permite ver tickets de producción', resource: 'produccion', action: 'read' } },
+        { permission_id: 'emp_read', permissions: { id: 'emp_read', name: 'Ver Empleados', description: 'Permite ver la lista de empleados', resource: 'empleados', action: 'read' } },
+        { permission_id: 'rep_read', permissions: { id: 'rep_read', name: 'Ver Reportes', description: 'Permite acceder a reportes del sistema', resource: 'reportes', action: 'read' } },
+        { permission_id: 'config_read', permissions: { id: 'config_read', name: 'Ver Configuración', description: 'Permite ver la configuración del sistema', resource: 'configuracion', action: 'read' } },
+      ];
 
-      if (error) throw error;
-
-      if (data.success) {
-        setRolePermissions(data.rolePermissions);
+      // Filter permissions based on role
+      let filteredPermissions = mockRolePermissions;
+      if (selectedRole === 'operator') {
+        filteredPermissions = mockRolePermissions.filter(p =>
+          ['prod_read', 'inv_read'].includes(p.permission_id)
+        );
+      } else if (selectedRole === 'warehouse') {
+        filteredPermissions = mockRolePermissions.filter(p =>
+          ['prod_read', 'inv_read', 'inv_update'].includes(p.permission_id)
+        );
+      } else if (selectedRole === 'supervisor') {
+        filteredPermissions = mockRolePermissions.filter(p =>
+          !['config_update'].includes(p.permission_id)
+        );
       }
+      // Admin and manager get all permissions
+
+      setRolePermissions(filteredPermissions);
     } catch (error) {
       console.error('Error loading role permissions:', error);
     }
-  };
+  }, [selectedRole]);
 
   const loadTerminalPermissions = async (terminalType: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('permissions/manage', {
-        body: {
-          action: 'get_terminal_permissions',
-          permissionData: { terminalType }
-        }
-      });
+      // Mock terminal permissions data for local development
+      const mockTerminalPermissions = Object.values(permissions).flat().map(permission => ({
+        permission_id: permission.id,
+        allowed: terminalType === 'escritorio' ? true : terminalType === 'kiosko' ? !['config_update', 'prod_delete'].includes(permission.id) : !['config_update', 'config_read'].includes(permission.id),
+        permissions: permission
+      }));
 
-      if (error) throw error;
-
-      if (data.success) {
-        setTerminalPermissions(prev => ({
-          ...prev,
-          [terminalType]: data.terminalPermissions
-        }));
-      }
+      setTerminalPermissions(prev => ({
+        ...prev,
+        [terminalType]: mockTerminalPermissions
+      }));
     } catch (error) {
       console.error('Error loading terminal permissions:', error);
     } finally {
@@ -124,62 +175,18 @@ export default function Permissions() {
     }
   };
 
-  const handleRolePermissionChange = async (permissionId: string, checked: boolean) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleRolePermissionChange = async (_permissionId: string, _checked: boolean) => {
     if (!selectedRole) return;
 
-    const currentPermissions = rolePermissions.map(rp => rp.permission_id);
-    let newPermissions: string[];
-
-    if (checked) {
-      newPermissions = [...currentPermissions, permissionId];
-    } else {
-      newPermissions = currentPermissions.filter(id => id !== permissionId);
-    }
-
-    try {
-      const { data, error } = await supabase.functions.invoke('permissions/manage', {
-        body: {
-          action: 'update_role_permissions',
-          permissionData: {
-            roleId: selectedRole,
-            permissionIds: newPermissions
-          }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
-        alert('Permisos actualizados exitosamente');
-        loadRolePermissions();
-      }
-    } catch (error: unknown) {
-      console.error('Error updating role permissions:', error);
-      alert('Error al actualizar permisos: ' + (error as Error).message);
-    }
+    // Mock update - just show success message
+    alert('Permisos actualizados exitosamente (modo local)');
+    loadRolePermissions();
   };
 
-  const handleTerminalPermissionChange = async (terminalType: string, permissionId: string, allowed: boolean) => {
-    try {
-      const { data, error } = await supabase.functions.invoke('permissions/manage', {
-        body: {
-          action: 'update_terminal_permissions',
-          permissionData: {
-            terminalType,
-            permissionUpdates: [{ permissionId, allowed }]
-          }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
-        loadTerminalPermissions(terminalType);
-      }
-    } catch (error: unknown) {
-      console.error('Error updating terminal permissions:', error);
-      alert('Error al actualizar permisos: ' + (error as Error).message);
-    }
+  const handleTerminalPermissionChange = async (terminalType: string, _permissionId: string, _allowed: boolean) => {
+    // Mock update - just reload permissions
+    loadTerminalPermissions(terminalType);
   };
 
   const isRolePermissionChecked = (permissionId: string) => {

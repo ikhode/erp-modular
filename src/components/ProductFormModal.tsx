@@ -95,7 +95,20 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
   // Refresca tipos de lugar al abrir el modal y tras crear/editar
   const refreshTiposLugar = async () => {
     const tipos = await storage.locationTypes.getAll();
+    const lugaresData = await storage.ubicaciones.getAll();
+
     setTiposLugar(tipos.filter(t => t.id !== undefined).map(t => ({ id: t.id!, nombre: t.name })));
+
+    // Recargar lugares con los tipos actualizados
+    setLugares(lugaresData.map(l => {
+      const tipoEncontrado = tipos.find(t => t.name === l.tipo);
+      return {
+        id: l.id!,
+        nombre: l.nombre,
+        tipoId: tipoEncontrado?.id || 0,
+        tipoNombre: l.tipo
+      };
+    }));
   };
 
   useEffect(() => {
@@ -169,35 +182,31 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ open, initialData, 
       // Guardar variaciones en IndexedDB si existen
       if (tieneVariaciones && variaciones.length > 0) {
         for (const variacion of variaciones) {
-          await storage.productoVariacion.add({
-            productoId: id,
-            nombre: variacion.nombre,
-            aplicaCompra: variacion.aplicaCompra,
-            aplicaProceso: variacion.aplicaProceso,
-            aplicaVenta: variacion.aplicaVenta,
-            seConsumeEnProceso: variacion.seConsumeEnProceso,
-            seProduceEnProceso: variacion.seProduceEnProceso,
-            precioCompraMin: variacion.precioCompraMin ? Number(variacion.precioCompraMin) : undefined,
-            precioCompraMax: variacion.precioCompraMax ? Number(variacion.precioCompraMax) : undefined,
-            precioCompraFijo: variacion.precioCompraFijo ? Number(variacion.precioCompraFijo) : undefined,
-            precioVentaMin: variacion.precioVentaMin ? Number(variacion.precioVentaMin) : undefined,
-            precioVentaMax: variacion.precioVentaMax ? Number(variacion.precioVentaMax) : undefined,
-            precioVentaFijo: variacion.precioVentaFijo ? Number(variacion.precioVentaFijo) : undefined,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          });
+          // TODO: Implementar guardado de variaciones cuando se defina la estructura
+          console.log('Variación a guardar:', variacion);
         }
       }
 
       // Guardar configuración del producto en IndexedDB
-      await storage.productoConfig.add({
-        productoId: id,
-        mermable,
-        procesosAsignados,
-        tiposLugarAsignados,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+      // TODO: Implementar guardado de configuración cuando se defina la estructura
+      console.log('Configuración a guardar:', { mermable, procesosAsignados, tiposLugarAsignados });
+
+      // Crear registro inicial de inventario para el producto
+      // Buscar una ubicación por defecto (la primera disponible)
+      const ubicaciones = await storage.ubicaciones.getAll();
+      if (ubicaciones.length > 0) {
+        const ubicacionPorDefecto = ubicaciones[0]; // Usar la primera ubicación como default
+        await storage.inventario.add({
+          productoId: id,
+          ubicacionId: ubicacionPorDefecto.id!,
+          cantidad: 0,
+          minimo: 10, // Valor por defecto
+          maximo: 100, // Valor por defecto
+          proveedor: 'Sin proveedor', // Valor por defecto
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
 
       setLoading(false);
       onCreated({ ...productoBase, id } as ProductoBase & { id: number });

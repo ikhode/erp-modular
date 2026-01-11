@@ -20,18 +20,16 @@ const Reports: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [ventasData, produccionData, empleadosData, inventarioData, productosData, asistenciaData] = await Promise.all([
+      const [ventasData, produccionData, empleadosData, productosData, asistenciaData] = await Promise.all([
         storage.ventas.getAll(),
-        storage.produccion.getAll(),
+        storage.produccionTickets.getAll(),
         storage.empleados.getAll(),
-        storage.inventario.getAll(),
         storage.productos.getAll(),
-        storage.asistencia.getAll()
+        storage.attendance.getAll()
       ]);
       setVentas(ventasData);
       setProduccion(produccionData);
       setEmpleados(empleadosData);
-      setInventario(inventarioData);
       setProductos(productosData);
       setAsistencia(asistenciaData);
     } catch (error) {
@@ -49,29 +47,29 @@ const Reports: React.FC = () => {
   ];
 
   const salesData = {
-    totalSales: ventas.reduce((total, venta) => total + venta.total, 0),
+    totalSales: ventas.reduce((total, venta) => total + (venta.totalAmount || (venta.cantidad * venta.precioUnitario)), 0),
     transactions: ventas.length,
-    avgTicket: ventas.reduce((total, venta) => total + venta.total, 0) / ventas.length || 0,
+    avgTicket: ventas.reduce((total, venta) => total + (venta.totalAmount || (venta.cantidad * venta.precioUnitario)), 0) / ventas.length || 0,
     topProducts: productos.map(producto => ({
       name: producto.nombre,
-      quantity: ventas.reduce((total, venta) => total + (venta.productos.find(p => p.id === producto.id)?.cantidad || 0), 0),
-      revenue: ventas.reduce((total, venta) => total + (venta.productos.find(p => p.id === producto.id)?.cantidad || 0) * producto.precio, 0)
+      quantity: ventas.filter(venta => venta.productoId === producto.id).reduce((total, venta) => total + venta.cantidad, 0),
+      revenue: ventas.filter(venta => venta.productoId === producto.id).reduce((total, venta) => total + (venta.totalAmount || (venta.cantidad * venta.precioUnitario)), 0)
     })).sort((a, b) => b.revenue - a.revenue).slice(0, 3),
     dailySales: Array.from({ length: 7 }, (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() - i);
       const dayString = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
       const amount = ventas.filter(venta => {
-        const ventaDate = new Date(venta.fecha);
+        const ventaDate = new Date(venta.createdAt);
         return ventaDate.getDate() === date.getDate() && ventaDate.getMonth() === date.getMonth() && ventaDate.getFullYear() === date.getFullYear();
-      }).reduce((total, venta) => total + venta.total, 0);
+      }).reduce((total, venta) => total + (venta.totalAmount || (venta.cantidad * venta.precioUnitario)), 0);
       return { date: dayString, amount };
     }).reverse()
   };
 
   const productionData = {
-    totalProduced: produccion.reduce((total, prod) => total + prod.cantidad, 0),
-    efficiency: produccion.reduce((total, prod) => total + prod.eficiencia, 0) / produccion.length || 0,
+    totalProduced: produccion.reduce((total, prod) => total + prod.cantidadProducida, 0),
+    efficiency: 85, // Valor por defecto ya que no hay campo eficiencia en ProduccionTicket
     downtime: '2.5h',
     topLines: [
       { name: 'Línea A - Rallado', produced: 650, efficiency: 92 },
@@ -82,14 +80,32 @@ const Reports: React.FC = () => {
 
   const employeeData = {
     totalEmployees: empleados.length,
-    presentToday: asistencia.filter(a => a.fecha === new Date().toISOString().split('T')[0]).length,
-    avgHours: asistencia.reduce((total, a) => total + a.horasTrabajadas, 0) / asistencia.length || 0,
-    overtime: asistencia.filter(a => a.horasExtra > 0).reduce((total, a) => total + a.horasExtra, 0),
+    presentToday: asistencia.filter(a => {
+      const today = new Date().toDateString();
+      return new Date(a.timestamp).toDateString() === today && a.action === 'entrada';
+    }).length,
+    avgHours: asistencia.reduce((total, a) => {
+      // Calcular horas aproximadas basado en entradas y salidas
+      if (a.action === 'salida') {
+        const entrada = asistencia.find(e => e.employeeId === a.employeeId && e.action === 'entrada' && new Date(e.timestamp).toDateString() === new Date(a.timestamp).toDateString());
+        if (entrada) {
+          return total + (new Date(a.timestamp).getTime() - new Date(entrada.timestamp).getTime()) / (1000 * 60 * 60);
+        }
+      }
+      return total;
+    }, 0) / asistencia.filter(a => a.action === 'salida').length || 0,
+    overtime: 0, // No hay campo horasExtra, usar 0 por defecto
     topPerformers: empleados.map(empleado => ({
       name: empleado.nombre,
-      hours: asistencia.filter(a => a.empleadoId === empleado.id).reduce((total, a) => total + a.horasTrabajadas, 0),
-      efficiency: produccion.filter(p => p.empleadoId === empleado.id).reduce((total, p) => total + p.eficiencia, 0) / produccion.filter(p => p.empleadoId === empleado.id).length || 0
-    })).sort((a, b) => b.efficiency - a.efficiency).slice(0, 3)
+      hours: asistencia.filter(a => a.employeeId === empleado.id && a.action === 'salida').reduce((total, a) => {
+        const entrada = asistencia.find(e => e.employeeId === a.employeeId && e.action === 'entrada' && new Date(e.timestamp).toDateString() === new Date(a.timestamp).toDateString());
+        if (entrada) {
+          return total + (new Date(a.timestamp).getTime() - new Date(entrada.timestamp).getTime()) / (1000 * 60 * 60);
+        }
+        return total;
+      }, 0),
+      efficiency: produccion.filter(p => p.employeeId === empleado.id).length > 0 ? 85 : 0 // Valor por defecto
+    })).sort((a, b) => b.hours - a.hours).slice(0, 3)
   };
 
   const renderSalesReport = () => (
@@ -127,7 +143,7 @@ const Reports: React.FC = () => {
             <Package className="h-8 w-8 text-orange-600 mr-3" />
             <div>
               <p className="text-sm text-gray-600">Productos Vendidos</p>
-              <p className="text-2xl font-bold">201</p>
+              <p className="text-2xl font-bold">{ventas.reduce((total, venta) => total + venta.cantidad, 0)}</p>
             </div>
           </div>
         </div>

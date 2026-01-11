@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "prefix": "COMP",
+    "description": "Compras",
+    "currentNumber": 125,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "prefix": "VENT",
+    "description": "Ventas",
+    "currentNumber": 89,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "prefix": "PROD",
+    "description": "Producción",
+    "currentNumber": 234,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "prefix": "TRANS",
+    "description": "Transferencias",
+    "currentNumber": 45,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  }
+]
+

@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {folioGenerator, storage} from '../lib/storage';
 import {ProduccionTicket} from '../lib/db';
 import PrintButton from './PrintButton';
+import {TicketData} from '../lib/printService';
 
 interface ProcessItem {
   productId?: string; // opcional si es por tipo
@@ -172,9 +173,9 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
     // Crear ticket de producción con firma y folio
     const ticket: Omit<ProduccionTicket, 'id'> = {
       folio,
-      procesoId: Number(proceso.id),
-      empleadoId: 1, // TODO: obtener del contexto de usuario
-      insumos: insumos.map(i => ({ productoId: Number(i.productId), cantidad: i.cantidad })),
+      processId: Number(proceso.id),
+      employeeId: 1, // TODO: obtener del contexto de usuario
+      insumos: insumos.map(i => ({ productId: Number(i.productId), cantidad: i.cantidad, ubicacionId: i.ubicacionId || 1 })),
       productoTerminadoId: Number(productosGenerados[0]?.productId),
       cantidadProducida: productosGenerados[0]?.cantidad || 0,
       ubicacionDestinoId: productosGenerados[0]?.ubicacionDestinoId || 0,
@@ -185,7 +186,7 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
     };
 
     // Guardar ticket
-    await storage.produccion.add(ticket);
+    await storage.produccionTickets.add(ticket);
 
     // Actualizar inventario: restar insumos
     for (const insumo of insumos) {
@@ -208,6 +209,9 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
           productoId: Number(producto.productId),
           ubicacionId: producto.ubicacionDestinoId,
           cantidad: producto.cantidad,
+          minimo: 0, // Default minimum
+          maximo: 1000, // Default maximum
+          proveedor: 'Producción interna',
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -218,25 +222,24 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
   };
 
   // Nueva función para generar datos del ticket de producción
-  const generateProductionTicketData = () => {
+  const generateProductionTicketData = (): TicketData => {
     return {
+      type: 'production',
       folio: '', // Se genera automáticamente
-      procesoId: proceso.id,
-      empleadoId: 1, // TODO: obtener del contexto de usuario
-      insumos: insumos.map(i => ({
-        productoId: Number(i.productId),
-        cantidad: i.cantidad,
-        ubicacionId: i.ubicacionId,
-      })),
-      productosGenerados: productosGenerados.map(p => ({
-        productoId: Number(p.productId),
-        cantidad: p.cantidad,
-        ubicacionDestinoId: p.ubicacionDestinoId,
-      })),
-      firmaEmpleadoBase64: signatureData,
-      estado: 'completado',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      date: new Date().toISOString(),
+      items: [
+        ...insumos.map(i => ({
+          description: `Insumo: ${productos.find(p => p.id === Number(i.productId))?.nombre || 'Producto desconocido'}`,
+          quantity: i.cantidad,
+          unit: i.unidad,
+        })),
+        ...productosGenerados.map(p => ({
+          description: `Producto: ${productos.find(prod => prod.id === Number(p.productId))?.nombre || 'Producto desconocido'}`,
+          quantity: p.cantidad,
+          unit: p.unidad,
+        }))
+      ],
+      total: 0, // Los tickets de producción no tienen total monetario
     };
   };
 

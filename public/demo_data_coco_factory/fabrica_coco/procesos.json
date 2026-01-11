@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "nombre": "Destopado de Coco",
+    "descripcion": "Proceso de quitar la estopa externa del coco",
+    "ubicacionId": 3,
+    "requiereFaceAuth": true,
+    "tipo": "Destopado",
+    "inputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "1",
+        "productName": "Coco Bueno",
+        "unit": "pieza",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 1
+      },
+      {
+        "modoProducto": "producto",
+        "productId": "2",
+        "productName": "Coco Desecho",
+        "unit": "pieza",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 1
+      }
+    ],
+    "outputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "7",
+        "productName": "Estopa de Coco",
+        "unit": "kg",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 7
+      },
+      {
+        "modoProducto": "producto",
+        "productId": "8",
+        "productName": "Coco sin Estopa",
+        "unit": "pieza",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 7
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Deshuesado de Coco",
+    "descripcion": "Extracción de pulpa del coco destopado",
+    "ubicacionId": 4,
+    "requiereFaceAuth": true,
+    "tipo": "Deshuesado",
+    "inputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "8",
+        "productName": "Coco sin Estopa",
+        "unit": "pieza",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 7
+      }
+    ],
+    "outputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "3",
+        "productName": "Pulpa de Coco Fresca",
+        "unit": "kg",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 7
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Secado de Pulpa",
+    "descripcion": "Proceso de deshidratación de la pulpa de coco",
+    "ubicacionId": 5,
+    "requiereFaceAuth": false,
+    "tipo": "Secado",
+    "inputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "3",
+        "productName": "Pulpa de Coco Fresca",
+        "unit": "kg",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 7
+      }
+    ],
+    "outputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "4",
+        "productName": "Pulpa de Coco Seca",
+        "unit": "kg",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 6
+      },
+      {
+        "modoProducto": "producto",
+        "productId": "5",
+        "productName": "Copra",
+        "unit": "kg",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 6
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "nombre": "Extracción de Aceite",
+    "descripcion": "Prensado en frío para extracción de aceite de copra",
+    "ubicacionId": 5,
+    "requiereFaceAuth": false,
+    "tipo": "Extracción Copra",
+    "inputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "5",
+        "productName": "Copra",
+        "unit": "kg",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 6
+      }
+    ],
+    "outputs": [
+      {
+        "modoProducto": "producto",
+        "productId": "6",
+        "productName": "Aceite de Coco Virgen",
+        "unit": "litro",
+        "modoUbicacion": "especifica",
+        "ubicacionId": 6
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]

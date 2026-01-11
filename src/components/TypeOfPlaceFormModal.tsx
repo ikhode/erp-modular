@@ -179,10 +179,22 @@ const TypeOfPlaceFormModal: React.FC<TypeOfPlaceFormModalProps> = ({ open, initi
     };
     if (initialData?.id) {
       await storage.locationTypes.update(initialData.id, payloadFixed);
-      await storage.syncQueue.add('update', 'location_types', { id: initialData.id, ...payloadFixed });
+      await storage.syncQueue.add({
+        operation: 'update',
+        table: 'locationTypes',
+        data: { id: initialData.id, ...payloadFixed },
+        createdAt: new Date(),
+        synced: false
+      });
     } else {
       await storage.locationTypes.add(payloadFixed);
-      await storage.syncQueue.add('create', 'location_types', { ...payloadFixed });
+      await storage.syncQueue.add({
+        operation: 'create',
+        table: 'locationTypes',
+        data: { ...payloadFixed },
+        createdAt: new Date(),
+        synced: false
+      });
     }
     setLoading(false);
     onSaved();

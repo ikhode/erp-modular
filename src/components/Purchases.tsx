@@ -72,23 +72,33 @@ const Purchases: React.FC = () => {
   }, []);
 
   // Funciones para firma digital
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     setIsDrawing(true);
     ctx.beginPath();
-    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    // Handle both mouse and touch events
+    const clientX = 'touches' in e ? e.touches[0].clientX - canvas.getBoundingClientRect().left : e.nativeEvent.offsetX;
+    const clientY = 'touches' in e ? e.touches[0].clientY - canvas.getBoundingClientRect().top : e.nativeEvent.offsetY;
+
+    ctx.moveTo(clientX, clientY);
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    // Handle both mouse and touch events
+    const clientX = 'touches' in e ? e.touches[0].clientX - canvas.getBoundingClientRect().left : e.nativeEvent.offsetX;
+    const clientY = 'touches' in e ? e.touches[0].clientY - canvas.getBoundingClientRect().top : e.nativeEvent.offsetY;
+
+    ctx.lineTo(clientX, clientY);
     ctx.stroke();
   };
 
@@ -161,6 +171,9 @@ const Purchases: React.FC = () => {
             productoId: form.productoId,
             ubicacionId: 1, // TODO: ubicación configurable
             cantidad: form.cantidad,
+            minimo: 10, // Valor por defecto
+            maximo: 100, // Valor por defecto
+            proveedor: proveedores.find(p => p.id === form.proveedorId)?.nombre || 'Proveedor no especificado',
             createdAt: now,
             updatedAt: now,
           });

@@ -45,17 +45,37 @@ export default function AccountsPayable() {
 
   const loadAccounts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('accounts_payable')
-        .select(`
-          id, folio, amount, paid_amount, balance, due_date, status,
-          description, terms, created_at,
-          providers(name, rfc)
-        `)
-        .order('created_at', { ascending: false });
+      // Mock accounts payable data for local development
+      const mockAccounts: AccountPayable[] = [
+        {
+          id: '1',
+          folio: 'CXP-001',
+          amount: 12000,
+          paid_amount: 4000,
+          balance: 8000,
+          due_date: '2026-02-10',
+          status: 'pendiente',
+          description: 'Compra de materia prima a proveedor',
+          terms: '30 días',
+          created_at: '2026-01-10',
+          providers: { name: 'Proveedor de Coco S.A.', rfc: 'PCS123456789' }
+        },
+        {
+          id: '2',
+          folio: 'CXP-002',
+          amount: 6500,
+          paid_amount: 6500,
+          balance: 0,
+          due_date: '2026-01-25',
+          status: 'pagado',
+          description: 'Pago de servicios de transporte',
+          terms: '15 días',
+          created_at: '2026-01-05',
+          providers: { name: 'Transportes del Sur', rfc: 'TDS987654321' }
+        }
+      ];
 
-      if (error) throw error;
-      setAccounts(data || []);
+      setAccounts(mockAccounts);
     } catch (error) {
       console.error('Error loading accounts:', error);
     } finally {

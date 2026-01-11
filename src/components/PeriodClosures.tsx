@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {AlertTriangle, Calendar, CheckCircle, FileText, Lock, Unlock} from 'lucide-react';
 import {storage} from '../lib/storage';
 
@@ -25,11 +25,7 @@ const PeriodClosures: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodClosure | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  useEffect(() => {
-    loadPeriodClosures();
-  }, []);
-
-  const loadPeriodClosures = async () => {
+  const loadPeriodClosures = useCallback(async () => {
     try {
       // For now, we'll simulate period closures data
       // In a real implementation, this would come from a dedicated storage
@@ -55,7 +51,11 @@ const PeriodClosures: React.FC = () => {
     } catch (error) {
       console.error('Error loading period closures:', error);
     }
-  };
+  }, [periodClosures]);
+
+  useEffect(() => {
+    loadPeriodClosures();
+  }, [loadPeriodClosures]);
 
   const calculatePeriodData = async (period: string): Promise<PeriodClosure> => {
     const [year, month] = period.split('-').map(Number);
@@ -78,7 +78,7 @@ const PeriodClosures: React.FC = () => {
       });
 
       // Get production for the period
-      const production = await storage.produccion.getAll();
+      const production = await storage.produccionTickets.getAll();
       const periodProduction = production.filter(prod => {
         const prodDate = new Date(prod.createdAt!);
         return prodDate >= startDate && prodDate <= endDate && prod.estado === 'completado';
@@ -322,7 +322,7 @@ NOTAS: ${periodClosure.notes || 'Sin notas adicionales'}
                         </button>
                       )}
                       {period.status === 'closed' && (
-                        <CheckCircle className="h-4 w-4 text-green-500" title="Período cerrado" />
+                        <CheckCircle className="h-4 w-4 text-green-500" />
                       )}
                     </div>
                   </td>

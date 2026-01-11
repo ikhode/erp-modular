@@ -125,10 +125,22 @@ const Products: React.FC = () => {
     }
     if (editingProduct) {
       await storage.productos.update(editingProduct.id!, productoBase);
-      await storage.syncQueue.add('update', 'productos', { id: editingProduct.id, ...productoBase });
+      await storage.syncQueue.add({
+        operation: 'update',
+        table: 'productos',
+        data: { id: editingProduct.id, ...productoBase },
+        createdAt: new Date(),
+        synced: false
+      });
     } else {
       await storage.productos.add(productoBase);
-      await storage.syncQueue.add('create', 'productos', { ...productoBase });
+      await storage.syncQueue.add({
+        operation: 'create',
+        table: 'productos',
+        data: { ...productoBase },
+        createdAt: new Date(),
+        synced: false
+      });
     }
     // Guardar flags extendidos en localStorage para persistencia temporal hasta migración
     const extendedKey = `producto_flags_${formData.nombre}`;
@@ -197,7 +209,13 @@ const Products: React.FC = () => {
     if (confirm('¿Está seguro de eliminar este producto?')) {
       setLoading(true);
       await storage.productos.delete(id);
-      await storage.syncQueue.add('delete', 'productos', { id });
+      await storage.syncQueue.add({
+        operation: 'delete',
+        table: 'productos',
+        data: { id },
+        createdAt: new Date(),
+        synced: false
+      });
       await fetchProducts();
       setLoading(false);
     }

@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "nombre": "Finca El Roble",
+    "rfc": "FER200101ABC",
+    "email": "ventas@fincaelroble.com.mx",
+    "telefono": "+52 961 123 4567",
+    "direccion": "Carretera Tuxtla Gutiérrez-San Cristóbal, Km 45, Chiapas",
+    "banco": "Banorte",
+    "cuentaBancaria": "0987654321",
+    "clabe": "072345678901234567",
+    "activo": true,
+    "notas": "Proveedor de café verde premium, entrega semanal",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Cooperativa Cafetalera del Soconusco",
+    "rfc": "CCS200201DEF",
+    "email": "exportaciones@cooperativasoconusco.org.mx",
+    "telefono": "+52 962 234 5678",
+    "direccion": "Av. Central s/n, Tapachula, Chiapas",
+    "banco": "BBVA",
+    "cuentaBancaria": "0876543210",
+    "clabe": "012345678909876543",
+    "activo": true,
+    "notas": "Cooperativa certificada orgánica, café de altura",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

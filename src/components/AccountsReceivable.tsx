@@ -45,17 +45,37 @@ export default function AccountsReceivable() {
 
   const loadAccounts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('accounts_receivable')
-        .select(`
-          id, folio, amount, paid_amount, balance, due_date, status,
-          description, terms, created_at,
-          clients(name, rfc)
-        `)
-        .order('created_at', { ascending: false });
+      // Mock accounts receivable data for local development
+      const mockAccounts: AccountReceivable[] = [
+        {
+          id: '1',
+          folio: 'CXC-001',
+          amount: 15000,
+          paid_amount: 5000,
+          balance: 10000,
+          due_date: '2026-02-15',
+          status: 'pendiente',
+          description: 'Venta de productos a cliente mayorista',
+          terms: '30 días',
+          created_at: '2026-01-15',
+          clients: { name: 'Cliente Mayorista S.A.', rfc: 'CMA123456789' }
+        },
+        {
+          id: '2',
+          folio: 'CXC-002',
+          amount: 8500,
+          paid_amount: 8500,
+          balance: 0,
+          due_date: '2026-01-30',
+          status: 'pagado',
+          description: 'Venta de copra procesada',
+          terms: '15 días',
+          created_at: '2026-01-10',
+          clients: { name: 'Distribuidora del Sur', rfc: 'DDS987654321' }
+        }
+      ];
 
-      if (error) throw error;
-      setAccounts(data || []);
+      setAccounts(mockAccounts);
     } catch (error) {
       console.error('Error loading accounts:', error);
     } finally {

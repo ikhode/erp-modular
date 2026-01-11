@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Café Verde Premium",
+    "descripcion": "Café verde de alta calidad, origen Chiapas",
+    "categoria": "Materia Prima",
+    "precioCompra": 45.50,
+    "precioVenta": 65.00,
+    "unidad": "kg",
+    "stockMinimo": 100,
+    "stockMaximo": 2000,
+    "ubicacionPredeterminada": 1,
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Café Tostado Oscuro",
+    "descripcion": "Café tostado oscuro, listo para empaque",
+    "categoria": "Producto Terminado",
+    "precioCompra": 0,
+    "precioVenta": 120.00,
+    "unidad": "kg",
+    "stockMinimo": 50,
+    "stockMaximo": 500,
+    "ubicacionPredeterminada": 2,
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Café Molido Gourmet",
+    "descripcion": "Café molido premium para cafeterías",
+    "categoria": "Producto Terminado",
+    "precioCompra": 0,
+    "precioVenta": 95.00,
+    "unidad": "kg",
+    "stockMinimo": 30,
+    "stockMaximo": 300,
+    "ubicacionPredeterminada": 2,
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

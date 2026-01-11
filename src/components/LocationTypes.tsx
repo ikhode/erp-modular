@@ -44,7 +44,13 @@ const LocationTypes: React.FC = () => {
     if (confirm('¿Está seguro de eliminar este tipo de lugar?')) {
       setLoading(true);
       await storage.locationTypes.delete(id);
-      await storage.syncQueue.add('delete', 'locationTypes', { id });
+      await storage.syncQueue.add({
+        operation: 'delete',
+        table: 'locationTypes',
+        data: { id },
+        createdAt: new Date(),
+        synced: false
+      });
       await fetchLocationTypes();
       setLoading(false);
     }

@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "name": "Patio",
+    "description": "Áreas exteriores para almacenamiento de materia prima",
+    "productosPermitidos": [1, 2],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Almacén",
+    "description": "Áreas interiores para almacenamiento de productos terminados",
+    "productosPermitidos": [3, 4, 5, 6, 7],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Producción",
+    "description": "Áreas de procesamiento y producción",
+    "productosPermitidos": [1, 2, 3, 4],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "name": "Transporte",
+    "description": "Áreas de carga y descarga para transporte",
+    "productosPermitidos": [1, 2, 3, 4, 5, 6, 7],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

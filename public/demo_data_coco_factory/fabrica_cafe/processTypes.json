@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1,
+    "name": "Destopado",
+    "description": "Proceso de quitar la estopa del coco",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Deshuesado",
+    "description": "Proceso de extraer la pulpa del coco",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Secado",
+    "description": "Proceso de secado de la pulpa",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "name": "Extracción Copra",
+    "description": "Proceso de extracción de aceite de copra",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

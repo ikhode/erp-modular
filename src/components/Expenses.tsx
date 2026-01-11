@@ -18,7 +18,13 @@ const Expenses: React.FC = () => {
   const loadCashFlows = async () => {
     try {
       const data = await cashFlowStorage.getAll();
-      setCashFlows(data);
+      setCashFlows(
+        data.map(cf => ({
+          ...cf,
+          createdAt: new Date(cf.createdAt),
+          updatedAt: new Date(cf.updatedAt)
+        }))
+      );
     } catch (error) {
       console.error('Error loading cash flows:', error);
     }
@@ -29,7 +35,7 @@ const Expenses: React.FC = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (confirm('¿Está seguro de eliminar este registro?')) {
       try {
         await cashFlowStorage.delete(id);
@@ -247,7 +253,7 @@ const Expenses: React.FC = () => {
                       {cashFlow.paymentMethod || 'No especificado'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {formatDate(cashFlow.createdAt)}
+                      {formatDate(new Date(cashFlow.createdAt))}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
@@ -258,7 +264,7 @@ const Expenses: React.FC = () => {
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => cashFlow.id && handleDelete(cashFlow.id.toString())}
+                          onClick={() => cashFlow.id && handleDelete(cashFlow.id)}
                           className="text-red-600 hover:text-red-900"
                         >
                           <Trash2 className="h-4 w-4" />

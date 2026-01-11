@@ -29,7 +29,14 @@ const TimeTracker: React.FC = () => {
         attendanceStorage.getAll(),
         empleadoStorage.getAll()
       ]);
-      setAttendances(attendancesData);
+      setAttendances(
+        attendancesData.map(a => ({
+          ...a,
+          timestamp: new Date(a.timestamp),
+          createdAt: new Date(a.createdAt),
+          updatedAt: new Date(a.updatedAt)
+        }))
+      );
       setEmpleados(empleadosData);
     } catch (error) {
       console.error('Error loading data:', error);
@@ -42,7 +49,11 @@ const TimeTracker: React.FC = () => {
     const empleado = getEmpleado(attendance.employeeId);
     return empleado?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
            attendance.action.toLowerCase().includes(searchTerm.toLowerCase());
-  }).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  }).sort((a, b) => {
+    const aTime = a.timestamp instanceof Date ? a.timestamp.getTime() : new Date(a.timestamp).getTime();
+    const bTime = b.timestamp instanceof Date ? b.timestamp.getTime() : new Date(b.timestamp).getTime();
+    return bTime - aTime;
+  });
 
   const getActiveEmployees = () => {
     const today = new Date().toDateString();
@@ -282,3 +293,4 @@ const TimeTracker: React.FC = () => {
 };
 
 export default TimeTracker;
+

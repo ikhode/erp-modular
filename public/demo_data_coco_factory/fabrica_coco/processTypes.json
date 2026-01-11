@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Destopado",
+    "description": "Quitar estopa al coco",
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Deshuesado",
+    "description": "Extraer pulpa del coco",
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  }
+]
+

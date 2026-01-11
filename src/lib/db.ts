@@ -65,6 +65,9 @@ export interface Empleado {
   rol: string; // Reference to user_roles.name
   email?: string;
   telefono?: string;
+  alias?: string; // Alias interno para identificación rápida
+  faceImageBase64?: string; // Imagen facial en base64 para autenticación
+  faceId?: string; // ID único de la cara para reconocimiento facial
   createdAt: Date;
   updatedAt: Date;
 }
@@ -109,6 +112,9 @@ export interface Inventario {
   productoId: number;
   ubicacionId: number;
   cantidad: number;
+  minimo: number;
+  maximo: number;
+  proveedor: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -118,21 +124,22 @@ export interface ProduccionTicket {
   folio?: string; // Nuevo campo para folio automático
   processId: number;
   employeeId: number;
-  insumos: { productoId: number; cantidad: number; locationId: number }[]; // Actualizado para incluir ubicación
+  insumos: { productId: number; ubicacionId: number; cantidad: number }[]; // Corregido para consistencia
   productoTerminadoId: number;
   cantidadProducida: number;
   ubicacionDestinoId: number;
   firmaEmpleadoBase64?: string;
   faceAuthData?: Record<string, unknown>; // Datos biométricos
   estado: 'pendiente' | 'en_proceso' | 'completado' | 'cancelado';
-  // Campos de pago
+  // Campos de pago mejorados
   paymentAmount?: number;
   paymentMethod?: 'efectivo' | 'transferencia' | 'cheque';
+  paidBy?: number; // ID del supervisor que pagó
   // Timestamps
   startedAt?: Date;
   completedAt?: Date;
   paidAt?: Date;
-  // Campos adicionales
+  // Campos adicionales para trazabilidad
   notes?: string;
   supervisorNotes?: string;
   qualityCheck?: boolean;
@@ -243,36 +250,6 @@ export interface CashFlow {
   updatedAt: Date;
 }
 
-// Nuevas interfaces para variaciones y configuraciones de productos
-export interface ProductoVariacion {
-  id?: number;
-  productoId: number;
-  nombre: string;
-  aplicaCompra: boolean;
-  aplicaProceso: boolean;
-  aplicaVenta: boolean;
-  seConsumeEnProceso: boolean;
-  seProduceEnProceso: boolean;
-  precioCompraMin?: number;
-  precioCompraMax?: number;
-  precioCompraFijo?: number;
-  precioVentaMin?: number;
-  precioVentaMax?: number;
-  precioVentaFijo?: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface ProductoConfig {
-  id?: number;
-  productoId: number;
-  mermable: boolean;
-  procesosAsignados: number[];
-  tiposLugarAsignados: number[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 // Interfaces para las tablas de configuración
 export interface UserRole {
   id?: number;
@@ -287,14 +264,6 @@ export interface LocationType {
   name: string;
   description?: string;
   productosPermitidos?: number[]; // IDs de productos permitidos
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface ProcessType {
-  id?: number;
-  name: string;
-  description?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -326,22 +295,19 @@ export class ERPDB extends Dexie {
   syncQueue!: Table<SyncQueue>;
   userRoles!: Table<UserRole>;
   locationTypes!: Table<LocationType>;
-  processTypes!: Table<ProcessType>;
   folioSequences!: Table<FolioSequence>;
-  productoVariaciones!: Table<ProductoVariacion>;
-  productoConfigs!: Table<ProductoConfig>;
 
   constructor() {
     super('erp_modular');
-    this.version(7).stores({
+    this.version(8).stores({
       clientes: '++id, nombre, rfc, email, createdAt',
       proveedores: '++id, nombre, rfc, email, createdAt',
       productos: '++id, nombre, precioActual, createdAt',
-      empleados: '++id, nombre, rol, email, createdAt',
+      empleados: '++id, nombre, alias, rol, email, createdAt',
       ubicaciones: '++id, nombre, tipo, createdAt',
       procesos: '++id, nombre, ubicacionId, requiereFaceAuth, createdAt',
-      inventario: '++id, productoId, ubicacionId, cantidad, createdAt',
-      produccionTickets: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, estado, createdAt',
+      inventario: '++id, productoId, ubicacionId, cantidad, minimo, maximo, proveedor, createdAt',
+      produccionTickets: '++id, folio, processId, employeeId, productoTerminadoId, ubicacionDestinoId, estado, createdAt',
       compras: '++id, folio, proveedorId, productoId, tipo, estado, createdAt',
       ventas: '++id, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
       transfers: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, status, fechaSolicitud, createdAt',
@@ -350,10 +316,7 @@ export class ERPDB extends Dexie {
       syncQueue: '++id, operation, table, synced, createdAt',
       userRoles: '++id, name, createdAt',
       locationTypes: '++id, name, createdAt',
-      processTypes: '++id, name, createdAt',
       folioSequences: '++id, prefix, currentNumber, createdAt',
-      productoVariaciones: '++id, productoId, nombre, createdAt',
-      productoConfigs: '++id, productoId, mermable, createdAt',
     });
   }
 }

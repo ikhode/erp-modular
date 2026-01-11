@@ -8,10 +8,15 @@ interface TransferFormProps {
   onSuccess: () => void;
 }
 
+interface InventoryWithLocation extends Inventario {
+  ubicacionNombre: string;
+  ubicacionTipo: string;
+}
+
 export default function TransferForm({ onClose, onSuccess }: TransferFormProps) {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
-  const [inventario, setInventario] = useState<Inventario[]>([]);
+  const [inventario, setInventario] = useState<InventoryWithLocation[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -33,16 +38,14 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
       const productInventory = inventoryData.filter(inv => inv.productoId === selectedProductId);
 
       // Agregar información de ubicación a cada item de inventario
-      const inventoryWithLocationInfo = await Promise.all(
-        productInventory.map(async (inv) => {
-          const ubicacion = ubicaciones.find(u => u.id === inv.ubicacionId);
-          return {
-            ...inv,
-            ubicacionNombre: ubicacion?.nombre || 'Ubicación desconocida',
-            ubicacionTipo: ubicacion?.tipo || 'Tipo desconocido'
-          };
-        })
-      );
+      const inventoryWithLocationInfo = productInventory.map(inv => {
+        const ubicacion = ubicaciones.find(u => u.id === inv.ubicacionId);
+        return {
+          ...inv,
+          ubicacionNombre: ubicacion?.nombre || 'Ubicación desconocida',
+          ubicacionTipo: ubicacion?.tipo || 'Tipo desconocido'
+        };
+      });
 
       setInventario(inventoryWithLocationInfo);
     } catch (error) {
@@ -111,7 +114,7 @@ export default function TransferForm({ onClose, onSuccess }: TransferFormProps) 
         cantidad: formData.cantidad,
         ubicacionOrigenId: formData.ubicacionOrigenId,
         ubicacionDestinoId: formData.ubicacionDestinoId,
-        estado: 'pendiente',
+        status: 'pendiente',
         fechaSolicitud: new Date(),
         notas: formData.notas,
         createdAt: new Date(),

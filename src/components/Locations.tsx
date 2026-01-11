@@ -49,7 +49,13 @@ const Locations: React.FC = () => {
         descripcion: formData.descripcion,
         updatedAt: new Date(),
       });
-      await storage.syncQueue.add('update', 'ubicaciones', { id: editingLocation.id, ...formData });
+      await storage.syncQueue.add({
+        operation: 'update',
+        table: 'ubicaciones',
+        data: { id: editingLocation.id, ...formData },
+        createdAt: new Date(),
+        synced: false
+      });
     } else {
       await storage.ubicaciones.add({
         nombre: formData.nombre,
@@ -58,7 +64,13 @@ const Locations: React.FC = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      await storage.syncQueue.add('create', 'ubicaciones', { ...formData });
+      await storage.syncQueue.add({
+        operation: 'create',
+        table: 'ubicaciones',
+        data: { ...formData },
+        createdAt: new Date(),
+        synced: false
+      });
     }
     await fetchLocations();
     resetForm();
@@ -90,7 +102,13 @@ const Locations: React.FC = () => {
     if (confirm('¿Está seguro de eliminar esta ubicación?')) {
       setLoading(true);
       await storage.ubicaciones.delete(id);
-      await storage.syncQueue.add('delete', 'ubicaciones', { id });
+      await storage.syncQueue.add({
+        operation: 'delete',
+        table: 'ubicaciones',
+        data: { id },
+        createdAt: new Date(),
+        synced: false
+      });
       await fetchLocations();
       setLoading(false);
     }
@@ -113,7 +131,13 @@ const Locations: React.FC = () => {
       createdAt: now,
       updatedAt: now,
     });
-    await storage.syncQueue.add('create', 'locationTypes', { name: newTypeName.trim(), description: newTypeDesc });
+    await storage.syncQueue.add({
+      operation: 'create',
+      table: 'locationTypes',
+      data: { name: newTypeName.trim(), description: newTypeDesc },
+      createdAt: new Date(),
+      synced: false
+    });
     await fetchLocationTypes();
     setFormData({ ...formData, tipo: String(id) });
     setCreatingType(false);

@@ -1,15 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {AlertCircle, CheckCircle, Clock, Factory, Pause, Play, Target} from 'lucide-react';
-import ProductionTicket from './ProductionTicket';
-import {storage} from '../lib/storage';
-import {Proceso, ProduccionTicket, Producto} from '../lib/db';
+import {AlertCircle, CheckCircle, Clock, Factory, Pause, Play, Plus, Target, UserCheck, X} from 'lucide-react';
+import {folioGenerator, storage} from '../lib/storage';
+import {Empleado, Proceso, ProduccionTicket, Producto} from '../lib/db';
 
 const Production: React.FC = () => {
   const [productionTickets, setProductionTickets] = useState<ProduccionTicket[]>([]);
   const [procesos, setProcesos] = useState<Proceso[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
+  const [empleados, setEmpleados] = useState<Empleado[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalStep, setModalStep] = useState<'employee' | 'process' | 'inputs' | 'outputs'>('employee');
   const [selectedProceso, setSelectedProceso] = useState<Proceso | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Empleado | null>(null);
+  const [ticketData, setTicketData] = useState({
+    insumos: [] as { productId: number; ubicacionId: number; cantidad: number }[],
+    productosGenerados: [] as { productId: number; ubicacionId: number; cantidad: number }[],
+    empleadoId: 1, // Default employee
+  });
+  const [employeeSearchTerm, setEmployeeSearchTerm] = useState('');
 
   useEffect(() => {
     loadData();
@@ -18,14 +27,26 @@ const Production: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [ticketsData, procesosData, productosData] = await Promise.all([
-        storage.produccion.getAll(),
+      const [ticketsData, procesosData, productosData, empleadosData] = await Promise.all([
+        storage.produccionTickets.getAll(),
         storage.procesos.getAll(),
         storage.productos.getAll(),
+        storage.empleados.getAll(),
       ]);
-      setProductionTickets(ticketsData);
+      // Normaliza los campos de fecha en los tickets
+      setProductionTickets(
+        ticketsData.map(ticket => ({
+          ...ticket,
+          startedAt: ticket.startedAt ? new Date(ticket.startedAt) : new Date(),
+          completedAt: ticket.completedAt ? new Date(ticket.completedAt) : new Date(),
+          paidAt: ticket.paidAt ? new Date(ticket.paidAt) : new Date(),
+          createdAt: ticket.createdAt ? new Date(ticket.createdAt) : new Date(),
+          updatedAt: ticket.updatedAt ? new Date(ticket.updatedAt) : new Date(),
+        }))
+      );
       setProcesos(procesosData);
       setProductos(productosData);
+      setEmpleados(empleadosData);
     } catch (error) {
       console.error('Error loading production data:', error);
     } finally {
@@ -36,41 +57,6 @@ const Production: React.FC = () => {
   const getProducto = (id: number) => productos.find(p => p.id === id);
   const getProceso = (id: number) => procesos.find(p => p.id === id);
 
-  // Adaptador para convertir Proceso (de storage) a Process (de ProductionTicket)
-  type ProcessTicketItem = {
-    productId?: string;
-    productTypeId?: number;
-    productName: string;
-    productTypeName?: string;
-    quantity: number;
-    unit: string;
-    allowedLocationTypes?: number[];
-  };
-  type ProcessTicketType = {
-    id: string;
-    name: string;
-    description: string;
-    inputs: ProcessTicketItem[];
-    outputs: ProcessTicketItem[];
-  };
-  function procesoToProcess(p: Proceso): ProcessTicketType {
-    const mapItem = (item: Partial<ProcessTicketItem>): ProcessTicketItem => ({
-      productId: item.productId,
-      productTypeId: item.productTypeId,
-      productName: item.productName || '',
-      productTypeName: item.productTypeName,
-      quantity: 0, // default para ticket
-      unit: item.unit || '',
-      allowedLocationTypes: item.allowedLocationTypes || [],
-    });
-    return {
-      id: String(p.id),
-      name: p.nombre,
-      description: p.descripcion || '',
-      inputs: (p.inputs || []).map(mapItem),
-      outputs: (p.outputs || []).map(mapItem),
-    };
-  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -90,17 +76,17 @@ const Production: React.FC = () => {
     }
   };
 
-  const totalEfficiency = productionTickets.reduce((sum, ticket) => {
-    const proceso = getProceso(ticket.procesoId);
-    return sum + (proceso ? proceso.efficiency : 0);
-  }, 0) / productionTickets.length;
+  const totalEfficiency = productionTickets.length > 0 ? productionTickets.reduce((sum, ticket) => {
+    const proceso = getProceso(ticket.processId);
+    return sum + (proceso ? 85 : 0); // Default efficiency
+  }, 0) / productionTickets.length : 0;
 
   const activeLines = productionTickets.filter(ticket => {
-    const proceso = getProceso(ticket.procesoId);
-    return proceso && proceso.status === 'running';
+    const proceso = getProceso(ticket.processId);
+    return proceso && ticket.estado === 'en_proceso';
   }).length;
 
-  const totalProduction = productionTickets.reduce((sum, ticket) => sum + ticket.completedQuantity, 0);
+  const totalProduction = productionTickets.reduce((sum, ticket) => sum + (ticket.cantidadProducida || 0), 0);
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -155,31 +141,33 @@ const Production: React.FC = () => {
       {/* Production Lines */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {productionTickets.map((ticket) => {
-          const proceso = getProceso(ticket.procesoId);
+          const proceso = getProceso(ticket.processId);
           if (!proceso) return null;
 
-          const StatusIcon = getStatusIcon(proceso.status);
-          const progressPercentage = (ticket.completedQuantity / ticket.targetQuantity) * 100;
+          const status = ticket.estado === 'en_proceso' ? 'running' : ticket.estado === 'completado' ? 'stopped' : 'maintenance';
+          const StatusIcon = getStatusIcon(status);
+          const progressPercentage = (ticket.cantidadProducida / 100) * 100; // Assuming target is 100 for now
+          const eficiencia = 85; // TODO: calcular eficiencia real si aplica
 
           return (
             <div key={ticket.id} className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">{proceso.nombre}</h3>
-                  <p className="text-sm text-gray-600">{getProducto(ticket.productoId)?.nombre}</p>
+                  <p className="text-sm text-gray-600">{getProducto(ticket.productoTerminadoId)?.nombre}</p>
                 </div>
-                <div className={`flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(proceso.status)}`}>
+                <div className={`flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(status)}`}>
                   <StatusIcon className="h-4 w-4 mr-1" />
-                  {proceso.status === 'running' ? 'En Operación' :
-                   proceso.status === 'stopped' ? 'Detenida' : 'Mantenimiento'}
+                  {status === 'running' ? 'En Operación' :
+                   status === 'stopped' ? 'Detenida' : 'Mantenimiento'}
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm text-gray-600 mb-1">
-                    <span>Lote Actual: {ticket.loteActual}</span>
-                    <span>{ticket.completedQuantity}/{ticket.targetQuantity} unidades</span>
+                    <span>Lote Actual: {ticket.folio || 'N/A'}</span>
+                    <span>{ticket.cantidadProducida}/100 unidades</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
@@ -196,27 +184,33 @@ const Production: React.FC = () => {
                   <div>
                     <p className="text-xs text-gray-600">Eficiencia</p>
                     <p className={`text-lg font-bold ${
-                      proceso.efficiency >= 80 ? 'text-green-600' : 
-                      proceso.efficiency >= 60 ? 'text-yellow-600' : 'text-red-600'
+                      eficiencia >= 80 ? 'text-green-600' : 
+                      eficiencia >= 60 ? 'text-yellow-600' : 'text-red-600'
                     }`}>
-                      {proceso.efficiency}%
+                      {eficiencia}%
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-600">Hora de Inicio</p>
-                    <p className="text-lg font-bold text-gray-900">{ticket.horaInicio}</p>
+                    <p className="text-xs text-gray-600">Pago</p>
+                    <p className={`text-lg font-bold ${
+                      ticket.paidAt && ticket.paymentAmount ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {ticket.paidAt && ticket.paymentAmount ? `$${ticket.paymentAmount}` : 'Pendiente'}
+                    </p>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-gray-200">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600">Estimado de finalización:</span>
-                    <span className="font-medium">{ticket.estimatedCompletion}</span>
+                    <span className="font-medium">
+                      {ticket.completedAt ? new Date(ticket.completedAt).toLocaleTimeString() : 'Pendiente'}
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex space-x-2">
-                  {proceso.status === 'running' ? (
+                  {ticket.estado === 'en_proceso' ? (
                     <button className="flex-1 bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center space-x-1">
                       <Pause className="h-4 w-4" />
                       <span>Pausar</span>
@@ -267,23 +261,419 @@ const Production: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded shadow mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">Selecciona un proceso</label>
-        <select
-          className="border rounded px-2 py-1"
-          value={selectedProceso?.id || ''}
-          onChange={e => {
-            const p = procesos.find(pr => pr.id === Number(e.target.value));
-            setSelectedProceso(p || null);
-          }}
-        >
-          <option value="">-- Selecciona --</option>
-          {procesos.map(p => (
-            <option key={p.id} value={p.id}>{p.nombre}</option>
-          ))}
-        </select>
+      {/* New Ticket Button */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">Nuevo Ticket de Producción</h3>
+            <p className="text-sm text-gray-600">Crear un nuevo ticket de producción rápidamente</p>
+          </div>
+          <button
+            onClick={() => {
+              setShowModal(true);
+              setModalStep('employee');
+              setSelectedProceso(null);
+              setSelectedEmployee(null);
+              setEmployeeSearchTerm('');
+              setTicketData({
+                insumos: [],
+                productosGenerados: [],
+                empleadoId: 1,
+              });
+            }}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+          >
+            <Plus className="h-5 w-5" />
+            <span>Nuevo Ticket</span>
+          </button>
+        </div>
       </div>
-      {selectedProceso && <ProductionTicket proceso={procesoToProcess(selectedProceso)} />}
+
+      {/* New Ticket Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Nuevo Ticket de Producción
+              </h3>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {/* Step Indicator */}
+              <div className="flex items-center justify-center mb-6">
+                <div className="flex items-center space-x-4">
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                    modalStep === 'employee' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    1
+                  </div>
+                  <div className={`w-12 h-1 ${
+                    modalStep === 'process' || modalStep === 'inputs' || modalStep === 'outputs' ? 'bg-blue-600' : 'bg-gray-200'
+                  }`} />
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                    modalStep === 'process' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    2
+                  </div>
+                  <div className={`w-12 h-1 ${
+                    modalStep === 'inputs' || modalStep === 'outputs' ? 'bg-blue-600' : 'bg-gray-200'
+                  }`} />
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                    modalStep === 'inputs' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    3
+                  </div>
+                  <div className={`w-12 h-1 ${
+                    modalStep === 'outputs' ? 'bg-blue-600' : 'bg-gray-200'
+                  }`} />
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                    modalStep === 'outputs' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    4
+                  </div>
+                </div>
+              </div>
+
+              {/* Step Content */}
+              {modalStep === 'employee' && (
+                <div className="space-y-4">
+                  <h4 className="text-md font-medium text-gray-900">Seleccionar Empleado</h4>
+                  <p className="text-sm text-gray-600">Elige el empleado asignado a este ticket</p>
+
+                  {/* Search */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Buscar por nombre o alias..."
+                      value={employeeSearchTerm}
+                      onChange={(e) => setEmployeeSearchTerm(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {empleados
+                      .filter(empleado =>
+                        (empleado.nombre || '').toLowerCase().includes(employeeSearchTerm.toLowerCase()) ||
+                        (empleado.alias || '').toLowerCase().includes(employeeSearchTerm.toLowerCase())
+                      )
+                      .map(empleado => (
+                        <button
+                          key={empleado.id}
+                          onClick={() => {
+                            setSelectedEmployee(empleado);
+                            setTicketData(prev => ({ ...prev, empleadoId: empleado.id! }));
+                            setModalStep('process');
+                          }}
+                          className={`w-full p-4 border-2 rounded-lg text-left transition-all ${
+                            selectedEmployee?.id === empleado.id
+                              ? 'border-blue-500 bg-blue-50'
+                              : 'border-gray-200 hover:border-gray-300 bg-white'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="flex-shrink-0">
+                              {empleado.faceImageBase64 ? (
+                                <img
+                                  src={empleado.faceImageBase64}
+                                  alt={empleado.nombre}
+                                  className="w-10 h-10 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                  <span className="text-gray-600 font-medium">
+                                    {empleado.nombre.charAt(0).toUpperCase()}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1">
+                              <h5 className="font-medium text-gray-900">{empleado.nombre}</h5>
+                              {empleado.alias && (
+                                <p className="text-sm text-blue-600">Alias: {empleado.alias}</p>
+                              )}
+                              <p className="text-sm text-gray-600">{empleado.rol}</p>
+                            </div>
+                            {empleado.faceId && (
+                              <div className="flex-shrink-0">
+                                <div className="flex items-center text-green-600">
+                                  <UserCheck className="h-4 w-4 mr-1" />
+                                  <span className="text-xs">Face ID</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {modalStep === 'process' && (
+                <div className="space-y-4">
+                  <h4 className="text-md font-medium text-gray-900">Seleccionar Proceso</h4>
+                  <div className="grid grid-cols-1 gap-3 max-h-96 overflow-y-auto">
+                    {procesos.map(proceso => (
+                      <button
+                        key={proceso.id}
+                        onClick={() => {
+                          setSelectedProceso(proceso);
+                          setModalStep('inputs');
+                          // Initialize insumos based on proceso inputs
+                          const insumos = (proceso.inputs || []).map(input => ({
+                            productId: input.productId ? parseInt(input.productId) : 0,
+                            ubicacionId: 0,
+                            cantidad: 1, // Default quantity
+                          }));
+                          setTicketData(prev => ({ ...prev, insumos }));
+                        }}
+                        className={`p-4 border-2 rounded-lg text-left transition-all ${
+                          selectedProceso?.id === proceso.id
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300 bg-white'
+                        }`}
+                      >
+                        <h5 className="font-medium text-gray-900">{proceso.nombre}</h5>
+                        <p className="text-sm text-gray-600 mt-1">{proceso.descripcion}</p>
+                        <div className="mt-2 text-xs text-gray-500">
+                          {proceso.inputs?.length || 0} insumos → {proceso.outputs?.length || 0} productos
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {modalStep === 'inputs' && selectedProceso && (
+                <div className="space-y-4">
+                  <h4 className="text-md font-medium text-gray-900">Configurar Insumos</h4>
+                  <p className="text-sm text-gray-600">Selecciona qué productos consumir y de dónde</p>
+
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {(selectedProceso.inputs || []).map((input, index) => {
+                      const availableProducts = productos.filter(p =>
+                        !input.productId || p.id === parseInt(input.productId)
+                      );
+
+                      return (
+                        <div key={index} className="p-4 border border-gray-200 rounded-lg">
+                          <h5 className="font-medium text-gray-900 mb-3">{input.productName}</h5>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Producto
+                              </label>
+                              <select
+                                value={ticketData.insumos[index]?.productId || ''}
+                                onChange={(e) => {
+                                  const newInsumos = [...ticketData.insumos];
+                                  newInsumos[index] = {
+                                    ...newInsumos[index],
+                                    productId: parseInt(e.target.value),
+                                    ubicacionId: 0, // Reset location when product changes
+                                  };
+                                  setTicketData(prev => ({ ...prev, insumos: newInsumos }));
+                                }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              >
+                                <option value="">Seleccionar producto</option>
+                                {availableProducts.map(product => (
+                                  <option key={product.id} value={product.id}>
+                                    {product.nombre}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Cantidad ({input.unit})
+                              </label>
+                              <input
+                                type="number"
+                                min="1"
+                                value={ticketData.insumos[index]?.cantidad || 1}
+                                onChange={(e) => {
+                                  const newInsumos = [...ticketData.insumos];
+                                  newInsumos[index] = {
+                                    ...newInsumos[index],
+                                    cantidad: parseInt(e.target.value) || 1,
+                                  };
+                                  setTicketData(prev => ({ ...prev, insumos: newInsumos }));
+                                }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {modalStep === 'outputs' && selectedProceso && (
+                <div className="space-y-4">
+                  <h4 className="text-md font-medium text-gray-900">Configurar Productos Generados</h4>
+                  <p className="text-sm text-gray-600">Define dónde almacenar los productos producidos</p>
+
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {(selectedProceso.outputs || []).map((output, index) => {
+                      const availableProducts = productos.filter(p =>
+                        !output.productId || p.id === parseInt(output.productId)
+                      );
+
+                      return (
+                        <div key={index} className="p-4 border border-gray-200 rounded-lg">
+                          <h5 className="font-medium text-gray-900 mb-3">{output.productName}</h5>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Producto
+                              </label>
+                              <select
+                                value={ticketData.productosGenerados[index]?.productId || ''}
+                                onChange={(e) => {
+                                  const newProductos = [...ticketData.productosGenerados];
+                                  newProductos[index] = {
+                                    ...newProductos[index],
+                                    productId: parseInt(e.target.value),
+                                    ubicacionId: 0,
+                                  };
+                                  setTicketData(prev => ({ ...prev, productosGenerados: newProductos }));
+                                }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              >
+                                <option value="">Seleccionar producto</option>
+                                {availableProducts.map(product => (
+                                  <option key={product.id} value={product.id}>
+                                    {product.nombre}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Cantidad Estimada ({output.unit})
+                              </label>
+                              <input
+                                type="number"
+                                min="1"
+                                value={ticketData.productosGenerados[index]?.cantidad || 1}
+                                onChange={(e) => {
+                                  const newProductos = [...ticketData.productosGenerados];
+                                  newProductos[index] = {
+                                    ...newProductos[index],
+                                    cantidad: parseInt(e.target.value) || 1,
+                                  };
+                                  setTicketData(prev => ({ ...prev, productosGenerados: newProductos }));
+                                }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between p-6 border-t border-gray-200">
+              <button
+                onClick={() => {
+                  if (modalStep === 'inputs') {
+                    setModalStep('process');
+                  } else if (modalStep === 'outputs') {
+                    setModalStep('inputs');
+                  } else if (modalStep === 'process') {
+                    setModalStep('employee');
+                  }
+                }}
+                disabled={modalStep === 'employee'}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Anterior
+              </button>
+
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  Cancelar
+                </button>
+
+                {modalStep === 'outputs' ? (
+                  <button
+                    onClick={async () => {
+                      // Create the ticket
+                      try {
+                        const folio = await folioGenerator.generateFolio('PROD');
+                        const newTicket: ProduccionTicket = {
+                          folio,
+                          processId: selectedProceso!.id!,
+                          employeeId: ticketData.empleadoId,
+                          insumos: ticketData.insumos,
+                          productoTerminadoId: ticketData.productosGenerados[0]?.productId || 0,
+                          cantidadProducida: ticketData.productosGenerados[0]?.cantidad || 0,
+                          ubicacionDestinoId: ticketData.productosGenerados[0]?.ubicacionId || 0,
+                          estado: 'pendiente',
+                          createdAt: new Date(),
+                          updatedAt: new Date(),
+                        };
+
+                        await storage.produccionTickets.add(newTicket);
+                        setShowModal(false);
+                        loadData(); // Refresh data
+                      } catch (error) {
+                        console.error('Error creating ticket:', error);
+                        alert('Error al crear el ticket');
+                      }
+                    }}
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+                  >
+                    Crear Ticket
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (modalStep === 'process' && selectedProceso) {
+                        setModalStep('inputs');
+                      } else if (modalStep === 'inputs') {
+                        setModalStep('outputs');
+                        // Initialize productosGenerados based on proceso outputs
+                        const productosGenerados = (selectedProceso?.outputs || []).map(output => ({
+                          productId: output.productId ? parseInt(output.productId) : 0,
+                          ubicacionId: 0,
+                          cantidad: 1, // Default quantity
+                        }));
+                        setTicketData(prev => ({ ...prev, productosGenerados }));
+                      }
+                    }}
+                    disabled={modalStep === 'process' && !selectedProceso}
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {modalStep === 'inputs' ? 'Siguiente' : 'Continuar'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "nombre": "Tostado de Café",
+    "descripcion": "Proceso de tostado del café verde",
+    "tipoProcesoId": 1,
+    "inputs": [
+      {
+        "productId": 1,
+        "productName": "Café Verde Premium",
+        "quantity": 100,
+        "unit": "kg"
+      }
+    ],
+    "outputs": [
+      {
+        "productId": 2,
+        "productName": "Café Tostado Oscuro",
+        "quantity": 85,
+        "unit": "kg"
+      }
+    ],
+    "duracionEstimada": 120,
+    "costoEstimado": 15.00,
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Molienda de Café",
+    "descripcion": "Proceso de molienda del café tostado",
+    "tipoProcesoId": 2,
+    "inputs": [
+      {
+        "productId": 2,
+        "productName": "Café Tostado Oscuro",
+        "quantity": 50,
+        "unit": "kg"
+      }
+    ],
+    "outputs": [
+      {
+        "productId": 3,
+        "productName": "Café Molido Gourmet",
+        "quantity": 48,
+        "unit": "kg"
+      }
+    ],
+    "duracionEstimada": 30,
+    "costoEstimado": 5.00,
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

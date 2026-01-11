@@ -8,7 +8,6 @@ import type {
     Inventario,
     LocationType,
     Proceso,
-    ProcessType,
     ProduccionTicket,
     Producto,
     Proveedor,
@@ -20,13 +19,6 @@ import type {
 } from './db';
 import {db} from './db';
 import type Dexie from 'dexie';
-
-// Utilidad para limpiar undefined y asegurar objeto plano
-function toPlainObject<T>(data: Partial<T>): Partial<T> {
-    return Object.fromEntries(
-        Object.entries(data).filter(([, v]) => v !== undefined)
-    ) as Partial<T>;
-}
 
 // Generic storage interface
 interface StorageService<T> {
@@ -57,13 +49,29 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
         return this.table.add(data as T);
     }
 
+    async addMany(items: Omit<T, 'id'>[]): Promise<void> {
+        await this.table.bulkAdd(items as T[]);
+    }
+
     async update(id: number, data: Partial<T>): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await this.table.update(id, toPlainObject(data) as any);
-        }
+        await this.table.update(id, data as any);
+    }
 
     async delete(id: number): Promise<void> {
         await this.table.delete(id);
+    }
+
+    async clearAll(): Promise<void> {
+        await this.table.clear();
+    }
+
+    async countAll(): Promise<number> {
+        return this.table.count();
+    }
+
+    // Método específico para ProduccionTicket
+    async getAllByEmployeeId(employeeId: number): Promise<T[]> {
+        return this.table.where('employeeId').equals(employeeId).toArray();
     }
 }
 
@@ -75,19 +83,16 @@ export const empleadoStorage = new DexieStorage<Empleado>(db.empleados);
 export const ubicacionStorage = new DexieStorage<Ubicacion>(db.ubicaciones);
 export const procesoStorage = new DexieStorage<Proceso>(db.procesos);
 export const inventarioStorage = new DexieStorage<Inventario>(db.inventario);
-export const produccionStorage = new DexieStorage<ProduccionTicket>(db.produccionTickets);
+export const produccionTicketsStorage = new DexieStorage<ProduccionTicket>(db.produccionTickets);
 export const compraStorage = new DexieStorage<Compra>(db.compras);
 export const ventaStorage = new DexieStorage<Venta>(db.ventas);
 export const cashFlowStorage = new DexieStorage<CashFlow>(db.cashFlow);
 export const userRoleStorage = new DexieStorage<UserRole>(db.userRoles);
 export const locationTypeStorage = new DexieStorage<LocationType>(db.locationTypes);
-export const processTypeStorage = new DexieStorage<ProcessType>(db.processTypes);
 export const syncQueueStorage = new DexieStorage<SyncQueue>(db.syncQueue);
 export const folioSequenceStorage = new DexieStorage<FolioSequence>(db.folioSequences);
 export const transferStorage = new DexieStorage<Transfer>(db.transfers);
 export const attendanceStorage = new DexieStorage<Attendance>(db.attendance);
-export const productoVariacionStorage = new DexieStorage<ProductoVariacion>(db.productoVariaciones);
-export const productoConfigStorage = new DexieStorage<ProductoConfig>(db.productoConfigs);
 
 // ✅ Sync queue management
 export const syncQueue = {
@@ -104,7 +109,15 @@ export const syncQueue = {
             synced: false,
         } as SyncQueue);
     },
-
+    async addMany(items: Omit<SyncQueue, 'id'>[]): Promise<void> {
+        await syncQueueStorage.addMany(items);
+    },
+    async clearAll(): Promise<void> {
+        await syncQueueStorage.clearAll();
+    },
+    async countAll(): Promise<number> {
+        return syncQueueStorage.countAll();
+    },
     async getPending(): Promise<SyncQueue[]> {
         // Use 0 instead of false for boolean index in Dexie
         return db.syncQueue.where('synced').equals(0).toArray();
@@ -155,22 +168,21 @@ export const folioGenerator = {
 
 // ✅ Unified export for modular access
 export const storage = {
-    clientes: clienteStorage, // Gestión de clientes: creación, edición, eliminación y consulta de registros de clientes.
-    proveedores: proveedorStorage, // Gestión de proveedores: creación, edición, eliminación y consulta de registros de proveedores.
-    productos: productoStorage, // Gestión de productos: creación, edición, eliminación y consulta de productos con flags de uso.
-    empleados: empleadoStorage, // Gestión de empleados: creación, edición, eliminación y consulta de empleados con roles asignados.
-    ubicaciones: ubicacionStorage, // Gestión de ubicaciones: creación, edición, eliminación y consulta de lugares físicos de almacenamiento.
-    procesos: procesoStorage, // Gestión de procesos de producción: creación, edición, eliminación y consulta de procesos con insumos y salidas.
-    inventario: inventarioStorage, // Gestión de inventario: registros de stock por producto y ubicación, con movimientos y actualizaciones.
-    produccion: produccionStorage, // Gestión de tickets de producción: creación, edición, eliminación y consulta de registros de producción.
-    compras: compraStorage, // Gestión de compras: registros de adquisiciones de productos con proveedores, precios y estados.
-    ventas: ventaStorage, // Gestión de ventas: registros de ventas de productos a clientes, precios y estados de entrega.
-    syncQueue, // Gestión de cola de sincronización: operaciones pendientes para sincronizar con la base de datos remota.
-    userRoles: userRoleStorage, // Gestión de roles de usuario: tipos de roles disponibles para empleados y permisos asociados.
-    locationTypes: locationTypeStorage, // Gestión de tipos de ubicación: categorías de lugares (patios, bodegas, etc.) con productos permitidos.
-    processTypes: processTypeStorage, // Gestión de tipos de proceso: categorías de procesos de producción (destopado, pelado, etc.).
-    transfers: transferStorage, // Gestión de traslados: registros de movimientos de productos entre ubicaciones.
-    asistencia: attendanceStorage, // Gestión de asistencia: registros de entrada y salida de empleados, con horarios y estados.
-    productoVariacion: productoVariacionStorage, // Gestión de variaciones de productos: seguimiento de diferentes versiones o variantes de un producto.
-    productoConfig: productoConfigStorage, // Gestión de configuraciones de productos: opciones y ajustes específicos para cada producto.
+    clientes: clienteStorage,
+    proveedores: proveedorStorage,
+    productos: productoStorage,
+    empleados: empleadoStorage,
+    ubicaciones: ubicacionStorage,
+    procesos: procesoStorage,
+    inventario: inventarioStorage,
+    produccionTickets: produccionTicketsStorage,
+    compras: compraStorage,
+    ventas: ventaStorage,
+    syncQueue: syncQueueStorage,
+    userRoles: userRoleStorage,
+    locationTypes: locationTypeStorage,
+    transfers: transferStorage,
+    attendance: attendanceStorage,
+    cashFlow: cashFlowStorage,
+    folioSequences: folioSequenceStorage,
 };

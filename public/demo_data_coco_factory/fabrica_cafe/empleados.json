@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "nombre": "María González",
+    "apellido": "Rodríguez",
+    "email": "maria.gonzalez@cafe.mx",
+    "telefono": "+52 961 111 2222",
+    "fechaNacimiento": "1990-05-15",
+    "fechaContratacion": "2024-01-15",
+    "puesto": "Tostador Jefe",
+    "salario": 8500.00,
+    "roleId": 3,
+    "activo": true,
+    "notas": "Experiencia de 8 años en tostado de café",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Carlos",
+    "apellido": "Mendoza",
+    "email": "carlos.mendoza@cafe.mx",
+    "telefono": "+52 961 333 4444",
+    "fechaNacimiento": "1988-08-22",
+    "fechaContratacion": "2023-06-01",
+    "puesto": "Supervisor de Producción",
+    "salario": 12000.00,
+    "roleId": 2,
+    "activo": true,
+    "notas": "Ingeniero industrial con especialización en procesos de café",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Ana",
+    "apellido": "López",
+    "email": "ana.lopez@cafe.mx",
+    "telefono": "+52 961 555 6666",
+    "fechaNacimiento": "1992-12-03",
+    "fechaContratacion": "2024-03-10",
+    "puesto": "Catadora de Café",
+    "salario": 6500.00,
+    "roleId": 3,
+    "activo": true,
+    "notas": "Certificada como catadora Q-Grader",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+

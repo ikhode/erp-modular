@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "nombre": "María González López",
+    "rol": "supervisor",
+    "email": "maria.gonzalez@fincacoco.com.mx",
+    "telefono": "+52 55 1111 2222",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Carlos Rodríguez Martínez",
+    "rol": "operario",
+    "email": "carlos.rodriguez@fincacoco.com.mx",
+    "telefono": "+52 55 2222 3333",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Ana Sánchez García",
+    "rol": "operario",
+    "email": "ana.sanchez@fincacoco.com.mx",
+    "telefono": "+52 55 3333 4444",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "nombre": "José Hernández Pérez",
+    "rol": "conductor",
+    "email": "jose.hernandez@fincacoco.com.mx",
+    "telefono": "+52 55 4444 5555",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "nombre": "Laura Jiménez Torres",
+    "rol": "contador",
+    "email": "laura.jimenez@fincacoco.com.mx",
+    "telefono": "+52 55 5555 6666",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "nombre": "Roberto Díaz Morales",
+    "rol": "operario",
+    "email": "roberto.diaz@fincacoco.com.mx",
+    "telefono": "+52 55 6666 7777",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "nombre": "Patricia Ruiz Navarro",
+    "rol": "operario",
+    "email": "patricia.ruiz@fincacoco.com.mx",
+    "telefono": "+52 55 7777 8888",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "nombre": "Miguel Ángel Castro",
+    "rol": "conductor",
+    "email": "miguel.castro@fincacoco.com.mx",
+    "telefono": "+52 55 8888 9999",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "productoId": 1,
+    "ubicacionId": 1,
+    "cantidad": 2500,
+    "minimo": 500,
+    "maximo": 5000,
+    "proveedor": "Finca Los Cocos de Michoacán",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "productoId": 2,
+    "ubicacionId": 1,
+    "cantidad": 800,
+    "minimo": 200,
+    "maximo": 1500,
+    "proveedor": "Finca Los Cocos de Michoacán",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "productoId": 3,
+    "ubicacionId": 7,
+    "cantidad": 150,
+    "minimo": 50,
+    "maximo": 300,
+    "proveedor": "Producción interna",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "productoId": 4,
+    "ubicacionId": 6,
+    "cantidad": 75,
+    "minimo": 25,
+    "maximo": 150,
+    "proveedor": "Producción interna",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "productoId": 5,
+    "ubicacionId": 6,
+    "cantidad": 200,
+    "minimo": 50,
+    "maximo": 400,
+    "proveedor": "Producción interna",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "productoId": 6,
+    "ubicacionId": 6,
+    "cantidad": 45,
+    "minimo": 10,
+    "maximo": 100,
+    "proveedor": "Producción interna",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "productoId": 7,
+    "ubicacionId": 7,
+    "cantidad": 120,
+    "minimo": 30,
+    "maximo": 250,
+    "proveedor": "Subproducto de destopado",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-10T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "nombre": "Patio Norte",
+    "tipo": "Patio",
+    "descripcion": "Patio principal para recepción de materia prima de coco",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Patio Sur",
+    "tipo": "Patio",
+    "descripcion": "Patio secundario para almacenamiento temporal",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Área de Destopado",
+    "tipo": "Producción",
+    "descripcion": "Área dedicada al proceso de destopado de cocos",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "nombre": "Área de Deshuesado",
+    "tipo": "Producción",
+    "descripcion": "Área para extracción de pulpa de coco",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "nombre": "Secadero Principal",
+    "tipo": "Producción",
+    "descripcion": "Instalación para secado de pulpa de coco",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "nombre": "Almacén de Producto Terminado",
+    "tipo": "Almacén",
+    "descripcion": "Almacén principal para productos terminados",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "nombre": "Almacén de Materia Prima",
+    "tipo": "Almacén",
+    "descripcion": "Almacén para almacenamiento de materia prima procesada",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "name": "Zona de Carga",
+    "tipo": "Transporte",
+    "descripcion": "Área de carga y descarga para transporte",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]

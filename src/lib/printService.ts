@@ -346,7 +346,7 @@ export class PrintService {
   /**
    * Sube el PDF a Supabase Storage
    */
-  async uploadToStorage(doc: jsPDF, filename: string): Promise<string> {
+  async uploadToStorage(_doc: jsPDF, filename: string): Promise<string> {
     // Aquí iría la lógica para subir a Supabase Storage
     // Por ahora retornamos el filename como placeholder
     return filename;

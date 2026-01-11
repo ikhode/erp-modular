@@ -1,0 +1,37 @@
+[
+  {
+    "prefix": "PROD",
+    "description": "Folios para producción",
+    "currentNumber": 2,
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  },
+  {
+    "prefix": "COMP",
+    "description": "Folios para compras",
+    "currentNumber": 3,
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  },
+  {
+    "prefix": "VENT",
+    "description": "Folios para ventas",
+    "currentNumber": 3,
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  },
+  {
+    "prefix": "TRAS",
+    "description": "Folios para traslados",
+    "currentNumber": 2,
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  },
+  {
+    "prefix": "DEV",
+    "description": "Folios para devoluciones",
+    "currentNumber": 1,
+    "createdAt": "2026-01-10T06:00:00.000Z",
+    "updatedAt": "2026-01-10T06:00:00.000Z"
+  }
+]

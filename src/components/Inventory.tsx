@@ -8,7 +8,6 @@ const Inventory: React.FC = () => {
   const [inventario, setInventario] = useState<Inventario[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('todos');
   const [showProductModal, setShowProductModal] = useState(false);
 
   useEffect(() => {
@@ -21,10 +20,118 @@ const Inventory: React.FC = () => {
         storage.inventario.getAll(),
         storage.productos.getAll(),
       ]);
-      setInventario(inventarioData);
-      setProductos(productosData);
+
+      // Si no hay datos, crear datos de prueba
+      if (productosData.length === 0) {
+        console.log('No hay productos, creando datos de prueba...');
+        await createTestData();
+        // Recargar después de crear datos
+        const [newInventarioData, newProductosData] = await Promise.all([
+          storage.inventario.getAll(),
+          storage.productos.getAll(),
+        ]);
+        setInventario(newInventarioData);
+        setProductos(newProductosData);
+      } else {
+        setInventario(inventarioData);
+        setProductos(productosData);
+      }
     } catch (error) {
       console.error('Error loading inventory data:', error);
+    }
+  };
+
+  const createTestData = async () => {
+    try {
+      // Crear tipos de lugar
+      await storage.locationTypes.add({
+        name: 'Patio',
+        description: 'Áreas exteriores para almacenamiento de materia prima',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.locationTypes.add({
+        name: 'Almacén',
+        description: 'Áreas interiores para almacenamiento de productos',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      // Crear ubicaciones
+      const patio1Id = await storage.ubicaciones.add({
+        nombre: 'Patio Norte',
+        tipo: 'Patio',
+        descripcion: 'Patio principal para recepción de materia prima',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      const almacen1Id = await storage.ubicaciones.add({
+        nombre: 'Almacén Central',
+        tipo: 'Almacén',
+        descripcion: 'Almacén principal para productos terminados',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      // Crear productos
+      const cocoProductoId = await storage.productos.add({
+        nombre: 'Coco Bueno',
+        descripcion: 'Coco de primera calidad',
+        precioMin: 5.00,
+        precioMax: 8.00,
+        precioActual: 6.50,
+        unidad: 'kg',
+        compra: true,
+        venta: false,
+        procesoEntrada: true,
+        procesoSalida: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      const pulpaProductoId = await storage.productos.add({
+        nombre: 'Pulpa de Coco',
+        descripcion: 'Pulpa procesada lista para venta',
+        precioMin: 15.00,
+        precioMax: 25.00,
+        precioActual: 20.00,
+        unidad: 'kg',
+        compra: false,
+        venta: true,
+        procesoEntrada: false,
+        procesoSalida: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      // Crear registros de inventario
+      await storage.inventario.add({
+        productoId: cocoProductoId,
+        ubicacionId: patio1Id,
+        cantidad: 150,
+        minimo: 50,
+        maximo: 500,
+        proveedor: 'Proveedor ABC',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.inventario.add({
+        productoId: pulpaProductoId,
+        ubicacionId: almacen1Id,
+        cantidad: 25,
+        minimo: 10,
+        maximo: 200,
+        proveedor: 'Sin proveedor',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      console.log('Datos de prueba creados exitosamente!');
+    } catch (error) {
+      console.error('Error creando datos de prueba:', error);
     }
   };
 
@@ -34,14 +141,13 @@ const Inventory: React.FC = () => {
     const producto = getProducto(item.productoId);
     const matchesSearch = producto?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.proveedor.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'todos' || producto?.categoria === selectedCategory;
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
   });
 
   const getStockStatus = (item: Inventario) => {
-    if (item.stockActual <= item.minimo) {
+    if (item.cantidad <= item.minimo) {
       return { status: 'critical', color: 'text-red-600 bg-red-100', icon: AlertTriangle };
-    } else if (item.stockActual <= item.minimo * 1.2) {
+    } else if (item.cantidad <= item.minimo * 1.2) {
       return { status: 'low', color: 'text-yellow-600 bg-yellow-100', icon: TrendingDown };
     } else {
       return { status: 'good', color: 'text-green-600 bg-green-100', icon: TrendingUp };
@@ -50,13 +156,15 @@ const Inventory: React.FC = () => {
 
   const totalValue = inventario.reduce((sum, item) => {
     const producto = getProducto(item.productoId);
-    return sum + (item.stockActual * (producto?.costoUnitario || 0));
+    return sum + (item.cantidad * (producto?.precioActual || 0));
   }, 0);
-  const lowStockItems = inventario.filter(item => item.stockActual <= item.minimo).length;
-  const criticalItems = inventario.filter(item => item.stockActual <= item.minimo * 0.5).length;
+  const lowStockItems = inventario.filter(item => item.cantidad <= item.minimo).length;
+  const criticalItems = inventario.filter(item => item.cantidad <= item.minimo * 0.5).length;
 
   const handleProductCreated = (producto: Producto & { id: number }) => {
     setProductos([...productos, producto]);
+    // Recargar inventario después de crear producto
+    loadData();
     setShowProductModal(false);
   };
 
@@ -126,26 +234,6 @@ const Inventory: React.FC = () => {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { value: 'todos', label: 'Todos' },
-              { value: 'Materia Prima', label: 'Materia Prima' },
-              { value: 'Producto Terminado', label: 'Productos Terminados' },
-              { value: 'Empaque', label: 'Empaque' },
-            ].map(category => (
-              <button
-                key={category.value}
-                onClick={() => setSelectedCategory(category.value)}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  selectedCategory === category.value
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -192,11 +280,11 @@ const Inventory: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {producto?.categoria}
+                      Sin categoría
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {item.stockActual} {producto?.unidad}
+                        {item.cantidad} {producto?.unidad}
                       </div>
                       <div className="text-xs text-gray-500">
                         Min: {item.minimo} | Max: {item.maximo}
@@ -210,10 +298,10 @@ const Inventory: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      ${producto?.costoUnitario.toFixed(2)}
+                      ${(producto?.precioActual || 0).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      ${(item.stockActual * (producto?.costoUnitario || 0)).toLocaleString()}
+                      ${(item.cantidad * (producto?.precioActual || 0)).toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {item.proveedor}

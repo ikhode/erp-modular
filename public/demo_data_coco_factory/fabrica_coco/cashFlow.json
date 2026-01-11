@@ -1,0 +1,27 @@
+[
+  {
+    "amount": 15000,
+    "movementType": "ingreso",
+    "sourceType": "venta",
+    "referenceType": "ventas",
+    "referenceId": 1,
+    "description": "Venta mayorista de coco",
+    "paymentMethod": "efectivo",
+    "createdBy": 2,
+    "createdAt": "2026-01-10T08:00:00.000Z",
+    "updatedAt": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "amount": 5000,
+    "movementType": "egreso",
+    "sourceType": "compra",
+    "referenceType": "compras",
+    "referenceId": 2,
+    "description": "Compra de coco a proveedor",
+    "paymentMethod": "transferencia",
+    "createdBy": 3,
+    "createdAt": "2026-01-10T09:00:00.000Z",
+    "updatedAt": "2026-01-10T09:00:00.000Z"
+  }
+]
+

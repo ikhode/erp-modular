@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ArrowRight, Ban, CheckCircle, Clock, MapPin, Package, Play, XCircle} from 'lucide-react';
 import {productoStorage, transferStorage, ubicacionStorage} from '../lib/storage';
 import {Producto, Transfer, Ubicacion} from '../lib/db';
@@ -248,8 +248,8 @@ export default function Transfers() {
 
                   <div className="mt-3 flex items-center justify-between">
                     <p className="text-xs text-gray-500">
-                      Solicitado: {formatDate(transfer.fechaSolicitud.toISOString())}
-                      {transfer.fechaCompletado && ` | Completado: ${formatDate(transfer.fechaCompletado.toISOString())}`}
+                      Solicitado: {formatDate(transfer.fechaSolicitud instanceof Date ? transfer.fechaSolicitud.toISOString() : transfer.fechaSolicitud)}
+                      {transfer.fechaCompletado && ` | Completado: ${formatDate(transfer.fechaCompletado instanceof Date ? transfer.fechaCompletado.toISOString() : transfer.fechaCompletado)}`}
                     </p>
                     <div className="flex space-x-2">
                       {transfer.status === 'pendiente' && (
