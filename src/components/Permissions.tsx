@@ -20,35 +20,61 @@ interface RolePermission {
   permissions: Permission;
 }
 
-interface TerminalPermission {
-  permission_id: string;
-  allowed: boolean;
-  permissions: Permission;
-}
-
 export default function Permissions() {
   const [permissions, setPermissions] = useState<Record<string, Permission[]>>({});
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [rolePermissions, setRolePermissions] = useState<RolePermission[]>([]);
-  const [terminalPermissions, setTerminalPermissions] = useState<Record<string, TerminalPermission[]>>({
-    kiosko: [],
-    movil: [],
-    escritorio: []
-  });
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'roles' | 'terminals'>('roles');
 
   useEffect(() => {
-    loadPermissions();
-    loadRoles();
+     loadPermissions();
+      loadRoles();
   }, []);
+
+  const loadRolePermissions = useCallback(async () => {
+    try {
+      // Mock role permissions data for local development
+      const mockRolePermissions = [
+        { permission_id: 'prod_read', permissions: { id: 'prod_read', name: 'Ver Productos', description: 'Permite ver la lista de productos', resource: 'productos', action: 'read' } },
+        { permission_id: 'prod_create', permissions: { id: 'prod_create', name: 'Crear Productos', description: 'Permite crear nuevos productos', resource: 'productos', action: 'create' } },
+        { permission_id: 'ventas_read', permissions: { id: 'ventas_read', name: 'Ver Ventas', description: 'Permite ver las ventas realizadas', resource: 'ventas', action: 'read' } },
+        { permission_id: 'compras_read', permissions: { id: 'compras_read', name: 'Ver Compras', description: 'Permite ver las compras realizadas', resource: 'compras', action: 'read' } },
+        { permission_id: 'inv_read', permissions: { id: 'inv_read', name: 'Ver Inventario', description: 'Permite ver el estado del inventario', resource: 'inventario', action: 'read' } },
+        { permission_id: 'prod_read', permissions: { id: 'prod_read', name: 'Ver Producción', description: 'Permite ver tickets de producción', resource: 'produccion', action: 'read' } },
+        { permission_id: 'emp_read', permissions: { id: 'emp_read', name: 'Ver Empleados', description: 'Permite ver la lista de empleados', resource: 'empleados', action: 'read' } },
+        { permission_id: 'rep_read', permissions: { id: 'rep_read', name: 'Ver Reportes', description: 'Permite acceder a reportes del sistema', resource: 'reportes', action: 'read' } },
+        { permission_id: 'config_read', permissions: { id: 'config_read', name: 'Ver Configuración', description: 'Permite ver la configuración del sistema', resource: 'configuracion', action: 'read' } },
+      ];
+
+      // Filter permissions based on role
+      let filteredPermissions = mockRolePermissions;
+      if (selectedRole === 'operator') {
+        filteredPermissions = mockRolePermissions.filter(p =>
+          ['prod_read', 'inv_read'].includes(p.permission_id)
+        );
+      } else if (selectedRole === 'warehouse') {
+        filteredPermissions = mockRolePermissions.filter(p =>
+          ['prod_read', 'inv_read', 'inv_update'].includes(p.permission_id)
+        );
+      } else if (selectedRole === 'supervisor') {
+        filteredPermissions = mockRolePermissions.filter(p =>
+          !['config_update'].includes(p.permission_id)
+        );
+      }
+      // Admin and manager get all permissions
+
+      setRolePermissions(filteredPermissions);
+    } catch (error) {
+      console.error('Error loading role permissions:', error);
+    }
+  }, [selectedRole]);
 
   useEffect(() => {
     if (selectedRole) {
       loadRolePermissions();
     }
-  }, [selectedRole]);
+  }, [selectedRole, loadRolePermissions]);
 
   const loadPermissions = async () => {
     try {
@@ -117,66 +143,7 @@ export default function Permissions() {
     }
   };
 
-  const loadRolePermissions = useCallback(async () => {
-    try {
-      // Mock role permissions data for local development
-      const mockRolePermissions = [
-        { permission_id: 'prod_read', permissions: { id: 'prod_read', name: 'Ver Productos', description: 'Permite ver la lista de productos', resource: 'productos', action: 'read' } },
-        { permission_id: 'prod_create', permissions: { id: 'prod_create', name: 'Crear Productos', description: 'Permite crear nuevos productos', resource: 'productos', action: 'create' } },
-        { permission_id: 'ventas_read', permissions: { id: 'ventas_read', name: 'Ver Ventas', description: 'Permite ver las ventas realizadas', resource: 'ventas', action: 'read' } },
-        { permission_id: 'compras_read', permissions: { id: 'compras_read', name: 'Ver Compras', description: 'Permite ver las compras realizadas', resource: 'compras', action: 'read' } },
-        { permission_id: 'inv_read', permissions: { id: 'inv_read', name: 'Ver Inventario', description: 'Permite ver el estado del inventario', resource: 'inventario', action: 'read' } },
-        { permission_id: 'prod_read', permissions: { id: 'prod_read', name: 'Ver Producción', description: 'Permite ver tickets de producción', resource: 'produccion', action: 'read' } },
-        { permission_id: 'emp_read', permissions: { id: 'emp_read', name: 'Ver Empleados', description: 'Permite ver la lista de empleados', resource: 'empleados', action: 'read' } },
-        { permission_id: 'rep_read', permissions: { id: 'rep_read', name: 'Ver Reportes', description: 'Permite acceder a reportes del sistema', resource: 'reportes', action: 'read' } },
-        { permission_id: 'config_read', permissions: { id: 'config_read', name: 'Ver Configuración', description: 'Permite ver la configuración del sistema', resource: 'configuracion', action: 'read' } },
-      ];
-
-      // Filter permissions based on role
-      let filteredPermissions = mockRolePermissions;
-      if (selectedRole === 'operator') {
-        filteredPermissions = mockRolePermissions.filter(p =>
-          ['prod_read', 'inv_read'].includes(p.permission_id)
-        );
-      } else if (selectedRole === 'warehouse') {
-        filteredPermissions = mockRolePermissions.filter(p =>
-          ['prod_read', 'inv_read', 'inv_update'].includes(p.permission_id)
-        );
-      } else if (selectedRole === 'supervisor') {
-        filteredPermissions = mockRolePermissions.filter(p =>
-          !['config_update'].includes(p.permission_id)
-        );
-      }
-      // Admin and manager get all permissions
-
-      setRolePermissions(filteredPermissions);
-    } catch (error) {
-      console.error('Error loading role permissions:', error);
-    }
-  }, [selectedRole]);
-
-  const loadTerminalPermissions = async (terminalType: string) => {
-    try {
-      // Mock terminal permissions data for local development
-      const mockTerminalPermissions = Object.values(permissions).flat().map(permission => ({
-        permission_id: permission.id,
-        allowed: terminalType === 'escritorio' ? true : terminalType === 'kiosko' ? !['config_update', 'prod_delete'].includes(permission.id) : !['config_update', 'config_read'].includes(permission.id),
-        permissions: permission
-      }));
-
-      setTerminalPermissions(prev => ({
-        ...prev,
-        [terminalType]: mockTerminalPermissions
-      }));
-    } catch (error) {
-      console.error('Error loading terminal permissions:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleRolePermissionChange = async (_permissionId: string, _checked: boolean) => {
+  const handleRolePermissionChange = async () => {
     if (!selectedRole) return;
 
     // Mock update - just show success message
@@ -184,19 +151,18 @@ export default function Permissions() {
     loadRolePermissions();
   };
 
-  const handleTerminalPermissionChange = async (terminalType: string, _permissionId: string, _allowed: boolean) => {
+  const handleTerminalPermissionChange = async () => {
     // Mock update - just reload permissions
-    loadTerminalPermissions(terminalType);
+    // loadTerminalPermissions(_terminalType);
   };
 
   const isRolePermissionChecked = (permissionId: string) => {
     return rolePermissions.some(rp => rp.permission_id === permissionId);
   };
 
-  const isTerminalPermissionAllowed = (terminalType: string, permissionId: string) => {
-    const terminalPerms = terminalPermissions[terminalType];
-    const perm = terminalPerms.find(tp => tp.permission_id === permissionId);
-    return perm ? perm.allowed : true; // Por defecto true si no hay restricción
+  const isTerminalPermissionAllowed = () => {
+    // Mock implementation - always return true for now
+    return true;
   };
 
   const getTerminalIcon = (type: string) => {
@@ -211,14 +177,6 @@ export default function Permissions() {
         return <Monitor className="h-5 w-5" />;
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -298,7 +256,7 @@ export default function Permissions() {
                             <input
                               type="checkbox"
                               checked={isRolePermissionChecked(permission.id)}
-                              onChange={(e) => handleRolePermissionChange(permission.id, e.target.checked)}
+                              onChange={() => handleRolePermissionChange()}
                               className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                             />
                             <div>
@@ -343,12 +301,8 @@ export default function Permissions() {
                           <label key={`${terminalType}-${permission.id}`} className="flex items-center space-x-2">
                             <input
                               type="checkbox"
-                              checked={isTerminalPermissionAllowed(terminalType, permission.id)}
-                              onChange={(e) => handleTerminalPermissionChange(
-                                terminalType,
-                                permission.id,
-                                e.target.checked
-                              )}
+                              checked={isTerminalPermissionAllowed()}
+                              onChange={() => handleTerminalPermissionChange()}
                               className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                             />
                             <div>

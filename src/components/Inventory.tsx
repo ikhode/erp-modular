@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {AlertTriangle, Package, Plus, Search, TrendingDown, TrendingUp} from 'lucide-react';
 import {storage} from '../lib/storage';
 import {Inventario, Producto} from '../lib/db';
@@ -10,11 +10,7 @@ const Inventory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       const [inventarioData, productosData] = await Promise.all([
         storage.inventario.getAll(),
@@ -39,7 +35,11 @@ const Inventory: React.FC = () => {
     } catch (error) {
       console.error('Error loading inventory data:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const createTestData = async () => {
     try {

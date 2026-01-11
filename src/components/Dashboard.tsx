@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AlertCircle, Clock, DollarSign, Package, TrendingUp, Users} from 'lucide-react';
 import {storage} from '../lib/storage';
+import {ProduccionTicket} from "../lib/db.ts";
 
 const Dashboard: React.FC = () => {
   // Estado para estadísticas y actividades recientes
@@ -43,7 +44,7 @@ const Dashboard: React.FC = () => {
       const totalStock = inventario.reduce((acc, i) => acc + i.cantidad, 0);
       // Eficiencia general (placeholder: % de procesos completados)
       const produccion = await storage.produccionTickets.getAll();
-      const completados = produccion.filter((p: any) => p.estado === 'completado').length;
+      const completados = produccion.filter((p: ProduccionTicket) => p.estado === 'completado').length;
       const eficiencia = produccion.length > 0 ? Math.round((completados / produccion.length) * 100) : 0;
       setStats([
         { title: 'Empleados Activos', value: activos.toString(), icon: Users, color: 'bg-blue-500' },
@@ -59,7 +60,7 @@ const Dashboard: React.FC = () => {
       const inventario = await storage.inventario.getAll();
       const actividades: RecentActivity[] = [];
       ventas.slice(-3).reverse().forEach(v => actividades.push({ type: 'sale', user: 'Sistema', action: `Venta procesada $${(v.cantidad * v.precioUnitario).toFixed(2)}`, time: new Date(v.createdAt).toLocaleTimeString() }));
-      produccion.slice(-3).reverse().forEach((p: any) => actividades.push({ type: 'production', user: 'Sistema', action: `Producción: ${p.cantidadProducida} unidades`, time: new Date(p.createdAt).toLocaleTimeString() }));
+      produccion.slice(-3).reverse().forEach((p: ProduccionTicket) => actividades.push({ type: 'production', user: 'Sistema', action: `Producción: ${p.cantidadProducida} unidades`, time: new Date(p.createdAt).toLocaleTimeString() }));
       inventario.slice(-3).reverse().forEach(i => actividades.push({ type: 'inventory', user: 'Sistema', action: `Stock actualizado`, time: new Date(i.updatedAt).toLocaleTimeString() }));
       actividades.sort((a, b) => b.time.localeCompare(a.time));
       setRecentActivities(actividades.slice(0, 6));

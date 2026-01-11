@@ -54,7 +54,7 @@ class DexieStorage<T extends { id?: number }> implements StorageService<T> {
     }
 
     async update(id: number, data: Partial<T>): Promise<void> {
-        await this.table.update(id, data as any);
+        await this.table.update(id, data as Record<string, unknown>);
     }
 
     async delete(id: number): Promise<void> {
