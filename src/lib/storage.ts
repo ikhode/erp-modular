@@ -18,7 +18,7 @@ import type {
     Venta,
 } from './db';
 import {db} from './db';
-import Dexie, type {UpdateSpec} from 'dexie';
+import Dexie, {UpdateSpec} from 'dexie';
 
 // Generic storage interface
 interface StorageService<T> {
