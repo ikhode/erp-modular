@@ -103,14 +103,14 @@ const Reports: React.FC = () => {
     { id: 'financiero', name: 'Análisis Financiero', icon: PieChart, description: 'Estados financieros y márgenes' },
   ];
 
-  const exportToCSV = (data: Record<string, unknown>[], filename: string) => {
+  const exportToCSV = (data: unknown[], filename: string) => {
     setExporting(true);
     try {
       const headers = Object.keys(data[0] || {});
       const csvContent = [
         headers.join(','),
-        ...data.map((row: Record<string, unknown>) =>
-          headers.map((header: string) => JSON.stringify(row[header] || '')).join(',')
+        ...data.map((row: unknown) =>
+          headers.map((header: string) => JSON.stringify((row as Record<string, unknown>)[header] || '')).join(',')
         )
       ].join('\n');
 

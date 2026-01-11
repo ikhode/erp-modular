@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AlertTriangle, Database, Plus, Save, Settings, Trash2} from 'lucide-react';
+import {AlertTriangle, Calendar, Database, Plus, Save, Settings, Trash2} from 'lucide-react';
 import {safeStorage} from '../lib/safeStorage';
 import {storage} from '../lib/storage';
 import type {
@@ -55,6 +55,12 @@ const defaultConfig = {
   testData: {
     enabled: false,
     lastCreated: null as string | null,
+  },
+  periodClosures: {
+    enabled: true,
+    frequency: 'monthly', // 'daily', 'weekly', 'biweekly', 'monthly', 'quarterly', 'yearly'
+    autoClose: false,
+    closeDay: 1, // Día del mes para cierre mensual, día de la semana para semanal, etc.
   }
 };
 
@@ -93,6 +99,7 @@ const Configuration: React.FC = () => {
       modules: { ...defaultConfig.modules, ...(stored.modules ?? {}) },
       testData: { ...defaultConfig.testData, ...(stored.testData ?? {}) },
       processes: stored.processes ?? defaultConfig.processes,
+      periodClosures: { ...defaultConfig.periodClosures, ...(stored.periodClosures ?? {}) },
     };
     setConfig(mergedConfig);
 
@@ -389,6 +396,7 @@ const Configuration: React.FC = () => {
     { id: 'general', label: 'General', icon: Settings },
     { id: 'pricing', label: 'Precios', icon: Settings },
     { id: 'processes', label: 'Procesos', icon: Settings },
+    { id: 'periodClosures', label: 'Cierres de Periodo', icon: Calendar },
     { id: 'locations', label: 'Ubicaciones', icon: Settings },
     { id: 'modules', label: 'Módulos', icon: Settings },
     { id: 'testData', label: 'Datos de Prueba', icon: Database },
@@ -816,6 +824,126 @@ const Configuration: React.FC = () => {
     );
   };
 
+  const renderPeriodClosuresTab = () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold text-gray-900">Configuración de Cierres de Periodo</h3>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-sm text-blue-800">
+          Los cierres de periodo permiten automatizar el cierre de operaciones contables y de inventario
+          en intervalos regulares. Esto asegura la integridad de los datos y facilita el análisis financiero.
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        {/* Habilitar/Deshabilitar */}
+        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+          <div>
+            <h4 className="text-sm font-medium text-gray-900">Habilitar Cierres de Periodo</h4>
+            <p className="text-sm text-gray-600">Activar el sistema de cierres automáticos</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={config.periodClosures.enabled}
+              onChange={(e) => setConfig({
+                ...config,
+                periodClosures: { ...config.periodClosures, enabled: e.target.checked }
+              })}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+          </label>
+        </div>
+
+        {config.periodClosures.enabled && (
+          <>
+            {/* Frecuencia */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Frecuencia de Cierre
+                </label>
+                <select
+                  value={config.periodClosures.frequency}
+                  onChange={(e) => setConfig({
+                    ...config,
+                    periodClosures: { ...config.periodClosures, frequency: e.target.value as any }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="daily">Diario</option>
+                  <option value="weekly">Semanal</option>
+                  <option value="biweekly">Quincenal</option>
+                  <option value="monthly">Mensual</option>
+                  <option value="quarterly">Trimestral</option>
+                  <option value="yearly">Anual</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Día de Cierre
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max={config.periodClosures.frequency === 'monthly' ? 31 :
+                        config.periodClosures.frequency === 'weekly' ? 7 :
+                        config.periodClosures.frequency === 'biweekly' ? 15 : 365}
+                  value={config.periodClosures.closeDay}
+                  onChange={(e) => setConfig({
+                    ...config,
+                    periodClosures: { ...config.periodClosures, closeDay: Number(e.target.value) }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {config.periodClosures.frequency === 'monthly' && 'Día del mes (1-31)'}
+                  {config.periodClosures.frequency === 'weekly' && 'Día de la semana (1=Lunes, 7=Domingo)'}
+                  {config.periodClosures.frequency === 'biweekly' && 'Día del mes para quincena (1-15)'}
+                  {config.periodClosures.frequency === 'yearly' && 'Día del año (1-365)'}
+                  {config.periodClosures.frequency === 'quarterly' && 'Día del trimestre (1-90)'}
+                  {config.periodClosures.frequency === 'daily' && 'No aplica (cierre diario)'}
+                </p>
+              </div>
+            </div>
+
+            {/* Cierre Automático */}
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900">Cierre Automático</h4>
+                <p className="text-sm text-gray-600">Realizar cierres automáticamente según la frecuencia configurada</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={config.periodClosures.autoClose}
+                  onChange={(e) => setConfig({
+                    ...config,
+                    periodClosures: { ...config.periodClosures, autoClose: e.target.checked }
+                  })}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            {/* Información del Próximo Cierre */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="text-sm font-medium text-gray-900 mb-2">Próximo Cierre Programado</h4>
+              <div className="text-sm text-gray-600">
+                <p>Frecuencia: <span className="font-medium capitalize">{config.periodClosures.frequency}</span></p>
+                <p>Día: <span className="font-medium">{config.periodClosures.closeDay}</span></p>
+                <p>Automático: <span className="font-medium">{config.periodClosures.autoClose ? 'Sí' : 'No'}</span></p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'general':
@@ -830,6 +958,8 @@ const Configuration: React.FC = () => {
         return renderModulesTab();
       case 'testData':
         return renderTestDataTab();
+      case 'periodClosures':
+        return renderPeriodClosuresTab();
       default:
         return renderGeneralTab();
     }
