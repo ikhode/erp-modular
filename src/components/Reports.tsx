@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
     BarChart3,
+    CheckCircle,
     Clock,
     DollarSign,
     Download,
@@ -9,13 +10,15 @@ import {
     Filter,
     Package,
     PieChart,
+    Play,
     RefreshCw,
+    Target,
     TrendingDown,
     TrendingUp,
     Users
 } from 'lucide-react';
 import {storage} from '../lib/storage';
-import {Compra, Empleado, Inventario, ProduccionTicket, Producto, Venta} from '../lib/db';
+import {Compra, Empleado, Inventario, Proceso, ProduccionTicket, Producto, Proveedor, Venta} from '../lib/db';
 
 interface ReportFilters {
   dateFrom: string;
@@ -45,6 +48,8 @@ const Reports: React.FC = () => {
   const [empleados, setEmpleados] = useState<Empleado[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [inventario, setInventario] = useState<Inventario[]>([]);
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]);
+  const [procesos, setProcesos] = useState<Proceso[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
 
@@ -61,14 +66,18 @@ const Reports: React.FC = () => {
         produccionData,
         empleadosData,
         productosData,
-        inventarioData
+        inventarioData,
+        proveedoresData,
+        procesosData
       ] = await Promise.all([
         storage.ventas.getAll(),
         storage.compras.getAll(),
         storage.produccionTickets.getAll(),
         storage.empleados.getAll(),
         storage.productos.getAll(),
-        storage.inventario.getAll()
+        storage.inventario.getAll(),
+        storage.proveedores.getAll(),
+        storage.procesos.getAll()
       ]);
 
       setVentas(ventasData);
@@ -77,6 +86,8 @@ const Reports: React.FC = () => {
       setEmpleados(empleadosData);
       setProductos(productosData);
       setInventario(inventarioData);
+      setProveedores(proveedoresData);
+      setProcesos(procesosData);
     } catch (error) {
       console.error('Error loading reports data:', error);
     } finally {
@@ -612,6 +623,194 @@ const Reports: React.FC = () => {
     );
   };
 
+  const renderProductionReport = () => {
+    const filteredProduccion = filterDataByDate(produccion);
+    const totalProduced = filteredProduccion.reduce((sum, p) => sum + p.cantidadProducida, 0);
+    const totalTickets = filteredProduccion.length;
+    const completedTickets = filteredProduccion.filter(p => p.estado === 'completado').length;
+    const efficiency = totalTickets > 0 ? (completedTickets / totalTickets) * 100 : 0;
+
+    return (
+      <div className="space-y-6">
+        {/* KPIs */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <Factory className="h-8 w-8 text-blue-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Producción Total</p>
+              <p className="text-2xl font-bold">{totalProduced.toLocaleString()}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <FileText className="h-8 w-8 text-green-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Tickets Totales</p>
+              <p className="text-2xl font-bold">{totalTickets}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <CheckCircle className="h-8 w-8 text-purple-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Tickets Completados</p>
+              <p className="text-2xl font-bold">{completedTickets}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <Target className="h-8 w-8 text-orange-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Eficiencia</p>
+              <p className="text-2xl font-bold">{efficiency.toFixed(1)}%</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Análisis Detallado */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">Producción por Proceso</h4>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {procesos.map(proceso => {
+                const processTickets = filteredProduccion.filter(p => p.procesoId === proceso.id);
+                const totalProduced = processTickets.reduce((sum, p) => sum + p.cantidadProducida, 0);
+
+                return totalProduced > 0 ? (
+                  <div key={proceso.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">{proceso.nombre}</p>
+                      <p className="text-sm text-gray-600">{processTickets.length} tickets</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">{totalProduced.toLocaleString()}</p>
+                      <p className="text-sm text-gray-600">unidades</p>
+                    </div>
+                  </div>
+                ) : null;
+              }).filter(Boolean)}
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">Producción por Empleado</h4>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {Array.from(new Set(filteredProduccion.map(p => p.empleadoId))).map(empleadoId => {
+                const empleado = empleados.find(e => e.id === empleadoId);
+                const employeeTickets = filteredProduccion.filter(p => p.empleadoId === empleadoId);
+                const totalProduced = employeeTickets.reduce((sum, p) => sum + p.cantidadProducida, 0);
+
+                return totalProduced > 0 ? (
+                  <div key={empleadoId} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">{empleado?.nombre || 'Empleado no encontrado'}</p>
+                      <p className="text-sm text-gray-600">{employeeTickets.length} tickets</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">{totalProduced.toLocaleString()}</p>
+                      <p className="text-sm text-gray-600">unidades</p>
+                    </div>
+                  </div>
+                ) : null;
+              }).filter(Boolean)}
+            </div>
+          </div>
+        </div>
+
+        {/* Estado de Tickets */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Estado de Tickets de Producción</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-yellow-50 rounded-lg">
+              <Clock className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-yellow-800">
+                {filteredProduccion.filter(p => p.estado === 'pendiente').length}
+              </p>
+              <p className="text-sm text-yellow-600">Pendientes</p>
+            </div>
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <Play className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-blue-800">
+                {filteredProduccion.filter(p => p.estado === 'en_progreso').length}
+              </p>
+              <p className="text-sm text-blue-600">En Progreso</p>
+            </div>
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-green-800">
+                {filteredProduccion.filter(p => p.estado === 'completado').length}
+              </p>
+              <p className="text-sm text-green-600">Completados</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabla de Tickets de Producción */}
+        <div className="bg-white shadow overflow-hidden sm:rounded-md">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-semibold text-gray-900">Tickets de Producción Recientes</h4>
+              <button
+                onClick={() => exportToCSV(filteredProduccion, 'reporte_produccion')}
+                disabled={exporting}
+                className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+              >
+                {exporting ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
+                Exportar CSV
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proceso</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empleado</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pagado</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredProduccion.slice(0, 10).map((ticket) => {
+                    const proceso = procesos.find(p => p.id === ticket.procesoId);
+                    const empleado = empleados.find(e => e.id === ticket.empleadoId);
+                    return (
+                      <tr key={ticket.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatDate(ticket.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {proceso?.nombre || 'Proceso no encontrado'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {empleado?.nombre || 'Empleado no encontrado'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {ticket.cantidadProducida}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            ticket.estado === 'completado' ? 'bg-green-100 text-green-800' :
+                            ticket.estado === 'en_progreso' ? 'bg-blue-100 text-blue-800' :
+                            'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {ticket.estado === 'completado' ? 'Completado' :
+                             ticket.estado === 'en_progreso' ? 'En Progreso' : 'Pendiente'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {ticket.paidAt ? 'Sí' : 'No'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -768,8 +967,9 @@ const Reports: React.FC = () => {
           {selectedReport === 'dashboard' && renderDashboard()}
           {selectedReport === 'ventas' && renderSalesReport()}
           {selectedReport === 'compras' && renderPurchasesReport()}
+          {selectedReport === 'produccion' && renderProductionReport()}
           {/* Aquí se agregarían los otros reportes */}
-          {selectedReport !== 'dashboard' && selectedReport !== 'ventas' && selectedReport !== 'compras' && (
+          {selectedReport !== 'dashboard' && selectedReport !== 'ventas' && selectedReport !== 'compras' && selectedReport !== 'produccion' && (
             <div className="text-center py-12">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">Reporte en desarrollo</h3>

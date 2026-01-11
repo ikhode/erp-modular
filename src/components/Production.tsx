@@ -19,6 +19,9 @@ const Production: React.FC = () => {
     empleadoId: 1, // Default employee
   });
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState('');
+  const [editingTicket, setEditingTicket] = useState<ProduccionTicket | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [ticketToDelete, setTicketToDelete] = useState<ProduccionTicket | null>(null);
 
   useEffect(() => {
     loadData();
@@ -57,6 +60,123 @@ const Production: React.FC = () => {
   const getProducto = (id: number) => productos.find(p => p.id === id);
   const getProceso = (id: number) => procesos.find(p => p.id === id);
 
+  // Function to update inventory when completing a ticket
+  const updateInventoryForTicket = async (ticket: ProduccionTicket) => {
+    try {
+      // Decrease inventory for consumed products
+      for (const insumo of ticket.insumos || []) {
+        const currentInventory = await storage.inventario.where('[productId+ubicacionId]').equals([insumo.productId, insumo.ubicacionId]).first();
+        if (currentInventory) {
+          await storage.inventario.update(currentInventory.id, {
+            cantidad: currentInventory.cantidad - insumo.cantidad,
+            updatedAt: new Date()
+          });
+        }
+      }
+
+      // Increase inventory for produced products
+      for (const output of ticket.productosGenerados || []) {
+        const currentInventory = await storage.inventario.where('[productId+ubicacionId]').equals([output.productId, output.ubicacionId]).first();
+        if (currentInventory) {
+          await storage.inventario.update(currentInventory.id, {
+            cantidad: currentInventory.cantidad + output.cantidad,
+            updatedAt: new Date()
+          });
+        } else {
+          // Create new inventory entry if it doesn't exist
+          await storage.inventario.add({
+            productId: output.productId,
+            ubicacionId: output.ubicacionId,
+            cantidad: output.cantidad,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error updating inventory:', error);
+      throw error;
+    }
+  };
+
+  // Function to start a ticket
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const startTicket = async (ticket: ProduccionTicket) => {
+    try {
+      await storage.produccionTickets.update(ticket.id, {
+        estado: 'en_progreso',
+        startedAt: new Date(),
+        updatedAt: new Date()
+      });
+      loadData();
+    } catch (error) {
+      console.error('Error starting ticket:', error);
+      alert('Error al iniciar el ticket');
+    }
+  };
+
+  // Function to pause a ticket
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const pauseTicket = async (ticket: ProduccionTicket) => {
+    try {
+      await storage.produccionTickets.update(ticket.id, {
+        estado: 'pendiente',
+        updatedAt: new Date()
+      });
+      loadData();
+    } catch (error) {
+      console.error('Error pausing ticket:', error);
+      alert('Error al pausar el ticket');
+    }
+  };
+
+  // Function to complete a ticket
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const completeTicket = async (ticket: ProduccionTicket) => {
+    try {
+      // Update inventory first
+      await updateInventoryForTicket(ticket);
+
+      // Then update ticket status
+      await storage.produccionTickets.update(ticket.id, {
+        estado: 'completado',
+        completedAt: new Date(),
+        updatedAt: new Date()
+      });
+      loadData();
+    } catch (error) {
+      console.error('Error completing ticket:', error);
+      alert('Error al completar el ticket');
+    }
+  };
+
+  // Function to cancel a ticket
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const cancelTicket = async (ticket: ProduccionTicket) => {
+    try {
+      await storage.produccionTickets.update(ticket.id, {
+        estado: 'cancelado',
+        updatedAt: new Date()
+      });
+      loadData();
+    } catch (error) {
+      console.error('Error canceling ticket:', error);
+      alert('Error al cancelar el ticket');
+    }
+  };
+
+  // Function to edit a ticket
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const editTicket = (ticket: ProduccionTicket) => {
+    setEditingTicket(ticket);
+  };
+
+  // Function to delete a ticket
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const deleteTicket = (ticket: ProduccionTicket) => {
+    setTicketToDelete(ticket);
+    setShowDeleteModal(true);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -210,19 +330,50 @@ const Production: React.FC = () => {
                 </div>
 
                 <div className="flex space-x-2">
-                  {ticket.estado === 'en_proceso' ? (
-                    <button className="flex-1 bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center space-x-1">
+                  {ticket.estado === 'en_progreso' ? (
+                    <button
+                      onClick={() => pauseTicket(ticket)}
+                      className="flex-1 bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center space-x-1"
+                    >
                       <Pause className="h-4 w-4" />
                       <span>Pausar</span>
                     </button>
-                  ) : (
-                    <button className="flex-1 bg-green-100 text-green-700 py-2 px-4 rounded-md hover:bg-green-200 transition-colors flex items-center justify-center space-x-1">
+                  ) : ticket.estado === 'pendiente' ? (
+                    <button
+                      onClick={() => startTicket(ticket)}
+                      className="flex-1 bg-green-100 text-green-700 py-2 px-4 rounded-md hover:bg-green-200 transition-colors flex items-center justify-center space-x-1"
+                    >
                       <Play className="h-4 w-4" />
                       <span>Iniciar</span>
                     </button>
+                  ) : ticket.estado === 'completado' ? (
+                    <button
+                      onClick={() => cancelTicket(ticket)}
+                      className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"
+                    >
+                      <X className="h-4 w-4" />
+                      <span>Cancelar</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => completeTicket(ticket)}
+                      className="flex-1 bg-green-100 text-green-700 py-2 px-4 rounded-md hover:bg-green-200 transition-colors flex items-center justify-center space-x-1"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                      <span>Completar</span>
+                    </button>
                   )}
-                  <button className="flex-1 bg-blue-100 text-blue-700 py-2 px-4 rounded-md hover:bg-blue-200 transition-colors">
-                    Detalles
+                  <button
+                    onClick={() => editTicket(ticket)}
+                    className="flex-1 bg-blue-100 text-blue-700 py-2 px-4 rounded-md hover:bg-blue-200 transition-colors"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => deleteTicket(ticket)}
+                    className="flex-1 bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors"
+                  >
+                    Eliminar
                   </button>
                 </div>
               </div>
@@ -670,6 +821,193 @@ const Production: React.FC = () => {
                   </button>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit and Delete Ticket Modal */}
+      {editingTicket && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Editar Ticket de Producción
+              </h3>
+              <button
+                onClick={() => setEditingTicket(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {/* Ticket Details */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Proceso
+                  </label>
+                  <select
+                    value={editingTicket.processId}
+                    onChange={(e) => {
+                      const procesoId = parseInt(e.target.value);
+                      const proceso = getProceso(procesoId);
+                      setEditingTicket(prev => ({
+                        ...prev!,
+                        processId: procesoId,
+                        productoTerminadoId: proceso?.outputs?.[0]?.productId || 0,
+                        cantidadProducida: proceso?.outputs?.[0]?.cantidad || 0,
+                      }));
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Seleccionar proceso</option>
+                    {procesos.map(proceso => (
+                      <option key={proceso.id} value={proceso.id}>
+                        {proceso.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Empleado
+                  </label>
+                  <select
+                    value={editingTicket.employeeId}
+                    onChange={(e) => setEditingTicket(prev => ({ ...prev!, employeeId: parseInt(e.target.value) }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    {empleados.map(empleado => (
+                      <option key={empleado.id} value={empleado.id}>
+                        {empleado.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Insumos
+                  </label>
+                  <div className="space-y-2">
+                    {(editingTicket.insumos || []).map((insumo, index) => {
+                      const producto = getProducto(insumo.productId);
+                      return (
+                        <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-900">{producto?.nombre}</p>
+                            <p className="text-xs text-gray-600">
+                              Ubicación: {insumo.ubicacionId} | Cantidad: {insumo.cantidad}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const newInsumos = editingTicket.insumos.filter((_, i) => i !== index);
+                              setEditingTicket(prev => ({ ...prev!, insumos: newInsumos }));
+                            }}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            <X className="h-5 w-5" />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Productos Generados
+                  </label>
+                  <div className="space-y-2">
+                    {(editingTicket.productosGenerados || []).map((output, index) => {
+                      const producto = getProducto(output.productId);
+                      return (
+                        <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-900">{producto?.nombre}</p>
+                            <p className="text-xs text-gray-600">
+                              Ubicación: {output.ubicacionId} | Cantidad Estimada: {output.cantidad}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const newOutputs = editingTicket.productosGenerados.filter((_, i) => i !== index);
+                              setEditingTicket(prev => ({ ...prev!, productosGenerados: newOutputs }));
+                            }}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            <X className="h-5 w-5" />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      // Save changes
+                      storage.produccionTickets.update(editingTicket.id, editingTicket);
+                      setEditingTicket(null);
+                      loadData();
+                    }}
+                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-1"
+                  >
+                    <CheckCircle className="h-4 w-4" />
+                    <span>Guardar Cambios</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowDeleteModal(true);
+                    }}
+                    className="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors flex items-center justify-center space-x-1"
+                  >
+                    <X className="h-4 w-4" />
+                    <span>Eliminar Ticket</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Ticket Confirmation Modal */}
+      {showDeleteModal && ticketToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Eliminar Ticket de Producción</h3>
+              <p className="text-sm text-gray-600">
+                ¿Estás seguro de que deseas eliminar el ticket <strong>{ticketToDelete.folio}</strong>? Esta acción no se puede deshacer.
+              </p>
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  // Eliminar el ticket
+                  await storage.produccionTickets.delete(ticketToDelete.id);
+                  setShowDeleteModal(false);
+                  setTicketToDelete(null);
+                  loadData();
+                }}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
+              >
+                Eliminar
+              </button>
             </div>
           </div>
         </div>
