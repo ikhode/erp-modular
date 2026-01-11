@@ -868,7 +868,7 @@ const Configuration: React.FC = () => {
                   value={config.periodClosures.frequency}
                   onChange={(e) => setConfig({
                     ...config,
-                    periodClosures: { ...config.periodClosures, frequency: e.target.value as any }
+                    periodClosures: { ...config.periodClosures, frequency: e.target.value as 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'yearly' }
                   })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >

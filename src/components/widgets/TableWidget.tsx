@@ -1,24 +1,24 @@
 import React from 'react';
 import {Download} from 'lucide-react';
 
-interface TableColumn {
-  key: string;
+interface TableColumn<T extends Record<string, unknown>> {
+  key: keyof T;
   header: string;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
   className?: string;
 }
 
-interface TableWidgetProps {
+interface TableWidgetProps<T extends Record<string, unknown>> {
   title: string;
-  columns: TableColumn[];
-  data: any[];
+  columns: TableColumn<T>[];
+  data: T[];
   maxRows?: number;
   exportable?: boolean;
   exportFilename?: string;
-  onExport?: (data: any[], filename: string) => void;
+  onExport?: (data: T[], filename: string) => void;
 }
 
-const TableWidget: React.FC<TableWidgetProps> = ({
+const TableWidget = <T extends Record<string, unknown>>({
   title,
   columns,
   data,
@@ -26,7 +26,7 @@ const TableWidget: React.FC<TableWidgetProps> = ({
   exportable = false,
   exportFilename = 'export',
   onExport
-}) => {
+}: TableWidgetProps<T>) => {
   const displayData = data.slice(0, maxRows);
 
   const handleExport = () => {
@@ -56,7 +56,7 @@ const TableWidget: React.FC<TableWidgetProps> = ({
               <tr>
                 {columns.map((column) => (
                   <th
-                    key={column.key}
+                    key={column.key as string}
                     className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.className || ''}`}
                   >
                     {column.header}
@@ -69,7 +69,7 @@ const TableWidget: React.FC<TableWidgetProps> = ({
                 <tr key={index}>
                   {columns.map((column) => (
                     <td
-                      key={column.key}
+                      key={column.key as string}
                       className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${column.className || ''}`}
                     >
                       {column.render

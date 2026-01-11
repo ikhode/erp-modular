@@ -460,6 +460,158 @@ const Reports: React.FC = () => {
     );
   };
 
+  const renderPurchasesReport = () => {
+    const filteredCompras = filterDataByDate(compras);
+    const totalPurchases = filteredCompras.reduce((sum, c) => sum + (c.totalAmount || (c.cantidad * c.precioUnitario)), 0);
+    const totalTransactions = filteredCompras.length;
+    const avgTicket = totalTransactions > 0 ? totalPurchases / totalTransactions : 0;
+
+    return (
+      <div className="space-y-6">
+        {/* KPIs */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <Package className="h-8 w-8 text-blue-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Compras Totales</p>
+              <p className="text-2xl font-bold">{formatCurrency(totalPurchases)}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <FileText className="h-8 w-8 text-green-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Transacciones</p>
+              <p className="text-2xl font-bold">{totalTransactions}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <TrendingUp className="h-8 w-8 text-purple-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Ticket Promedio</p>
+              <p className="text-2xl font-bold">{formatCurrency(avgTicket)}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <Users className="h-8 w-8 text-orange-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Proveedores</p>
+              <p className="text-2xl font-bold">{new Set(filteredCompras.map(c => c.proveedorId)).size}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Análisis Detallado */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">Compras por Producto</h4>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {productos.map(producto => {
+                const productPurchases = filteredCompras.filter(c => c.productoId === producto.id);
+                const quantity = productPurchases.reduce((sum, c) => sum + c.cantidad, 0);
+                const revenue = productPurchases.reduce((sum, c) => sum + (c.totalAmount || (c.cantidad * c.precioUnitario)), 0);
+
+                return quantity > 0 ? (
+                  <div key={producto.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">{producto.nombre}</p>
+                      <p className="text-sm text-gray-600">{quantity} unidades</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">{formatCurrency(revenue)}</p>
+                      <p className="text-sm text-gray-600">{formatCurrency(revenue / quantity)}/unidad</p>
+                    </div>
+                  </div>
+                ) : null;
+              }).filter(Boolean)}
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">Compras por Proveedor</h4>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {Array.from(new Set(filteredCompras.map(c => c.proveedorId))).map(proveedorId => {
+                const proveedor = proveedores.find(p => p.id === proveedorId);
+                const providerPurchases = filteredCompras.filter(c => c.proveedorId === proveedorId);
+                const total = providerPurchases.reduce((sum, c) => sum + (c.totalAmount || (c.cantidad * c.precioUnitario)), 0);
+
+                return total > 0 ? (
+                  <div key={proveedorId} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">{proveedor?.nombre || 'Proveedor no encontrado'}</p>
+                      <p className="text-sm text-gray-600">{providerPurchases.length} compras</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">{formatCurrency(total)}</p>
+                    </div>
+                  </div>
+                ) : null;
+              }).filter(Boolean)}
+            </div>
+          </div>
+        </div>
+
+        {/* Tabla de Compras Detalladas */}
+        <div className="bg-white shadow overflow-hidden sm:rounded-md">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-semibold text-gray-900">Transacciones Recientes</h4>
+              <button
+                onClick={() => exportToCSV(filteredCompras, 'reporte_compras')}
+                disabled={exporting}
+                className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+              >
+                {exporting ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
+                Exportar CSV
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Unit.</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredCompras.slice(0, 10).map((compra) => {
+                    const producto = productos.find(p => p.id === compra.productoId);
+                    const proveedor = proveedores.find(p => p.id === compra.proveedorId);
+                    return (
+                      <tr key={compra.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatDate(compra.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {producto?.nombre || 'Producto no encontrado'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {proveedor?.nombre || 'Proveedor no encontrado'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {compra.cantidad}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatCurrency(compra.precioUnitario)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {formatCurrency(compra.totalAmount || (compra.cantidad * compra.precioUnitario))}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -615,8 +767,9 @@ const Reports: React.FC = () => {
         <div className="px-4 py-5 sm:p-6">
           {selectedReport === 'dashboard' && renderDashboard()}
           {selectedReport === 'ventas' && renderSalesReport()}
+          {selectedReport === 'compras' && renderPurchasesReport()}
           {/* Aquí se agregarían los otros reportes */}
-          {selectedReport !== 'dashboard' && selectedReport !== 'ventas' && (
+          {selectedReport !== 'dashboard' && selectedReport !== 'ventas' && selectedReport !== 'compras' && (
             <div className="text-center py-12">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">Reporte en desarrollo</h3>
