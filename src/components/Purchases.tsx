@@ -3,6 +3,7 @@ import {CreditCard, Edit, Plus, Search, ShoppingBag, Trash2} from 'lucide-react'
 import {compraStorage, folioGenerator, productoStorage, proveedorStorage, storage} from '../lib/storage';
 import {Compra, Producto, Proveedor} from '../lib/db';
 import PrintButton from './PrintButton';
+import {mlService} from '../lib/mlService';
 
 const initialForm: Omit<Compra, 'id' | 'createdAt' | 'updatedAt'> = {
   proveedorId: 0,
@@ -14,6 +15,7 @@ const initialForm: Omit<Compra, 'id' | 'createdAt' | 'updatedAt'> = {
   vehiculo: '',
   conductor: '',
   notes: '',
+  tenantId: '',
 };
 
 const Purchases: React.FC = () => {
@@ -151,7 +153,7 @@ const Purchases: React.FC = () => {
       // Generar folio automático
       const folio = await folioGenerator.generateFolio('COMP');
 
-      await compraStorage.add({
+      const newPurchase = {
         ...form,
         folio,
         firmaConductorBase64: signatures.conductor,
@@ -159,13 +161,43 @@ const Purchases: React.FC = () => {
         firmaProveedorBase64: signatures.proveedor,
         createdAt: now,
         updatedAt: now
-      });
+      };
+
+      await compraStorage.add(newPurchase);
+
+      // Insertar datos en ML service para aprendizaje continuo
+      try {
+        await mlService.insertTrainingData('purchase', {
+          ...newPurchase,
+          cantidad: form.cantidad,
+          precioUnitario: form.precioUnitario,
+          productoId: form.productoId,
+          proveedorId: form.proveedorId,
+          tipo: form.tipo
+        });
+      } catch (error) {
+        console.error('Error insertando datos de compra en ML:', error);
+      }
+
       // Sumar inventario al completar compra
       if (form.estado === 'completado') {
         const inventario = await storage.inventario.getAll();
         const item = inventario.find(inv => inv.productoId === form.productoId && inv.ubicacionId === 1); // TODO: ubicación configurable
         if (item) {
           await storage.inventario.update(item.id!, { cantidad: item.cantidad + form.cantidad, updatedAt: now });
+
+          // Insertar datos de inventario en ML
+          try {
+            await mlService.insertTrainingData('inventory', {
+              productoId: form.productoId,
+              ubicacionId: 1,
+              cantidad: item.cantidad + form.cantidad,
+              movimiento: form.cantidad,
+              tipoMovimiento: 'compra'
+            });
+          } catch (error) {
+            console.error('Error insertando datos de inventario en ML:', error);
+          }
         } else {
           await storage.inventario.add({
             productoId: form.productoId,
@@ -177,6 +209,19 @@ const Purchases: React.FC = () => {
             createdAt: now,
             updatedAt: now,
           });
+
+          // Insertar datos de inventario en ML
+          try {
+            await mlService.insertTrainingData('inventory', {
+              productoId: form.productoId,
+              ubicacionId: 1,
+              cantidad: form.cantidad,
+              movimiento: form.cantidad,
+              tipoMovimiento: 'compra'
+            });
+          } catch (error) {
+            console.error('Error insertando datos de inventario en ML:', error);
+          }
         }
       }
     }

@@ -65,9 +65,9 @@ const Production: React.FC = () => {
     try {
       // Decrease inventory for consumed products
       for (const insumo of ticket.insumos || []) {
-        const currentInventory = await storage.inventario.where('[productId+ubicacionId]').equals([insumo.productId, insumo.ubicacionId]).first();
+        const currentInventory = await db.inventario.where('[productoId+ubicacionId]').equals([insumo.productId, insumo.ubicacionId]).first();
         if (currentInventory) {
-          await storage.inventario.update(currentInventory.id, {
+          await db.inventario.update(currentInventory.id!, {
             cantidad: currentInventory.cantidad - insumo.cantidad,
             updatedAt: new Date()
           });
@@ -76,18 +76,21 @@ const Production: React.FC = () => {
 
       // Increase inventory for produced products
       for (const output of ticket.productosGenerados || []) {
-        const currentInventory = await storage.inventario.where('[productId+ubicacionId]').equals([output.productId, output.ubicacionId]).first();
+        const currentInventory = await db.inventario.where('[productoId+ubicacionId]').equals([output.productId, output.ubicacionId]).first();
         if (currentInventory) {
-          await storage.inventario.update(currentInventory.id, {
+          await db.inventario.update(currentInventory.id!, {
             cantidad: currentInventory.cantidad + output.cantidad,
             updatedAt: new Date()
           });
         } else {
           // Create new inventory entry if it doesn't exist
-          await storage.inventario.add({
-            productId: output.productId,
+          await db.inventario.add({
+            productoId: output.productId,
             ubicacionId: output.ubicacionId,
             cantidad: output.cantidad,
+            minimo: 0,
+            maximo: 1000,
+            proveedor: 'Producción',
             createdAt: new Date(),
             updatedAt: new Date()
           });
@@ -102,8 +105,8 @@ const Production: React.FC = () => {
   // Function to start a ticket
   const startTicket = async (ticket: ProduccionTicket) => {
     try {
-      await storage.produccionTickets.update(ticket.id, {
-        estado: 'en_progreso',
+      await storage.produccionTickets.update(ticket.id!, {
+        estado: 'en_proceso',
         startedAt: new Date(),
         updatedAt: new Date()
       });
@@ -324,7 +327,7 @@ const Production: React.FC = () => {
                 </div>
 
                 <div className="flex space-x-2">
-                  {ticket.estado === 'en_progreso' ? (
+                  {ticket.estado === 'en_proceso' ? (
                     <button
                       onClick={() => pauseTicket(ticket)}
                       className="flex-1 bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center space-x-1"

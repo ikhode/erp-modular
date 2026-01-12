@@ -89,8 +89,10 @@ const Expenses: React.FC = () => {
     }
   };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-MX');
+  const formatDate = (date: Date | string | null | undefined) => {
+    if (!date) return 'N/A';
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return dateObj.toLocaleDateString('es-MX');
   };
 
   const types = [

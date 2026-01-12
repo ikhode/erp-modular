@@ -50,8 +50,8 @@ const TimeTracker: React.FC = () => {
     return empleado?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
            attendance.action.toLowerCase().includes(searchTerm.toLowerCase());
   }).sort((a, b) => {
-    const aTime = a.timestamp instanceof Date ? a.timestamp.getTime() : new Date(a.timestamp).getTime();
-    const bTime = b.timestamp instanceof Date ? b.timestamp.getTime() : new Date(b.timestamp).getTime();
+    const aTime = a.timestamp instanceof Date ? a.timestamp.getTime() : new Date(a.timestamp as string).getTime();
+    const bTime = b.timestamp instanceof Date ? b.timestamp.getTime() : new Date(b.timestamp as string).getTime();
     return bTime - aTime;
   });
 

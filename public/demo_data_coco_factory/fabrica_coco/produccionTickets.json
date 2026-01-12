@@ -1,19 +1,264 @@
 [
   {
     "folio": "PROD-00001",
-    "productoId": 1,
-    "ubicacionOrigenId": 1,
+    "processId": 1,
+    "employeeId": 1,
+    "insumos": [
+      {
+        "productId": 1,
+        "ubicacionId": 1,
+        "cantidad": 200
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 3,
+        "ubicacionId": 2,
+        "cantidad": 180
+      },
+      {
+        "productId": 8,
+        "ubicacionId": 2,
+        "cantidad": 20
+      }
+    ],
+    "productoTerminadoId": 3,
+    "cantidadProducida": 180,
     "ubicacionDestinoId": 2,
     "estado": "completado",
-    "createdAt": "2026-01-10T10:00:00.000Z"
+    "startedAt": "2026-01-10T08:00:00.000Z",
+    "completedAt": "2026-01-10T12:00:00.000Z",
+    "paymentAmount": 36,
+    "paidAt": "2026-01-10T15:00:00.000Z",
+    "createdAt": "2026-01-10T08:00:00.000Z",
+    "updatedAt": "2026-01-10T15:00:00.000Z"
   },
   {
     "folio": "PROD-00002",
-    "productoId": 2,
-    "ubicacionOrigenId": 2,
+    "processId": 1,
+    "employeeId": 2,
+    "insumos": [
+      {
+        "productId": 2,
+        "ubicacionId": 1,
+        "cantidad": 150
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 3,
+        "ubicacionId": 2,
+        "cantidad": 135
+      },
+      {
+        "productId": 8,
+        "ubicacionId": 2,
+        "cantidad": 15
+      }
+    ],
+    "productoTerminadoId": 3,
+    "cantidadProducida": 135,
+    "ubicacionDestinoId": 2,
+    "estado": "completado",
+    "startedAt": "2026-01-10T08:30:00.000Z",
+    "completedAt": "2026-01-10T12:30:00.000Z",
+    "paymentAmount": 27,
+    "paidAt": "2026-01-10T15:15:00.000Z",
+    "createdAt": "2026-01-10T08:30:00.000Z",
+    "updatedAt": "2026-01-10T15:15:00.000Z"
+  },
+  {
+    "folio": "PROD-00003",
+    "processId": 2,
+    "employeeId": 3,
+    "insumos": [
+      {
+        "productId": 3,
+        "ubicacionId": 2,
+        "cantidad": 100
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 4,
+        "ubicacionId": 3,
+        "cantidad": 95
+      }
+    ],
+    "productoTerminadoId": 4,
+    "cantidadProducida": 95,
     "ubicacionDestinoId": 3,
     "estado": "completado",
-    "createdAt": "2026-01-10T11:00:00.000Z"
+    "startedAt": "2026-01-10T09:00:00.000Z",
+    "completedAt": "2026-01-10T13:00:00.000Z",
+    "paymentAmount": 19,
+    "paidAt": "2026-01-10T15:30:00.000Z",
+    "createdAt": "2026-01-10T09:00:00.000Z",
+    "updatedAt": "2026-01-10T15:30:00.000Z"
+  },
+  {
+    "folio": "PROD-00004",
+    "processId": 3,
+    "employeeId": 4,
+    "insumos": [
+      {
+        "productId": 4,
+        "ubicacionId": 3,
+        "cantidad": 50
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 5,
+        "ubicacionId": 4,
+        "cantidad": 45
+      },
+      {
+        "productId": 6,
+        "ubicacionId": 4,
+        "cantidad": 5
+      }
+    ],
+    "productoTerminadoId": 5,
+    "cantidadProducida": 45,
+    "ubicacionDestinoId": 4,
+    "estado": "completado",
+    "startedAt": "2026-01-10T10:00:00.000Z",
+    "completedAt": "2026-01-10T14:00:00.000Z",
+    "paymentAmount": 9,
+    "paidAt": "2026-01-10T15:45:00.000Z",
+    "createdAt": "2026-01-10T10:00:00.000Z",
+    "updatedAt": "2026-01-10T15:45:00.000Z"
+  },
+  {
+    "folio": "PROD-00005",
+    "processId": 1,
+    "employeeId": 5,
+    "insumos": [
+      {
+        "productId": 1,
+        "ubicacionId": 1,
+        "cantidad": 180
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 3,
+        "ubicacionId": 2,
+        "cantidad": 162
+      },
+      {
+        "productId": 8,
+        "ubicacionId": 2,
+        "cantidad": 18
+      }
+    ],
+    "productoTerminadoId": 3,
+    "cantidadProducida": 162,
+    "ubicacionDestinoId": 2,
+    "estado": "completado",
+    "startedAt": "2026-01-10T11:00:00.000Z",
+    "completedAt": "2026-01-10T15:00:00.000Z",
+    "paymentAmount": 32.4,
+    "paidAt": "2026-01-10T16:00:00.000Z",
+    "createdAt": "2026-01-10T11:00:00.000Z",
+    "updatedAt": "2026-01-10T16:00:00.000Z"
+  },
+  {
+    "folio": "PROD-00006",
+    "processId": 2,
+    "employeeId": 6,
+    "insumos": [
+      {
+        "productId": 3,
+        "ubicacionId": 2,
+        "cantidad": 80
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 4,
+        "ubicacionId": 3,
+        "cantidad": 76
+      }
+    ],
+    "productoTerminadoId": 4,
+    "cantidadProducida": 76,
+    "ubicacionDestinoId": 3,
+    "estado": "completado",
+    "startedAt": "2026-01-10T15:00:00.000Z",
+    "completedAt": "2026-01-10T19:00:00.000Z",
+    "paymentAmount": 15.2,
+    "paidAt": "2026-01-10T22:00:00.000Z",
+    "createdAt": "2026-01-10T15:00:00.000Z",
+    "updatedAt": "2026-01-10T22:00:00.000Z"
+  },
+  {
+    "folio": "PROD-00007",
+    "processId": 3,
+    "employeeId": 7,
+    "insumos": [
+      {
+        "productId": 4,
+        "ubicacionId": 3,
+        "cantidad": 40
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 5,
+        "ubicacionId": 4,
+        "cantidad": 36
+      },
+      {
+        "productId": 6,
+        "ubicacionId": 4,
+        "cantidad": 4
+      }
+    ],
+    "productoTerminadoId": 5,
+    "cantidadProducida": 36,
+    "ubicacionDestinoId": 4,
+    "estado": "completado",
+    "startedAt": "2026-01-10T16:00:00.000Z",
+    "completedAt": "2026-01-10T20:00:00.000Z",
+    "paymentAmount": 7.2,
+    "paidAt": "2026-01-10T22:15:00.000Z",
+    "createdAt": "2026-01-10T16:00:00.000Z",
+    "updatedAt": "2026-01-10T22:15:00.000Z"
+  },
+  {
+    "folio": "PROD-00008",
+    "processId": 1,
+    "employeeId": 8,
+    "insumos": [
+      {
+        "productId": 2,
+        "ubicacionId": 1,
+        "cantidad": 120
+      }
+    ],
+    "productosGenerados": [
+      {
+        "productId": 3,
+        "ubicacionId": 2,
+        "cantidad": 108
+      },
+      {
+        "productId": 8,
+        "ubicacionId": 2,
+        "cantidad": 12
+      }
+    ],
+    "productoTerminadoId": 3,
+    "cantidadProducida": 108,
+    "ubicacionDestinoId": 2,
+    "estado": "completado",
+    "startedAt": "2026-01-10T17:00:00.000Z",
+    "completedAt": "2026-01-10T21:00:00.000Z",
+    "paymentAmount": 21.6,
+    "paidAt": "2026-01-10T22:30:00.000Z",
+    "createdAt": "2026-01-10T17:00:00.000Z",
+    "updatedAt": "2026-01-10T22:30:00.000Z"
   }
 ]
-

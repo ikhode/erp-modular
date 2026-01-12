@@ -3,6 +3,7 @@ import Dexie, {Table} from 'dexie';
 // Interfaces para las tablas principales del ERP
 export interface Cliente {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   nombre: string;
   rfc: string;
   email?: string;
@@ -23,6 +24,7 @@ export interface Cliente {
 
 export interface Proveedor {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   nombre: string;
   rfc: string;
   email?: string;
@@ -44,11 +46,14 @@ export interface Proveedor {
 
 export interface Producto {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   nombre: string;
   descripcion?: string;
+  categoria?: string; // Categoría del producto
   precioMin: number;
   precioMax: number;
   precioActual: number;
+  precioCompra?: number; // Precio de compra promedio
   unidad: string;
   // Flags de uso para trazabilidad y flexibilidad
   compra: boolean; // Se puede comprar
@@ -61,6 +66,7 @@ export interface Producto {
 
 export interface Empleado {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   nombre: string;
   rol: string; // Reference to user_roles.name
   email?: string;
@@ -68,12 +74,14 @@ export interface Empleado {
   alias?: string; // Alias interno para identificación rápida
   faceImageBase64?: string; // Imagen facial en base64 para autenticación
   faceId?: string; // ID único de la cara para reconocimiento facial
+  activo?: boolean; // Estado del empleado
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface Ubicacion {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   nombre: string;
   tipo: string; // Reference to location_types.name
   descripcion?: string;
@@ -83,6 +91,7 @@ export interface Ubicacion {
 
 export interface Proceso {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   nombre: string;
   descripcion?: string;
   ubicacionId: number;
@@ -109,6 +118,7 @@ export interface ProcessItem {
 
 export interface Inventario {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   productoId: number;
   ubicacionId: number;
   cantidad: number;
@@ -121,10 +131,14 @@ export interface Inventario {
 
 export interface ProduccionTicket {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   folio?: string; // Nuevo campo para folio automático
   processId: number;
   employeeId: number;
+  tiempoEstimado?: number; // Tiempo estimado en minutos
+  prioridad?: number; // Prioridad del ticket (1-5)
   insumos: { productId: number; ubicacionId: number; cantidad: number }[]; // Corregido para consistencia
+  productosGenerados?: { productId: number; ubicacionId: number; cantidad: number }[]; // Productos generados
   productoTerminadoId: number;
   cantidadProducida: number;
   ubicacionDestinoId: number;
@@ -150,6 +164,7 @@ export interface ProduccionTicket {
 
 export interface Compra {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   folio?: string; // Nuevo campo para folio automático
   proveedorId: number;
   productoId: number;
@@ -175,6 +190,7 @@ export interface Compra {
 
 export interface Venta {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   folio?: string; // Nuevo campo para folio automático
   clienteId: number;
   productoId: number;
@@ -198,6 +214,7 @@ export interface Venta {
 
 export interface Transfer {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   folio?: string; // Nuevo campo para folio automático
   productoId: number;
   cantidad: number;
@@ -212,13 +229,14 @@ export interface Transfer {
   fechaTransporte?: Date;
   fechaCompletado?: Date;
   motivoCancelacion?: string;
-  notas?: string;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface Attendance {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   employeeId: number;
   action: 'entrada' | 'salida' | 'comida' | 'regreso_comida' | 'baño' | 'regreso_baño';
   timestamp: Date;
@@ -229,15 +247,20 @@ export interface Attendance {
 
 export interface SyncQueue {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   operation: 'create' | 'update' | 'delete';
   table: string;
   data: Record<string, unknown>;
   createdAt: Date;
   synced: boolean;
+  retryCount?: number;
+  lastError?: string;
+  updatedAt?: Date;
 }
 
 export interface CashFlow {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   amount: number;
   movementType: 'ingreso' | 'egreso';
   sourceType: 'venta' | 'compra' | 'produccion' | 'capital' | 'nomina' | 'gasto' | 'devolucion' | 'otro';
@@ -253,6 +276,7 @@ export interface CashFlow {
 // Interfaces para las tablas de configuración
 export interface UserRole {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   name: string;
   description?: string;
   createdAt: Date;
@@ -261,6 +285,7 @@ export interface UserRole {
 
 export interface LocationType {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   name: string;
   description?: string;
   productosPermitidos?: number[]; // IDs de productos permitidos
@@ -270,9 +295,46 @@ export interface LocationType {
 
 export interface FolioSequence {
   id?: number;
+  tenantId: string; // Multi-tenancy support
   prefix: string;
   description?: string;
   currentNumber: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Interfaces para terminales y dispositivos
+export interface Terminal {
+  id?: number;
+  tenantId: string; // Multi-tenancy support
+  name: string;
+  deviceId: string; // Unique device identifier
+  deviceType: 'kiosk' | 'mobile' | 'desktop';
+  location?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  lastSeen?: Date;
+  isActive: boolean;
+  revokedAt?: Date;
+  revokedBy?: number;
+  revocationReason?: string;
+  faceAuthEnabled: boolean;
+  allowedModules: string[]; // Array of allowed module names
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TerminalSession {
+  id?: number;
+  tenantId: string; // Multi-tenancy support
+  terminalId: number;
+  employeeId: number;
+  startedAt: Date;
+  endedAt?: Date;
+  faceAuthUsed: boolean;
+  ipAddress?: string;
+  userAgent?: string;
+  actionsPerformed: string[]; // Array of actions performed during session
   createdAt: Date;
   updatedAt: Date;
 }
@@ -296,27 +358,31 @@ export class ERPDB extends Dexie {
   userRoles!: Table<UserRole>;
   locationTypes!: Table<LocationType>;
   folioSequences!: Table<FolioSequence>;
+  terminals!: Table<Terminal>;
+  terminalSessions!: Table<TerminalSession>;
 
   constructor() {
     super('erp_modular');
-    this.version(8).stores({
-      clientes: '++id, nombre, rfc, email, createdAt',
-      proveedores: '++id, nombre, rfc, email, createdAt',
-      productos: '++id, nombre, precioActual, createdAt',
-      empleados: '++id, nombre, alias, rol, email, createdAt',
-      ubicaciones: '++id, nombre, tipo, createdAt',
-      procesos: '++id, nombre, ubicacionId, requiereFaceAuth, createdAt',
-      inventario: '++id, productoId, ubicacionId, cantidad, minimo, maximo, proveedor, createdAt',
-      produccionTickets: '++id, folio, processId, employeeId, productoTerminadoId, ubicacionDestinoId, estado, createdAt',
-      compras: '++id, folio, proveedorId, productoId, tipo, estado, createdAt',
-      ventas: '++id, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
-      transfers: '++id, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, status, fechaSolicitud, createdAt',
-      attendance: '++id, employeeId, action, timestamp, createdAt',
-      cashFlow: '++id, amount, movementType, sourceType, createdAt',
-      syncQueue: '++id, operation, table, synced, createdAt',
-      userRoles: '++id, name, createdAt',
-      locationTypes: '++id, name, createdAt',
-      folioSequences: '++id, prefix, currentNumber, createdAt',
+    this.version(9).stores({
+      clientes: '++id, tenantId, nombre, rfc, email, createdAt',
+      proveedores: '++id, tenantId, nombre, rfc, email, createdAt',
+      productos: '++id, tenantId, nombre, precioActual, createdAt',
+      empleados: '++id, tenantId, nombre, alias, rol, email, createdAt',
+      ubicaciones: '++id, tenantId, nombre, tipo, createdAt',
+      procesos: '++id, tenantId, nombre, ubicacionId, requiereFaceAuth, createdAt',
+      inventario: '++id, tenantId, productoId, ubicacionId, cantidad, minimo, maximo, proveedor, createdAt',
+      produccionTickets: '++id, tenantId, folio, processId, employeeId, productoTerminadoId, ubicacionDestinoId, estado, createdAt',
+      compras: '++id, tenantId, folio, proveedorId, productoId, tipo, estado, createdAt',
+      ventas: '++id, tenantId, folio, clienteId, productoId, tipoEntrega, estado, createdAt',
+      transfers: '++id, tenantId, folio, productoId, ubicacionOrigenId, ubicacionDestinoId, status, fechaSolicitud, createdAt',
+      attendance: '++id, tenantId, employeeId, action, timestamp, createdAt',
+      cashFlow: '++id, tenantId, amount, movementType, sourceType, createdAt',
+      syncQueue: '++id, tenantId, operation, table, synced, createdAt',
+      userRoles: '++id, tenantId, name, createdAt',
+      locationTypes: '++id, tenantId, name, createdAt',
+      folioSequences: '++id, tenantId, prefix, currentNumber, createdAt',
+      terminals: '++id, tenantId, name, deviceId, createdAt',
+      terminalSessions: '++id, tenantId, terminalId, employeeId, startedAt, createdAt',
     });
   }
 }

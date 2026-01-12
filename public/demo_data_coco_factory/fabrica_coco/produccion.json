@@ -1,0 +1,2141 @@
+[
+  {
+    "id": 1,
+    "fecha": "2026-01-09T08:00:00.000Z",
+    "lote": "LOTE-2026-01-001",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 500,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 800,
+        "unidad": "kg",
+        "compraReferencia": 1
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción regular de pulpa seca",
+    "ventaReferencia": 1,
+    "createdAt": "2026-01-09T08:00:00.000Z",
+    "updatedAt": "2026-01-09T08:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "fecha": "2026-01-08T08:00:00.000Z",
+    "lote": "LOTE-2026-01-002",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 200,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 600,
+        "unidad": "kg",
+        "compraReferencia": 2
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Producción de aceite virgen",
+    "ventaReferencia": 2,
+    "createdAt": "2026-01-08T08:00:00.000Z",
+    "updatedAt": "2026-01-08T08:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "fecha": "2026-01-07T08:00:00.000Z",
+    "lote": "LOTE-2026-01-003",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 300,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 450,
+        "unidad": "kg",
+        "compraReferencia": 3
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Producción para venta local",
+    "ventaReferencia": 3,
+    "createdAt": "2026-01-07T08:00:00.000Z",
+    "updatedAt": "2026-01-07T08:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "fecha": "2026-01-06T08:00:00.000Z",
+    "lote": "LOTE-2026-01-004",
+    "producto": "Copra",
+    "cantidadProducida": 400,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 500,
+        "unidad": "kg",
+        "compraReferencia": 4
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "Ana Rodríguez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra para exportación",
+    "ventaReferencia": 4,
+    "createdAt": "2026-01-06T08:00:00.000Z",
+    "updatedAt": "2026-01-06T08:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "fecha": "2026-01-05T08:00:00.000Z",
+    "lote": "LOTE-2026-01-005",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 500,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1500,
+        "unidad": "kg",
+        "compraReferencia": 5
+      }
+    ],
+    "tiempoProduccion": 10,
+    "operador": "Roberto Sánchez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Producción especial para exportación",
+    "ventaReferencia": 5,
+    "createdAt": "2026-01-05T08:00:00.000Z",
+    "updatedAt": "2026-01-05T08:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "fecha": "2026-01-04T08:00:00.000Z",
+    "lote": "LOTE-2026-01-006",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 200,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 300,
+        "unidad": "kg",
+        "compraReferencia": 6
+      }
+    ],
+    "tiempoProduccion": 3,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción semanal regular",
+    "ventaReferencia": 6,
+    "createdAt": "2026-01-04T08:00:00.000Z",
+    "updatedAt": "2026-01-04T08:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "fecha": "2026-01-03T08:00:00.000Z",
+    "lote": "LOTE-2026-01-007",
+    "producto": "Estopa",
+    "cantidadProducida": 50,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 100,
+        "unidad": "kg",
+        "compraReferencia": 7
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Producción de subproducto",
+    "ventaReferencia": 7,
+    "createdAt": "2026-01-03T08:00:00.000Z",
+    "updatedAt": "2026-01-03T08:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "fecha": "2026-01-02T08:00:00.000Z",
+    "lote": "LOTE-2026-01-008",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 400,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 640,
+        "unidad": "kg",
+        "compraReferencia": 8
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción para venta local",
+    "ventaReferencia": 8,
+    "createdAt": "2026-01-02T08:00:00.000Z",
+    "updatedAt": "2026-01-02T08:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "fecha": "2026-01-01T08:00:00.000Z",
+    "lote": "LOTE-2026-01-009",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 300,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 900,
+        "unidad": "kg",
+        "compraReferencia": 9
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Ana Rodríguez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Producción de fin de año",
+    "ventaReferencia": 9,
+    "createdAt": "2026-01-01T08:00:00.000Z",
+    "updatedAt": "2026-01-01T08:00:00.000Z"
+  },
+  {
+    "id": 10,
+    "fecha": "2025-12-31T08:00:00.000Z",
+    "lote": "LOTE-2025-12-001",
+    "producto": "Copra",
+    "cantidadProducida": 350,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 437.5,
+        "unidad": "kg",
+        "compraReferencia": 10
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra navideña",
+    "ventaReferencia": 10,
+    "createdAt": "2025-12-31T08:00:00.000Z",
+    "updatedAt": "2025-12-31T08:00:00.000Z"
+  },
+  {
+    "id": 11,
+    "fecha": "2025-12-30T08:00:00.000Z",
+    "lote": "LOTE-2025-12-002",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 400,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 600,
+        "unidad": "kg",
+        "compraReferencia": 11
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción para exportación",
+    "ventaReferencia": 11,
+    "createdAt": "2025-12-30T08:00:00.000Z",
+    "updatedAt": "2025-12-30T08:00:00.000Z"
+  },
+  {
+    "id": 12,
+    "fecha": "2025-12-29T08:00:00.000Z",
+    "lote": "LOTE-2025-12-003",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 150,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 450,
+        "unidad": "kg",
+        "compraReferencia": 12
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Producción navideña",
+    "ventaReferencia": 12,
+    "createdAt": "2025-12-29T08:00:00.000Z",
+    "updatedAt": "2025-12-29T08:00:00.000Z"
+  },
+  {
+    "id": 13,
+    "fecha": "2025-12-28T08:00:00.000Z",
+    "lote": "LOTE-2025-12-004",
+    "producto": "Estopa",
+    "cantidadProducida": 15,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 30,
+        "unidad": "kg",
+        "compraReferencia": 13
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Subproducto navideño",
+    "ventaReferencia": 13,
+    "createdAt": "2025-12-28T08:00:00.000Z",
+    "updatedAt": "2025-12-28T08:00:00.000Z"
+  },
+  {
+    "id": 14,
+    "fecha": "2025-12-27T08:00:00.000Z",
+    "lote": "LOTE-2025-12-005",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 600,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 960,
+        "unidad": "kg",
+        "compraReferencia": 14
+      }
+    ],
+    "tiempoProduccion": 9,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción semanal",
+    "ventaReferencia": 14,
+    "createdAt": "2025-12-27T08:00:00.000Z",
+    "updatedAt": "2025-12-27T08:00:00.000Z"
+  },
+  {
+    "id": 15,
+    "fecha": "2025-12-26T08:00:00.000Z",
+    "lote": "LOTE-2025-12-006",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 250,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 750,
+        "unidad": "kg",
+        "compraReferencia": 15
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite navideño",
+    "ventaReferencia": 15,
+    "createdAt": "2025-12-26T08:00:00.000Z",
+    "updatedAt": "2025-12-26T08:00:00.000Z"
+  },
+  {
+    "id": 16,
+    "fecha": "2025-12-25T08:00:00.000Z",
+    "lote": "LOTE-2025-12-007",
+    "producto": "Copra",
+    "cantidadProducida": 440,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 550,
+        "unidad": "kg",
+        "compraReferencia": 16
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Juan Pérez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra especial navideña",
+    "ventaReferencia": 16,
+    "createdAt": "2025-12-25T08:00:00.000Z",
+    "updatedAt": "2025-12-25T08:00:00.000Z"
+  },
+  {
+    "id": 17,
+    "fecha": "2025-12-24T08:00:00.000Z",
+    "lote": "LOTE-2025-12-008",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 100,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 150,
+        "unidad": "kg",
+        "compraReferencia": 17
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción navideña especial",
+    "ventaReferencia": 17,
+    "createdAt": "2025-12-24T08:00:00.000Z",
+    "updatedAt": "2025-12-24T08:00:00.000Z"
+  },
+  {
+    "id": 18,
+    "fecha": "2025-12-23T08:00:00.000Z",
+    "lote": "LOTE-2025-12-009",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 330,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 990,
+        "unidad": "kg",
+        "compraReferencia": 18
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Carlos López",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 18,
+    "createdAt": "2025-12-23T08:00:00.000Z",
+    "updatedAt": "2025-12-23T08:00:00.000Z"
+  },
+  {
+    "id": 19,
+    "fecha": "2025-12-22T08:00:00.000Z",
+    "lote": "LOTE-2025-12-010",
+    "producto": "Estopa",
+    "cantidadProducida": 28,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 56,
+        "unidad": "kg",
+        "compraReferencia": 19
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 19,
+    "createdAt": "2025-12-22T08:00:00.000Z",
+    "updatedAt": "2025-12-22T08:00:00.000Z"
+  },
+  {
+    "id": 20,
+    "fecha": "2025-12-21T08:00:00.000Z",
+    "lote": "LOTE-2025-12-011",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 350,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 560,
+        "unidad": "kg",
+        "compraReferencia": 20
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para panadería",
+    "ventaReferencia": 20,
+    "createdAt": "2025-12-21T08:00:00.000Z",
+    "updatedAt": "2025-12-21T08:00:00.000Z"
+  },
+  {
+    "id": 21,
+    "fecha": "2025-12-20T08:00:00.000Z",
+    "lote": "LOTE-2025-12-012",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 400,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1200,
+        "unidad": "kg",
+        "compraReferencia": 21
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Juan Pérez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Gran producción de aceite",
+    "ventaReferencia": 21,
+    "createdAt": "2025-12-20T08:00:00.000Z",
+    "updatedAt": "2025-12-20T08:00:00.000Z"
+  },
+  {
+    "id": 22,
+    "fecha": "2025-12-19T08:00:00.000Z",
+    "lote": "LOTE-2025-12-013",
+    "producto": "Copra",
+    "cantidadProducida": 220,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 275,
+        "unidad": "kg",
+        "compraReferencia": 22
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "María García",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra semanal",
+    "ventaReferencia": 22,
+    "createdAt": "2025-12-19T08:00:00.000Z",
+    "updatedAt": "2025-12-19T08:00:00.000Z"
+  },
+  {
+    "id": 23,
+    "fecha": "2025-12-18T08:00:00.000Z",
+    "lote": "LOTE-2025-12-014",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 140,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 210,
+        "unidad": "kg",
+        "compraReferencia": 23
+      }
+    ],
+    "tiempoProduccion": 3,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción regular",
+    "ventaReferencia": 23,
+    "createdAt": "2025-12-18T08:00:00.000Z",
+    "updatedAt": "2025-12-18T08:00:00.000Z"
+  },
+  {
+    "id": 24,
+    "fecha": "2025-12-17T08:00:00.000Z",
+    "lote": "LOTE-2025-12-015",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 495,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1485,
+        "unidad": "kg",
+        "compraReferencia": 24
+      }
+    ],
+    "tiempoProduccion": 9,
+    "operador": "Ana Rodríguez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 24,
+    "createdAt": "2025-12-17T08:00:00.000Z",
+    "updatedAt": "2025-12-17T08:00:00.000Z"
+  },
+  {
+    "id": 25,
+    "fecha": "2025-12-16T08:00:00.000Z",
+    "lote": "LOTE-2025-12-016",
+    "producto": "Estopa",
+    "cantidadProducida": 10,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 20,
+        "unidad": "kg",
+        "compraReferencia": 25
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 25,
+    "createdAt": "2025-12-16T08:00:00.000Z",
+    "updatedAt": "2025-12-16T08:00:00.000Z"
+  },
+  {
+    "id": 26,
+    "fecha": "2025-12-15T08:00:00.000Z",
+    "lote": "LOTE-2025-12-017",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 800,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1280,
+        "unidad": "kg",
+        "compraReferencia": 26
+      }
+    ],
+    "tiempoProduccion": 12,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción para exportación",
+    "ventaReferencia": 26,
+    "createdAt": "2025-12-15T08:00:00.000Z",
+    "updatedAt": "2025-12-15T08:00:00.000Z"
+  },
+  {
+    "id": 27,
+    "fecha": "2025-12-14T08:00:00.000Z",
+    "lote": "LOTE-2025-12-018",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 220,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 660,
+        "unidad": "kg",
+        "compraReferencia": 27
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 27,
+    "createdAt": "2025-12-14T08:00:00.000Z",
+    "updatedAt": "2025-12-14T08:00:00.000Z"
+  },
+  {
+    "id": 28,
+    "fecha": "2025-12-13T08:00:00.000Z",
+    "lote": "LOTE-2025-12-019",
+    "producto": "Copra",
+    "cantidadProducida": 339,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 423.75,
+        "unidad": "kg",
+        "compraReferencia": 28
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Carlos López",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra premium",
+    "ventaReferencia": 28,
+    "createdAt": "2025-12-13T08:00:00.000Z",
+    "updatedAt": "2025-12-13T08:00:00.000Z"
+  },
+  {
+    "id": 29,
+    "fecha": "2025-12-12T08:00:00.000Z",
+    "lote": "LOTE-2025-12-020",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 350,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 525,
+        "unidad": "kg",
+        "compraReferencia": 29
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa fresca",
+    "ventaReferencia": 29,
+    "createdAt": "2025-12-12T08:00:00.000Z",
+    "updatedAt": "2025-12-12T08:00:00.000Z"
+  },
+  {
+    "id": 30,
+    "fecha": "2025-12-11T08:00:00.000Z",
+    "lote": "LOTE-2025-12-021",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 242,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 726,
+        "unidad": "kg",
+        "compraReferencia": 30
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 30,
+    "createdAt": "2025-12-11T08:00:00.000Z",
+    "updatedAt": "2025-12-11T08:00:00.000Z"
+  },
+  {
+    "id": 31,
+    "fecha": "2025-12-10T08:00:00.000Z",
+    "lote": "LOTE-2025-12-022",
+    "producto": "Estopa",
+    "cantidadProducida": 20,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 40,
+        "unidad": "kg",
+        "compraReferencia": 31
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 31,
+    "createdAt": "2025-12-10T08:00:00.000Z",
+    "updatedAt": "2025-12-10T08:00:00.000Z"
+  },
+  {
+    "id": 32,
+    "fecha": "2025-12-09T08:00:00.000Z",
+    "lote": "LOTE-2025-12-023",
+    "producto": "Pulpa seca",
+    "lote": "LOTE-2025-12-023",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 250,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 400,
+        "unidad": "kg",
+        "compraReferencia": 32
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta local",
+    "ventaReferencia": 32,
+    "createdAt": "2025-12-09T08:00:00.000Z",
+    "updatedAt": "2025-12-09T08:00:00.000Z"
+  },
+  {
+    "id": 33,
+    "fecha": "2025-12-08T08:00:00.000Z",
+    "lote": "LOTE-2025-12-024",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 385,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1155,
+        "unidad": "kg",
+        "compraReferencia": 33
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Carlos López",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 33,
+    "createdAt": "2025-12-08T08:00:00.000Z",
+    "updatedAt": "2025-12-08T08:00:00.000Z"
+  },
+  {
+    "id": 34,
+    "fecha": "2025-12-07T08:00:00.000Z",
+    "lote": "LOTE-2025-12-025",
+    "producto": "Copra",
+    "cantidadProducida": 415,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 518.75,
+        "unidad": "kg",
+        "compraReferencia": 34
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Ana Rodríguez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra para exportación",
+    "ventaReferencia": 34,
+    "createdAt": "2025-12-07T08:00:00.000Z",
+    "updatedAt": "2025-12-07T08:00:00.000Z"
+  },
+  {
+    "id": 35,
+    "fecha": "2025-12-06T08:00:00.000Z",
+    "lote": "LOTE-2025-12-026",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 160,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 240,
+        "unidad": "kg",
+        "compraReferencia": 35
+      }
+    ],
+    "tiempoProduccion": 3,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa fresca semanal",
+    "ventaReferencia": 35,
+    "createdAt": "2025-12-06T08:00:00.000Z",
+    "updatedAt": "2025-12-06T08:00:00.000Z"
+  },
+  {
+    "id": 36,
+    "fecha": "2025-12-05T08:00:00.000Z",
+    "lote": "LOTE-2025-12-027",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 440,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1320,
+        "unidad": "kg",
+        "compraReferencia": 36
+      }
+    ],
+    "tiempoProduccion": 9,
+    "operador": "Juan Pérez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite para exportación",
+    "ventaReferencia": 36,
+    "createdAt": "2025-12-05T08:00:00.000Z",
+    "updatedAt": "2025-12-05T08:00:00.000Z"
+  },
+  {
+    "id": 37,
+    "fecha": "2025-12-04T08:00:00.000Z",
+    "lote": "LOTE-2025-12-028",
+    "producto": "Estopa",
+    "cantidadProducida": 6,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 12,
+        "unidad": "kg",
+        "compraReferencia": 37
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 37,
+    "createdAt": "2025-12-04T08:00:00.000Z",
+    "updatedAt": "2025-12-04T08:00:00.000Z"
+  },
+  {
+    "id": 38,
+    "fecha": "2025-12-03T08:00:00.000Z",
+    "lote": "LOTE-2025-12-029",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 450,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 720,
+        "unidad": "kg",
+        "compraReferencia": 38
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta",
+    "ventaReferencia": 38,
+    "createdAt": "2025-12-03T08:00:00.000Z",
+    "updatedAt": "2025-12-03T08:00:00.000Z"
+  },
+  {
+    "id": 39,
+    "fecha": "2025-12-02T08:00:00.000Z",
+    "lote": "LOTE-2025-12-030",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 440,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1320,
+        "unidad": "kg",
+        "compraReferencia": 39
+      }
+    ],
+    "tiempoProduccion": 9,
+    "operador": "Ana Rodríguez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 39,
+    "createdAt": "2025-12-02T08:00:00.000Z",
+    "updatedAt": "2025-12-02T08:00:00.000Z"
+  },
+  {
+    "id": 40,
+    "fecha": "2025-12-01T08:00:00.000Z",
+    "lote": "LOTE-2025-12-031",
+    "producto": "Copra",
+    "cantidadProducida": 302.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 378.125,
+        "unidad": "kg",
+        "compraReferencia": 40
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "Roberto Sánchez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra mensual",
+    "ventaReferencia": 40,
+    "createdAt": "2025-12-01T08:00:00.000Z",
+    "updatedAt": "2025-12-01T08:00:00.000Z"
+  },
+  {
+    "id": 41,
+    "fecha": "2025-11-30T08:00:00.000Z",
+    "lote": "LOTE-2025-11-001",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 487.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 731.25,
+        "unidad": "kg",
+        "compraReferencia": 41
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para exportación",
+    "ventaReferencia": 41,
+    "createdAt": "2025-11-30T08:00:00.000Z",
+    "updatedAt": "2025-11-30T08:00:00.000Z"
+  },
+  {
+    "id": 42,
+    "fecha": "2025-11-29T08:00:00.000Z",
+    "lote": "LOTE-2025-11-002",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 198,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 594,
+        "unidad": "kg",
+        "compraReferencia": 42
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 42,
+    "createdAt": "2025-11-29T08:00:00.000Z",
+    "updatedAt": "2025-11-29T08:00:00.000Z"
+  },
+  {
+    "id": 43,
+    "fecha": "2025-11-28T08:00:00.000Z",
+    "lote": "LOTE-2025-11-003",
+    "producto": "Estopa",
+    "cantidadProducida": 14,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 28,
+        "unidad": "kg",
+        "compraReferencia": 43
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 43,
+    "createdAt": "2025-11-28T08:00:00.000Z",
+    "updatedAt": "2025-11-28T08:00:00.000Z"
+  },
+  {
+    "id": 44,
+    "fecha": "2025-11-27T08:00:00.000Z",
+    "lote": "LOTE-2025-11-004",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 412.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 660,
+        "unidad": "kg",
+        "compraReferencia": 44
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta",
+    "ventaReferencia": 44,
+    "createdAt": "2025-11-27T08:00:00.000Z",
+    "updatedAt": "2025-11-27T08:00:00.000Z"
+  },
+  {
+    "id": 45,
+    "fecha": "2025-11-26T08:00:00.000Z",
+    "lote": "LOTE-2025-11-005",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 308,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 924,
+        "unidad": "kg",
+        "compraReferencia": 45
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Roberto Sánchez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 45,
+    "createdAt": "2025-11-26T08:00:00.000Z",
+    "updatedAt": "2025-11-26T08:00:00.000Z"
+  },
+  {
+    "id": 46,
+    "fecha": "2025-11-25T08:00:00.000Z",
+    "lote": "LOTE-2025-11-006",
+    "producto": "Copra",
+    "cantidadProducida": 507.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 634.375,
+        "unidad": "kg",
+        "compraReferencia": 46
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Juan Pérez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra para exportación",
+    "ventaReferencia": 46,
+    "createdAt": "2025-11-25T08:00:00.000Z",
+    "updatedAt": "2025-11-25T08:00:00.000Z"
+  },
+  {
+    "id": 47,
+    "fecha": "2025-11-24T08:00:00.000Z",
+    "lote": "LOTE-2025-11-007",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 110,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 165,
+        "unidad": "kg",
+        "compraReferencia": 47
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa fresca semanal",
+    "ventaReferencia": 47,
+    "createdAt": "2025-11-24T08:00:00.000Z",
+    "updatedAt": "2025-11-24T08:00:00.000Z"
+  },
+  {
+    "id": 48,
+    "fecha": "2025-11-23T08:00:00.000Z",
+    "lote": "LOTE-2025-11-008",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 352,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1056,
+        "unidad": "kg",
+        "compraReferencia": 48
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Carlos López",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 48,
+    "createdAt": "2025-11-23T08:00:00.000Z",
+    "updatedAt": "2025-11-23T08:00:00.000Z"
+  },
+  {
+    "id": 49,
+    "fecha": "2025-11-22T08:00:00.000Z",
+    "lote": "LOTE-2025-11-009",
+    "producto": "Estopa",
+    "cantidadProducida": 25.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 51,
+        "unidad": "kg",
+        "compraReferencia": 49
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 49,
+    "createdAt": "2025-11-22T08:00:00.000Z",
+    "updatedAt": "2025-11-22T08:00:00.000Z"
+  },
+  {
+    "id": 50,
+    "fecha": "2025-11-21T08:00:00.000Z",
+    "lote": "LOTE-2025-11-010",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 342,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 547.2,
+        "unidad": "kg",
+        "compraReferencia": 50
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta",
+    "ventaReferencia": 50,
+    "createdAt": "2025-11-21T08:00:00.000Z",
+    "updatedAt": "2025-11-21T08:00:00.000Z"
+  },
+  {
+    "id": 51,
+    "fecha": "2025-11-20T08:00:00.000Z",
+    "lote": "LOTE-2025-11-011",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 481.25,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1443.75,
+        "unidad": "kg",
+        "compraReferencia": 51
+      }
+    ],
+    "tiempoProduccion": 10,
+    "operador": "Juan Pérez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Gran producción de aceite",
+    "ventaReferencia": 51,
+    "createdAt": "2025-11-20T08:00:00.000Z",
+    "updatedAt": "2025-11-20T08:00:00.000Z"
+  },
+  {
+    "id": 52,
+    "fecha": "2025-11-19T08:00:00.000Z",
+    "lote": "LOTE-2025-11-012",
+    "producto": "Copra",
+    "cantidadProducida": 232.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 290.9375,
+        "unidad": "kg",
+        "compraReferencia": 52
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "María García",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra semanal",
+    "ventaReferencia": 52,
+    "createdAt": "2025-11-19T08:00:00.000Z",
+    "updatedAt": "2025-11-19T08:00:00.000Z"
+  },
+  {
+    "id": 53,
+    "fecha": "2025-11-18T08:00:00.000Z",
+    "lote": "LOTE-2025-11-013",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 130,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 195,
+        "unidad": "kg",
+        "compraReferencia": 53
+      }
+    ],
+    "tiempoProduccion": 3,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción regular",
+    "ventaReferencia": 53,
+    "createdAt": "2025-11-18T08:00:00.000Z",
+    "updatedAt": "2025-11-18T08:00:00.000Z"
+  },
+  {
+    "id": 54,
+    "fecha": "2025-11-17T08:00:00.000Z",
+    "lote": "LOTE-2025-11-014",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 528,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1584,
+        "unidad": "kg",
+        "compraReferencia": 54
+      }
+    ],
+    "tiempoProduccion": 11,
+    "operador": "Ana Rodríguez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 54,
+    "createdAt": "2025-11-17T08:00:00.000Z",
+    "updatedAt": "2025-11-17T08:00:00.000Z"
+  },
+  {
+    "id": 55,
+    "fecha": "2025-11-16T08:00:00.000Z",
+    "lote": "LOTE-2025-11-015",
+    "producto": "Estopa",
+    "cantidadProducida": 12.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 25.5,
+        "unidad": "kg",
+        "compraReferencia": 55
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 55,
+    "createdAt": "2025-11-16T08:00:00.000Z",
+    "updatedAt": "2025-11-16T08:00:00.000Z"
+  },
+  {
+    "id": 56,
+    "fecha": "2025-11-15T08:00:00.000Z",
+    "lote": "LOTE-2025-11-016",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 637.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1020,
+        "unidad": "kg",
+        "compraReferencia": 56
+      }
+    ],
+    "tiempoProduccion": 10,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción para exportación",
+    "ventaReferencia": 56,
+    "createdAt": "2025-11-15T08:00:00.000Z",
+    "updatedAt": "2025-11-15T08:00:00.000Z"
+  },
+  {
+    "id": 57,
+    "fecha": "2025-11-14T08:00:00.000Z",
+    "lote": "LOTE-2025-11-017",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 231,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 693,
+        "unidad": "kg",
+        "compraReferencia": 57
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 57,
+    "createdAt": "2025-11-14T08:00:00.000Z",
+    "updatedAt": "2025-11-14T08:00:00.000Z"
+  },
+  {
+    "id": 58,
+    "fecha": "2025-11-13T08:00:00.000Z",
+    "lote": "LOTE-2025-11-018",
+    "producto": "Copra",
+    "cantidadProducida": 358.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 448.4375,
+        "unidad": "kg",
+        "compraReferencia": 58
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Carlos López",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra premium",
+    "ventaReferencia": 58,
+    "createdAt": "2025-11-13T08:00:00.000Z",
+    "updatedAt": "2025-11-13T08:00:00.000Z"
+  },
+  {
+    "id": 59,
+    "fecha": "2025-11-12T08:00:00.000Z",
+    "lote": "LOTE-2025-11-019",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 281.25,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 421.875,
+        "unidad": "kg",
+        "compraReferencia": 59
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa fresca",
+    "ventaReferencia": 59,
+    "createdAt": "2025-11-12T08:00:00.000Z",
+    "updatedAt": "2025-11-12T08:00:00.000Z"
+  },
+  {
+    "id": 60,
+    "fecha": "2025-11-11T08:00:00.000Z",
+    "lote": "LOTE-2025-11-020",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 264,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 792,
+        "unidad": "kg",
+        "compraReferencia": 60
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 60,
+    "createdAt": "2025-11-11T08:00:00.000Z",
+    "updatedAt": "2025-11-11T08:00:00.000Z"
+  },
+  {
+    "id": 61,
+    "fecha": "2025-11-10T08:00:00.000Z",
+    "lote": "LOTE-2025-11-021",
+    "producto": "Estopa",
+    "cantidadProducida": 23.25,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 46.5,
+        "unidad": "kg",
+        "compraReferencia": 61
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 61,
+    "createdAt": "2025-11-10T08:00:00.000Z",
+    "updatedAt": "2025-11-10T08:00:00.000Z"
+  },
+  {
+    "id": 62,
+    "fecha": "2025-11-09T08:00:00.000Z",
+    "lote": "LOTE-2025-11-022",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 270,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 432,
+        "unidad": "kg",
+        "compraReferencia": 62
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta local",
+    "ventaReferencia": 62,
+    "createdAt": "2025-11-09T08:00:00.000Z",
+    "updatedAt": "2025-11-09T08:00:00.000Z"
+  },
+  {
+    "id": 63,
+    "fecha": "2025-11-08T08:00:00.000Z",
+    "lote": "LOTE-2025-11-023",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 418,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1254,
+        "unidad": "kg",
+        "compraReferencia": 63
+      }
+    ],
+    "tiempoProduccion": 9,
+    "operador": "Carlos López",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 63,
+    "createdAt": "2025-11-08T08:00:00.000Z",
+    "updatedAt": "2025-11-08T08:00:00.000Z"
+  },
+  {
+    "id": 64,
+    "fecha": "2025-11-07T08:00:00.000Z",
+    "lote": "LOTE-2025-11-024",
+    "producto": "Copra",
+    "cantidadProducida": 438.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 548.4375,
+        "unidad": "kg",
+        "compraReferencia": 64
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Ana Rodríguez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra para exportación",
+    "ventaReferencia": 64,
+    "createdAt": "2025-11-07T08:00:00.000Z",
+    "updatedAt": "2025-11-07T08:00:00.000Z"
+  },
+  {
+    "id": 65,
+    "fecha": "2025-11-06T08:00:00.000Z",
+    "lote": "LOTE-2025-11-025",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 170,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 255,
+        "unidad": "kg",
+        "compraReferencia": 65
+      }
+    ],
+    "tiempoProduccion": 3,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa fresca semanal",
+    "ventaReferencia": 65,
+    "createdAt": "2025-11-06T08:00:00.000Z",
+    "updatedAt": "2025-11-06T08:00:00.000Z"
+  },
+  {
+    "id": 66,
+    "fecha": "2025-11-05T08:00:00.000Z",
+    "lote": "LOTE-2025-11-026",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 426.25,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1278.75,
+        "unidad": "kg",
+        "compraReferencia": 66
+      }
+    ],
+    "tiempoProduccion": 9,
+    "operador": "Juan Pérez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite para exportación",
+    "ventaReferencia": 66,
+    "createdAt": "2025-11-05T08:00:00.000Z",
+    "updatedAt": "2025-11-05T08:00:00.000Z"
+  },
+  {
+    "id": 67,
+    "fecha": "2025-11-04T08:00:00.000Z",
+    "lote": "LOTE-2025-11-027",
+    "producto": "Estopa",
+    "cantidadProducida": 9,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 18,
+        "unidad": "kg",
+        "compraReferencia": 67
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 67,
+    "createdAt": "2025-11-04T08:00:00.000Z",
+    "updatedAt": "2025-11-04T08:00:00.000Z"
+  },
+  {
+    "id": 68,
+    "fecha": "2025-11-03T08:00:00.000Z",
+    "lote": "LOTE-2025-11-028",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 432,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 691.2,
+        "unidad": "kg",
+        "compraReferencia": 68
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta",
+    "ventaReferencia": 68,
+    "createdAt": "2025-11-03T08:00:00.000Z",
+    "updatedAt": "2025-11-03T08:00:00.000Z"
+  },
+  {
+    "id": 69,
+    "fecha": "2025-11-02T08:00:00.000Z",
+    "lote": "LOTE-2025-11-029",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 462,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1386,
+        "unidad": "kg",
+        "compraReferencia": 69
+      }
+    ],
+    "tiempoProduccion": 10,
+    "operador": "Ana Rodríguez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 69,
+    "createdAt": "2025-11-02T08:00:00.000Z",
+    "updatedAt": "2025-11-02T08:00:00.000Z"
+  },
+  {
+    "id": 70,
+    "fecha": "2025-11-01T08:00:00.000Z",
+    "lote": "LOTE-2025-11-030",
+    "producto": "Copra",
+    "cantidadProducida": 313.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 392.1875,
+        "unidad": "kg",
+        "compraReferencia": 70
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "Roberto Sánchez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra mensual",
+    "ventaReferencia": 70,
+    "createdAt": "2025-11-01T08:00:00.000Z",
+    "updatedAt": "2025-11-01T08:00:00.000Z"
+  },
+  {
+    "id": 71,
+    "fecha": "2025-10-31T08:00:00.000Z",
+    "lote": "LOTE-2025-10-001",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 468.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 703.125,
+        "unidad": "kg",
+        "compraReferencia": 71
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para exportación",
+    "ventaReferencia": 71,
+    "createdAt": "2025-10-31T08:00:00.000Z",
+    "updatedAt": "2025-10-31T08:00:00.000Z"
+  },
+  {
+    "id": 72,
+    "fecha": "2025-10-30T08:00:00.000Z",
+    "lote": "LOTE-2025-10-002",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 176,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 528,
+        "unidad": "kg",
+        "compraReferencia": 72
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 72,
+    "createdAt": "2025-10-30T08:00:00.000Z",
+    "updatedAt": "2025-10-30T08:00:00.000Z"
+  },
+  {
+    "id": 73,
+    "fecha": "2025-10-29T08:00:00.000Z",
+    "lote": "LOTE-2025-10-003",
+    "producto": "Estopa",
+    "cantidadProducida": 12.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 25,
+        "unidad": "kg",
+        "compraReferencia": 73
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 73,
+    "createdAt": "2025-10-29T08:00:00.000Z",
+    "updatedAt": "2025-10-29T08:00:00.000Z"
+  },
+  {
+    "id": 74,
+    "fecha": "2025-10-28T08:00:00.000Z",
+    "lote": "LOTE-2025-10-004",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 390,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 624,
+        "unidad": "kg",
+        "compraReferencia": 74
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta",
+    "ventaReferencia": 74,
+    "createdAt": "2025-10-28T08:00:00.000Z",
+    "updatedAt": "2025-10-28T08:00:00.000Z"
+  },
+  {
+    "id": 75,
+    "fecha": "2025-10-27T08:00:00.000Z",
+    "lote": "LOTE-2025-10-005",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 286,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 858,
+        "unidad": "kg",
+        "compraReferencia": 75
+      }
+    ],
+    "tiempoProduccion": 7,
+    "operador": "Roberto Sánchez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 75,
+    "createdAt": "2025-10-27T08:00:00.000Z",
+    "updatedAt": "2025-10-27T08:00:00.000Z"
+  },
+  {
+    "id": 76,
+    "fecha": "2025-10-26T08:00:00.000Z",
+    "lote": "LOTE-2025-10-006",
+    "producto": "Copra",
+    "cantidadProducida": 485,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 606.25,
+        "unidad": "kg",
+        "compraReferencia": 76
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Juan Pérez",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra para exportación",
+    "ventaReferencia": 76,
+    "createdAt": "2025-10-26T08:00:00.000Z",
+    "updatedAt": "2025-10-26T08:00:00.000Z"
+  },
+  {
+    "id": 77,
+    "fecha": "2025-10-25T08:00:00.000Z",
+    "lote": "LOTE-2025-10-007",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 120,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 180,
+        "unidad": "kg",
+        "compraReferencia": 77
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "María García",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa fresca semanal",
+    "ventaReferencia": 77,
+    "createdAt": "2025-10-25T08:00:00.000Z",
+    "updatedAt": "2025-10-25T08:00:00.000Z"
+  },
+  {
+    "id": 78,
+    "fecha": "2025-10-24T08:00:00.000Z",
+    "lote": "LOTE-2025-10-008",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 363,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1089,
+        "unidad": "kg",
+        "compraReferencia": 78
+      }
+    ],
+    "tiempoProduccion": 8,
+    "operador": "Carlos López",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 78,
+    "createdAt": "2025-10-24T08:00:00.000Z",
+    "updatedAt": "2025-10-24T08:00:00.000Z"
+  },
+  {
+    "id": 79,
+    "fecha": "2025-10-23T08:00:00.000Z",
+    "lote": "LOTE-2025-10-009",
+    "producto": "Estopa",
+    "cantidadProducida": 22.5,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 45,
+        "unidad": "kg",
+        "compraReferencia": 79
+      }
+    ],
+    "tiempoProduccion": 2,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 79,
+    "createdAt": "2025-10-23T08:00:00.000Z",
+    "updatedAt": "2025-10-23T08:00:00.000Z"
+  },
+  {
+    "id": 80,
+    "fecha": "2025-10-22T08:00:00.000Z",
+    "lote": "LOTE-2025-10-010",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 324,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 518.4,
+        "unidad": "kg",
+        "compraReferencia": 80
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Pulpa para venta",
+    "ventaReferencia": 80,
+    "createdAt": "2025-10-22T08:00:00.000Z",
+    "updatedAt": "2025-10-22T08:00:00.000Z"
+  },
+  {
+    "id": 81,
+    "fecha": "2025-10-21T08:00:00.000Z",
+    "lote": "LOTE-2025-10-011",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 467.5,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1402.5,
+        "unidad": "kg",
+        "compraReferencia": 81
+      }
+    ],
+    "tiempoProduccion": 10,
+    "operador": "Juan Pérez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Gran producción de aceite",
+    "ventaReferencia": 81,
+    "createdAt": "2025-10-21T08:00:00.000Z",
+    "updatedAt": "2025-10-21T08:00:00.000Z"
+  },
+  {
+    "id": 82,
+    "fecha": "2025-10-20T08:00:00.000Z",
+    "lote": "LOTE-2025-10-012",
+    "producto": "Copra",
+    "cantidadProducida": 242.75,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 303.4375,
+        "unidad": "kg",
+        "compraReferencia": 82
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "María García",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra semanal",
+    "ventaReferencia": 82,
+    "createdAt": "2025-10-20T08:00:00.000Z",
+    "updatedAt": "2025-10-20T08:00:00.000Z"
+  },
+  {
+    "id": 83,
+    "fecha": "2025-10-19T08:00:00.000Z",
+    "lote": "LOTE-2025-10-013",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 145,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 217.5,
+        "unidad": "kg",
+        "compraReferencia": 83
+      }
+    ],
+    "tiempoProduccion": 3,
+    "operador": "Carlos López",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción regular",
+    "ventaReferencia": 83,
+    "createdAt": "2025-10-19T08:00:00.000Z",
+    "updatedAt": "2025-10-19T08:00:00.000Z"
+  },
+  {
+    "id": 84,
+    "fecha": "2025-10-18T08:00:00.000Z",
+    "lote": "LOTE-2025-10-014",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 530,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1590,
+        "unidad": "kg",
+        "compraReferencia": 84
+      }
+    ],
+    "tiempoProduccion": 11,
+    "operador": "Ana Rodríguez",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite premium",
+    "ventaReferencia": 84,
+    "createdAt": "2025-10-18T08:00:00.000Z",
+    "updatedAt": "2025-10-18T08:00:00.000Z"
+  },
+  {
+    "id": 85,
+    "fecha": "2025-10-17T08:00:00.000Z",
+    "lote": "LOTE-2025-10-015",
+    "producto": "Estopa",
+    "cantidadProducida": 12,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco desecho",
+        "cantidad": 24,
+        "unidad": "kg",
+        "compraReferencia": 85
+      }
+    ],
+    "tiempoProduccion": 1,
+    "operador": "Roberto Sánchez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "B",
+    "notas": "Estopa artesanal",
+    "ventaReferencia": 85,
+    "createdAt": "2025-10-17T08:00:00.000Z",
+    "updatedAt": "2025-10-17T08:00:00.000Z"
+  },
+  {
+    "id": 86,
+    "fecha": "2025-10-16T08:00:00.000Z",
+    "lote": "LOTE-2025-10-016",
+    "producto": "Pulpa seca",
+    "cantidadProducida": 702,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 1123.2,
+        "unidad": "kg",
+        "compraReferencia": 86
+      }
+    ],
+    "tiempoProduccion": 11,
+    "operador": "Juan Pérez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Producción para exportación",
+    "ventaReferencia": 86,
+    "createdAt": "2025-10-16T08:00:00.000Z",
+    "updatedAt": "2025-10-16T08:00:00.000Z"
+  },
+  {
+    "id": 87,
+    "fecha": "2025-10-15T08:00:00.000Z",
+    "lote": "LOTE-2025-10-017",
+    "producto": "Aceite de coco",
+    "cantidadProducida": 214.5,
+    "unidad": "litros",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 643.5,
+        "unidad": "kg",
+        "compraReferencia": 87
+      }
+    ],
+    "tiempoProduccion": 5,
+    "operador": "María García",
+    "maquina": "Prensadora Hidráulica",
+    "calidad": "A",
+    "notas": "Aceite regular",
+    "ventaReferencia": 87,
+    "createdAt": "2025-10-15T08:00:00.000Z",
+    "updatedAt": "2025-10-15T08:00:00.000Z"
+  },
+  {
+    "id": 88,
+    "fecha": "2025-10-14T08:00:00.000Z",
+    "lote": "LOTE-2025-10-018",
+    "producto": "Copra",
+    "cantidadProducida": 376.25,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 470.3125,
+        "unidad": "kg",
+        "compraReferencia": 88
+      }
+    ],
+    "tiempoProduccion": 6,
+    "operador": "Carlos López",
+    "maquina": "Secadora Industrial",
+    "calidad": "A",
+    "notas": "Copra premium",
+    "ventaReferencia": 88,
+    "createdAt": "2025-10-14T08:00:00.000Z",
+    "updatedAt": "2025-10-14T08:00:00.000Z"
+  },
+  {
+    "id": 89,
+    "fecha": "2025-10-13T08:00:00.000Z",
+    "lote": "LOTE-2025-10-019",
+    "producto": "Pulpa fresca",
+    "cantidadProducida": 270,
+    "unidad": "kg",
+    "materiaPrimaUsada": [
+      {
+        "tipo": "Coco bueno",
+        "cantidad": 405,
+        "unidad": "kg",
+        "compraReferencia": 89
+      }
+    ],
+    "tiempoProduccion": 4,
+    "operador": "Ana Rodríguez",
+    "maquina": "Destopadora Industrial",
+    "calidad": "A",
+    "notas": "Primera producción de pulpa fresca",
+    "ventaReferencia": 89,
+    "createdAt": "2025-10-13T08:00:00.000Z",
+    "updatedAt": "2025-10-13T08:00:00.000Z"
+  }
+]
+

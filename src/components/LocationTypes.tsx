@@ -3,6 +3,7 @@ import {CreditCard as Edit, MapPin, Plus, Trash2} from 'lucide-react';
 import {storage} from '../lib/storage';
 import type {Producto} from '../lib/db';
 import TypeOfPlaceFormModal from './TypeOfPlaceFormModal';
+import {useTenant} from '../contexts/TenantContext';
 
 interface LocationType {
   id?: number;
@@ -19,6 +20,7 @@ const LocationTypes: React.FC = () => {
   const [editingType, setEditingType] = useState<LocationType | null>(null);
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(false);
+  const { tenantId } = useTenant();
 
   // Cargar tipos de lugar desde storage
   useEffect(() => {
@@ -49,7 +51,8 @@ const LocationTypes: React.FC = () => {
         table: 'locationTypes',
         data: { id },
         createdAt: new Date(),
-        synced: false
+        synced: false,
+        tenantId
       });
       await fetchLocationTypes();
       setLoading(false);

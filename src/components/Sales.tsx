@@ -3,6 +3,7 @@ import {CreditCard as Edit, DollarSign, Plus, Receipt, Search, ShoppingCart, Tra
 import {clienteStorage, folioGenerator, productoStorage, storage, ventaStorage} from '../lib/storage';
 import {Cliente, Producto, Venta} from '../lib/db';
 import PrintButton from './PrintButton';
+import {mlService} from '../lib/mlService';
 
 const initialForm: Omit<Venta, 'id' | 'createdAt' | 'updatedAt'> = {
   clienteId: 0,
@@ -14,6 +15,7 @@ const initialForm: Omit<Venta, 'id' | 'createdAt' | 'updatedAt'> = {
   vehiculo: '',
   conductor: '',
   notes: '',
+  tenantId: '',
 };
 
 const Sales: React.FC = () => {
@@ -138,19 +140,49 @@ const Sales: React.FC = () => {
       // Generar folio automático
       const folio = await folioGenerator.generateFolio('VENT');
 
-      await ventaStorage.add({
+      const newSale = {
         ...form,
         folio,
         firmaClienteBase64: signatureData,
         createdAt: now,
         updatedAt: now
-      });
+      };
+
+      await ventaStorage.add(newSale);
+
+      // Insertar datos en ML service para aprendizaje continuo
+      try {
+        await mlService.insertTrainingData('sale', {
+          ...newSale,
+          cantidad: form.cantidad,
+          precioUnitario: form.precioUnitario,
+          productoId: form.productoId,
+          clienteId: form.clienteId,
+          tipoEntrega: form.tipoEntrega
+        });
+      } catch (error) {
+        console.error('Error insertando datos de venta en ML:', error);
+      }
+
       // Restar inventario al completar venta
       if (form.estado === 'entregado') {
         const inventario = await storage.inventario.getAll();
         const item = inventario.find(inv => inv.productoId === form.productoId && inv.ubicacionId === 1); // TODO: ubicación configurable
         if (item && item.cantidad >= form.cantidad) {
           await storage.inventario.update(item.id!, { cantidad: item.cantidad - form.cantidad, updatedAt: now });
+
+          // Insertar datos de inventario en ML
+          try {
+            await mlService.insertTrainingData('inventory', {
+              productoId: form.productoId,
+              ubicacionId: 1,
+              cantidad: item.cantidad - form.cantidad,
+              movimiento: -form.cantidad,
+              tipoMovimiento: 'venta'
+            });
+          } catch (error) {
+            console.error('Error insertando datos de inventario en ML:', error);
+          }
         } else {
           alert('Stock insuficiente para completar la venta.');
           return;

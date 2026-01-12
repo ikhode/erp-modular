@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {folioGenerator, storage} from '../lib/storage';
 import {ProduccionTicket} from '../lib/db';
 import PrintButton from './PrintButton';
+import {mlService} from '../lib/mlService';
 import {TicketData} from '../lib/printService';
 
 interface ProcessItem {
@@ -188,12 +189,42 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
     // Guardar ticket
     await storage.produccionTickets.add(ticket);
 
+    // Insertar datos en ML service para aprendizaje continuo
+    try {
+      await mlService.insertTrainingData('production', {
+        ...ticket,
+        insumos: ticket.insumos,
+        productosGenerados: productosGenerados.map(p => ({
+          productId: Number(p.productId),
+          ubicacionId: p.ubicacionDestinoId,
+          cantidad: p.cantidad
+        })),
+        cantidadProducida: ticket.cantidadProducida,
+        estado: ticket.estado
+      });
+    } catch (error) {
+      console.error('Error insertando datos de producción en ML:', error);
+    }
+
     // Actualizar inventario: restar insumos
     for (const insumo of insumos) {
       const inventario = await storage.inventario.getAll();
       const item = inventario.find(inv => inv.productoId === Number(insumo.productId) && inv.ubicacionId === insumo.ubicacionId);
       if (item) {
         await storage.inventario.update(item.id!, { cantidad: item.cantidad - insumo.cantidad, updatedAt: new Date() });
+
+        // Insertar datos de inventario en ML
+        try {
+          await mlService.insertTrainingData('inventory', {
+            productoId: Number(insumo.productId),
+            ubicacionId: insumo.ubicacionId,
+            cantidad: item.cantidad - insumo.cantidad,
+            movimiento: -insumo.cantidad,
+            tipoMovimiento: 'produccion_insumo'
+          });
+        } catch (error) {
+          console.error('Error insertando datos de inventario en ML:', error);
+        }
       }
     }
 
@@ -203,6 +234,19 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
       const item = inventario.find(inv => inv.productoId === Number(producto.productId) && inv.ubicacionId === producto.ubicacionDestinoId);
       if (item) {
         await storage.inventario.update(item.id!, { cantidad: item.cantidad + producto.cantidad, updatedAt: new Date() });
+
+        // Insertar datos de inventario en ML
+        try {
+          await mlService.insertTrainingData('inventory', {
+            productoId: Number(producto.productId),
+            ubicacionId: producto.ubicacionDestinoId,
+            cantidad: item.cantidad + producto.cantidad,
+            movimiento: producto.cantidad,
+            tipoMovimiento: 'produccion_salida'
+          });
+        } catch (error) {
+          console.error('Error insertando datos de inventario en ML:', error);
+        }
       } else {
         // Crear nuevo registro de inventario si no existe
         await storage.inventario.add({
@@ -215,6 +259,19 @@ const ProductionTicket: React.FC<{ proceso: Process }> = ({ proceso }) => {
           createdAt: new Date(),
           updatedAt: new Date(),
         });
+
+        // Insertar datos de inventario en ML
+        try {
+          await mlService.insertTrainingData('inventory', {
+            productoId: Number(producto.productId),
+            ubicacionId: producto.ubicacionDestinoId,
+            cantidad: producto.cantidad,
+            movimiento: producto.cantidad,
+            tipoMovimiento: 'produccion_salida'
+          });
+        } catch (error) {
+          console.error('Error insertando datos de inventario en ML:', error);
+        }
       }
     }
 

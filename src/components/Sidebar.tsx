@@ -140,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
   };
 
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-blue-900 text-white shadow-lg">
+    <div className={`fixed left-0 top-0 h-full w-64 bg-blue-900 text-white shadow-lg`}>
       <div className="p-6">
         <div className="flex items-center space-x-3">
           <Building2 className="h-8 w-8 text-orange-400" />
@@ -162,7 +162,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
               }`}
             >
               <dashboardItem.icon className="h-5 w-5" />
-              <span>{dashboardItem.label}</span>
+              <span className="block">{dashboardItem.label}</span>
             </button>
           </div>
         )}
@@ -189,7 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
                       }`}
                     >
                       <Icon className="h-5 w-5" />
-                      <span>{item.label}</span>
+                      <span className="block">{item.label}</span>
                     </button>
                   );
                 })}
@@ -220,7 +220,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
                       }`}
                     >
                       <Icon className="h-5 w-5" />
-                      <span>{item.label}</span>
+                      <span className="block">{item.label}</span>
                     </button>
                   );
                 })}
@@ -251,7 +251,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
                       }`}
                     >
                       <Icon className="h-5 w-5" />
-                      <span>{item.label}</span>
+                      <span className="block">{item.label}</span>
                     </button>
                   );
                 })}
@@ -282,7 +282,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
                       }`}
                     >
                       <Icon className="h-5 w-5" />
-                      <span>{item.label}</span>
+                      <span className="block">{item.label}</span>
                     </button>
                   );
                 })}
@@ -298,7 +298,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeModule, setActiveModule, userRo
           className="w-full flex items-center space-x-3 px-4 py-2 text-left text-blue-300 hover:text-white hover:bg-blue-800 rounded-md transition-colors"
         >
           <LogOut className="h-5 w-5" />
-          <span>Cerrar Sesión</span>
+          <span className="block">Cerrar Sesión</span>
         </button>
       </div>
     </div>

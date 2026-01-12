@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
 import {AlertTriangle, Calendar, Database, Plus, Save, Settings, Trash2} from 'lucide-react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {safeStorage} from '../lib/safeStorage';
 import {storage} from '../lib/storage';
 import type {
@@ -96,6 +96,23 @@ const Configuration: React.FC = () => {
   const [testDataCounts, setTestDataCounts] = useState<Record<string, number>>({});
   const [selectedIndustry, setSelectedIndustry] = useState('fabrica_coco');
 
+    const checkAndLoadDemoData = useCallback(async () => {
+      try {
+        // Verificar si hay datos en las tablas principales
+        const clientesCount = await storage.clientes.countAll();
+        const productosCount = await storage.productos.countAll();
+        const empleadosCount = await storage.empleados.countAll();
+
+        // Si no hay datos básicos, cargar datos de prueba automáticamente
+        if (clientesCount === 0 && productosCount === 0 && empleadosCount === 0) {
+          console.log('No hay datos básicos, cargando datos de prueba automáticamente...');
+          await createTestData();
+        }
+      } catch (error) {
+        console.error('Error verificando datos:', error);
+      }
+    }, []);
+
     // Cargar configuración persistente al montar
     useEffect(() => {
     const stored = safeStorage.get(CONFIG_KEY, {}) as Partial<ERPConfig>;
@@ -114,8 +131,11 @@ const Configuration: React.FC = () => {
     // Si hay datos de prueba activos, contar los registros
     if (mergedConfig.testData.enabled) {
       countTestDataRecords();
+    } else {
+      // Verificar si hay datos en las tablas principales, si no, cargar datos de prueba automáticamente
+      checkAndLoadDemoData();
     }
-    }, []);
+    }, [checkAndLoadDemoData]);
 
     const createTestData = async () => {
       try {

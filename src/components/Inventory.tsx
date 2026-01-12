@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {AlertTriangle, Package, Plus, Search, TrendingDown, TrendingUp} from 'lucide-react';
 import {storage} from '../lib/storage';
 import {Inventario, Producto} from '../lib/db';
+import {useTenant} from '../contexts/TenantContext';
 import ProductFormModal from './ProductFormModal';
 
 const Inventory: React.FC = () => {
@@ -10,7 +11,11 @@ const Inventory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
 
+  const { tenantId } = useTenant();
+
   const loadData = useCallback(async () => {
+    if (!tenantId) return;
+
     try {
       const [inventarioData, productosData] = await Promise.all([
         storage.inventario.getAll(),
@@ -35,7 +40,7 @@ const Inventory: React.FC = () => {
     } catch (error) {
       console.error('Error loading inventory data:', error);
     }
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     loadData();
@@ -47,53 +52,100 @@ const Inventory: React.FC = () => {
       await storage.locationTypes.add({
         name: 'Patio',
         description: 'Áreas exteriores para almacenamiento de materia prima',
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       await storage.locationTypes.add({
         name: 'Almacén',
-        description: 'Áreas interiores para almacenamiento de productos',
+        description: 'Espacios cerrados para almacenamiento de productos terminados',
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.locationTypes.add({
+        name: 'Bidón',
+        description: 'Contenedores para almacenamiento de líquidos',
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       // Crear ubicaciones
-      const patio1Id = await storage.ubicaciones.add({
-        nombre: 'Patio Norte',
+      await storage.ubicaciones.add({
+        nombre: 'Patio 1',
         tipo: 'Patio',
-        descripcion: 'Patio principal para recepción de materia prima',
+        descripcion: 'Patio principal para coco',
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
-      const almacen1Id = await storage.ubicaciones.add({
-        nombre: 'Almacén Central',
+      await storage.ubicaciones.add({
+        nombre: 'Patio 2',
+        tipo: 'Patio',
+        descripcion: 'Patio secundario para coco',
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.ubicaciones.add({
+        nombre: 'Almacén 1',
         tipo: 'Almacén',
-        descripcion: 'Almacén principal para productos terminados',
+        descripcion: 'Almacén principal',
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.ubicaciones.add({
+        nombre: 'Bidón 1',
+        tipo: 'Bidón',
+        descripcion: 'Bidón para aceite',
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       // Crear productos
-      const cocoProductoId = await storage.productos.add({
+      await storage.productos.add({
         nombre: 'Coco Bueno',
         descripcion: 'Coco de primera calidad',
         precioMin: 5.00,
         precioMax: 8.00,
         precioActual: 6.50,
-        unidad: 'kg',
+        unidad: 'pieza',
         compra: true,
         venta: false,
         procesoEntrada: true,
         procesoSalida: false,
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
-      const pulpaProductoId = await storage.productos.add({
+      await storage.productos.add({
+        nombre: 'Coco Desecho',
+        descripcion: 'Coco de segunda calidad',
+        precioMin: 3.00,
+        precioMax: 5.00,
+        precioActual: 4.00,
+        unidad: 'pieza',
+        compra: true,
+        venta: false,
+        procesoEntrada: true,
+        procesoSalida: false,
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.productos.add({
         nombre: 'Pulpa de Coco',
-        descripcion: 'Pulpa procesada lista para venta',
+        descripcion: 'Pulpa extraída del coco',
         precioMin: 15.00,
         precioMax: 25.00,
         precioActual: 20.00,
@@ -102,29 +154,136 @@ const Inventory: React.FC = () => {
         venta: true,
         procesoEntrada: false,
         procesoSalida: true,
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.productos.add({
+        nombre: 'Copra',
+        descripcion: 'Carne de coco seca',
+        precioMin: 25.00,
+        precioMax: 35.00,
+        precioActual: 30.00,
+        unidad: 'kg',
+        compra: false,
+        venta: true,
+        procesoEntrada: false,
+        procesoSalida: true,
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.productos.add({
+        nombre: 'Aceite de Coco',
+        descripcion: 'Aceite virgen extraído de la copra',
+        precioMin: 80.00,
+        precioMax: 120.00,
+        precioActual: 100.00,
+        unidad: 'litro',
+        compra: false,
+        venta: true,
+        procesoEntrada: false,
+        procesoSalida: true,
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.productos.add({
+        nombre: 'Estopa de Coco',
+        descripcion: 'Fibra externa del coco',
+        precioMin: 2.00,
+        precioMax: 4.00,
+        precioActual: 3.00,
+        unidad: 'kg',
+        compra: false,
+        venta: true,
+        procesoEntrada: false,
+        procesoSalida: true,
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.productos.add({
+        nombre: 'Coco sin Estopa',
+        descripcion: 'Coco limpio sin fibra externa',
+        precioMin: 6.00,
+        precioMax: 9.00,
+        precioActual: 7.50,
+        unidad: 'pieza',
+        compra: false,
+        venta: false,
+        procesoEntrada: true,
+        procesoSalida: true,
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.productos.add({
+        nombre: 'Pulpa de Coco Seca',
+        descripcion: 'Pulpa deshidratada',
+        precioMin: 30.00,
+        precioMax: 45.00,
+        precioActual: 35.00,
+        unidad: 'kg',
+        compra: false,
+        venta: true,
+        procesoEntrada: false,
+        procesoSalida: true,
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       // Crear registros de inventario
       await storage.inventario.add({
-        productoId: cocoProductoId,
-        ubicacionId: patio1Id,
+        productoId: 1,
+        ubicacionId: 1,
         cantidad: 150,
         minimo: 50,
         maximo: 500,
         proveedor: 'Proveedor ABC',
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       await storage.inventario.add({
-        productoId: pulpaProductoId,
-        ubicacionId: almacen1Id,
+        productoId: 2,
+        ubicacionId: 2,
+        cantidad: 150,
+        minimo: 50,
+        maximo: 500,
+        proveedor: 'Proveedor ABC',
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.inventario.add({
+        productoId: 3,
+        ubicacionId: 3,
         cantidad: 25,
         minimo: 10,
         maximo: 200,
         proveedor: 'Sin proveedor',
+        tenantId: tenantId!,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await storage.inventario.add({
+        productoId: 4,
+        ubicacionId: 3,
+        cantidad: 25,
+        minimo: 10,
+        maximo: 200,
+        proveedor: 'Sin proveedor',
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -140,7 +299,7 @@ const Inventory: React.FC = () => {
   const filteredInventory = inventario.filter(item => {
     const producto = getProducto(item.productoId);
     const matchesSearch = producto?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.proveedor.toLowerCase().includes(searchTerm.toLowerCase());
+                         (item.proveedor && item.proveedor.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesSearch;
   });
 
@@ -280,7 +439,7 @@ const Inventory: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      Sin categoría
+                      {producto?.categoria || 'Sin categoría'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
@@ -327,3 +486,4 @@ const Inventory: React.FC = () => {
 };
 
 export default Inventory;
+

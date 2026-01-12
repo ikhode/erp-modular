@@ -68,7 +68,8 @@ const Clients: React.FC = () => {
       };
 
       if (editingClient) {
-        await clienteStorage.update(editingClient.id!, { ...clientData, updatedAt: new Date() });
+        const { ...updateData } = clientData;
+        await clienteStorage.update(editingClient.id!, { ...updateData, updatedAt: new Date() });
       } else {
         await clienteStorage.add(clientData);
       }

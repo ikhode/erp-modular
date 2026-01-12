@@ -1,0 +1,3945 @@
+[
+  {
+    "id": 1,
+    "tipo": "venta",
+    "referenciaId": 1,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta mayorista de pulpa seca - Folio: VENT-00001",
+    "fecha": "2026-01-09T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1500,
+      "cliente": "Distribuidora Nacional",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 2,
+    "tipo": "venta",
+    "referenciaId": 2,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite de coco - Folio: VENT-00002",
+    "fecha": "2026-01-08T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1100,
+      "cliente": "Supermercados Unidos",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 3,
+    "tipo": "venta",
+    "referenciaId": 3,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00003",
+    "fecha": "2026-01-07T18:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 475,
+      "cliente": "Restaurante El Sabor",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 4,
+    "tipo": "venta",
+    "referenciaId": 4,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00004",
+    "fecha": "2026-01-06T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1850,
+      "cliente": "Exportadora Internacional",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 5,
+    "tipo": "venta",
+    "referenciaId": 5,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de aceite - Folio: VENT-00005",
+    "fecha": "2026-01-05T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 11000,
+      "cliente": "Importadora USA Corp",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 6,
+    "tipo": "venta",
+    "referenciaId": 6,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta semanal de pulpa fresca - Folio: VENT-00006",
+    "fecha": "2026-01-04T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 450,
+      "cliente": "Mercado Local",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 7,
+    "tipo": "venta",
+    "referenciaId": 7,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00007",
+    "fecha": "2026-01-03T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 22.5,
+      "cliente": "Artesanías Mexicanas",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 8,
+    "tipo": "venta",
+    "referenciaId": 8,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00008",
+    "fecha": "2026-01-02T18:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1200,
+      "cliente": "Panadería La Tradición",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 9,
+    "tipo": "venta",
+    "referenciaId": 9,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00009",
+    "fecha": "2026-01-01T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2750,
+      "cliente": "Distribuidora Gourmet",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 10,
+    "tipo": "venta",
+    "referenciaId": 10,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00010",
+    "fecha": "2025-12-31T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1387.5,
+      "cliente": "Exportadora del Pacífico",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 11,
+    "tipo": "venta",
+    "referenciaId": 11,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de pulpa fresca - Folio: VENT-00011",
+    "fecha": "2025-12-30T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2250,
+      "cliente": "Importadora Europa Ltd",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 12,
+    "tipo": "venta",
+    "referenciaId": 12,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00012",
+    "fecha": "2025-12-29T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 825,
+      "cliente": "Tienda Natural",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 13,
+    "tipo": "venta",
+    "referenciaId": 13,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00013",
+    "fecha": "2025-12-28T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 45,
+      "cliente": "Artesano Local",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 14,
+    "tipo": "venta",
+    "referenciaId": 14,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00014",
+    "fecha": "2025-12-27T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1800,
+      "cliente": "Distribuidora Regional",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 15,
+    "tipo": "venta",
+    "referenciaId": 15,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00015",
+    "fecha": "2025-12-26T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1375,
+      "cliente": "Supermercado Orgánico",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 16,
+    "tipo": "venta",
+    "referenciaId": 16,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de copra navideña - Folio: VENT-00016",
+    "fecha": "2025-12-25T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2220,
+      "cliente": "Importadora Asia Corp",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 17,
+    "tipo": "venta",
+    "referenciaId": 17,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta navideña de pulpa fresca - Folio: VENT-00017",
+    "fecha": "2025-12-24T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 300,
+      "cliente": "Restaurante Festivo",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 18,
+    "tipo": "venta",
+    "referenciaId": 18,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00018",
+    "fecha": "2025-12-23T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1650,
+      "cliente": "Tienda Gourmet",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 19,
+    "tipo": "venta",
+    "referenciaId": 19,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00019",
+    "fecha": "2025-12-22T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 112.5,
+      "cliente": "Artesanías Navideñas",
+      "productos": ["Estopa"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 20,
+    "tipo": "venta",
+    "referenciaId": 20,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00020",
+    "fecha": "2025-12-21T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1050,
+      "cliente": "Panadería Artesanal",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 21,
+    "tipo": "venta",
+    "referenciaId": 21,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Gran exportación de aceite - Folio: VENT-00021",
+    "fecha": "2025-12-20T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 9900,
+      "cliente": "Importadora Global",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 22,
+    "tipo": "venta",
+    "referenciaId": 22,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00022",
+    "fecha": "2025-12-19T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 740,
+      "cliente": "Exportadora Local",
+      "productos": ["Copra"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 23,
+    "tipo": "venta",
+    "referenciaId": 23,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta semanal - Folio: VENT-00023",
+    "fecha": "2025-12-18T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 420,
+      "cliente": "Mercado Municipal",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 24,
+    "tipo": "venta",
+    "referenciaId": 24,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00024",
+    "fecha": "2025-12-17T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2475,
+      "cliente": "Distribuidora Premium",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 25,
+    "tipo": "venta",
+    "referenciaId": 25,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00025",
+    "fecha": "2025-12-16T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 33.75,
+      "cliente": "Artesano Regional",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 26,
+    "tipo": "venta",
+    "referenciaId": 26,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de pulpa seca - Folio: VENT-00026",
+    "fecha": "2025-12-15T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2400,
+      "cliente": "Importadora Canadá",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 27,
+    "tipo": "venta",
+    "referenciaId": 27,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00027",
+    "fecha": "2025-12-14T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 660,
+      "cliente": "Tienda Saludable",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 28,
+    "tipo": "venta",
+    "referenciaId": 28,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00028",
+    "fecha": "2025-12-13T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1017.5,
+      "cliente": "Exportadora Nacional",
+      "productos": ["Copra"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 29,
+    "tipo": "venta",
+    "referenciaId": 29,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00029",
+    "fecha": "2025-12-12T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1050,
+      "cliente": "Restaurante Mexicano",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 30,
+    "tipo": "venta",
+    "referenciaId": 30,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00030",
+    "fecha": "2025-12-11T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1210,
+      "cliente": "Supermercado Verde",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 31,
+    "tipo": "venta",
+    "referenciaId": 31,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de estopa - Folio: VENT-00031",
+    "fecha": "2025-12-10T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 67.5,
+      "cliente": "Importadora Textil",
+      "productos": ["Estopa"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 32,
+    "tipo": "venta",
+    "referenciaId": 32,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00032",
+    "fecha": "2025-12-09T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 750,
+      "cliente": "Panadería Moderna",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 33,
+    "tipo": "venta",
+    "referenciaId": 33,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00033",
+    "fecha": "2025-12-08T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1925,
+      "cliente": "Tienda Orgánica",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 34,
+    "tipo": "venta",
+    "referenciaId": 34,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00034",
+    "fecha": "2025-12-07T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1665,
+      "cliente": "Exportadora del Sur",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 35,
+    "tipo": "venta",
+    "referenciaId": 35,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00035",
+    "fecha": "2025-12-06T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 480,
+      "cliente": "Restaurante Tropical",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 36,
+    "tipo": "venta",
+    "referenciaId": 36,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de aceite - Folio: VENT-00036",
+    "fecha": "2025-12-05T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 8800,
+      "cliente": "Importadora Americana",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 37,
+    "tipo": "venta",
+    "referenciaId": 37,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00037",
+    "fecha": "2025-12-04T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 18,
+      "cliente": "Artesano Independiente",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 38,
+    "tipo": "venta",
+    "referenciaId": 38,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00038",
+    "fecha": "2025-12-03T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1350,
+      "cliente": "Distribuidora Local",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 39,
+    "tipo": "venta",
+    "referenciaId": 39,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00039",
+    "fecha": "2025-12-02T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2200,
+      "cliente": "Supermercado Central",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 40,
+    "tipo": "venta",
+    "referenciaId": 40,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00040",
+    "fecha": "2025-12-01T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1202.5,
+      "cliente": "Exportadora del Norte",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 41,
+    "tipo": "venta",
+    "referenciaId": 41,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de pulpa fresca - Folio: VENT-00041",
+    "fecha": "2025-11-30T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1950,
+      "cliente": "Importadora Española",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 42,
+    "tipo": "venta",
+    "referenciaId": 42,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00042",
+    "fecha": "2025-11-29T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 990,
+      "cliente": "Tienda Naturalista",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 43,
+    "tipo": "venta",
+    "referenciaId": 43,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00043",
+    "fecha": "2025-11-28T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 56.25,
+      "cliente": "Artesanías Regionales",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 44,
+    "tipo": "venta",
+    "referenciaId": 44,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00044",
+    "fecha": "2025-11-27T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1650,
+      "cliente": "Distribuidora Metropolitana",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 45,
+    "tipo": "venta",
+    "referenciaId": 45,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00045",
+    "fecha": "2025-11-26T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1540,
+      "cliente": "Supermercado Saludable",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 46,
+    "tipo": "venta",
+    "referenciaId": 46,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de copra - Folio: VENT-00046",
+    "fecha": "2025-11-25T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2035,
+      "cliente": "Importadora Asiática",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 47,
+    "tipo": "venta",
+    "referenciaId": 47,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00047",
+    "fecha": "2025-11-24T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 330,
+      "cliente": "Restaurante Gourmet",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 48,
+    "tipo": "venta",
+    "referenciaId": 48,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00048",
+    "fecha": "2025-11-23T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1760,
+      "cliente": "Tienda Especializada",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 49,
+    "tipo": "venta",
+    "referenciaId": 49,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00049",
+    "fecha": "2025-11-22T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 101.25,
+      "cliente": "Artesanías Contemporáneas",
+      "productos": ["Estopa"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 50,
+    "tipo": "venta",
+    "referenciaId": 50,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00050",
+    "fecha": "2025-11-21T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1140,
+      "cliente": "Panadería Tradicional",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 51,
+    "tipo": "venta",
+    "referenciaId": 51,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Gran exportación de aceite - Folio: VENT-00051",
+    "fecha": "2025-11-20T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 9625,
+      "cliente": "Importadora Mundial",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 52,
+    "tipo": "venta",
+    "referenciaId": 52,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00052",
+    "fecha": "2025-11-19T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 777,
+      "cliente": "Exportadora Regional",
+      "productos": ["Copra"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 53,
+    "tipo": "venta",
+    "referenciaId": 53,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta semanal - Folio: VENT-00053",
+    "fecha": "2025-11-18T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 390,
+      "cliente": "Mercado Popular",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 54,
+    "tipo": "venta",
+    "referenciaId": 54,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00054",
+    "fecha": "2025-11-17T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2640,
+      "cliente": "Distribuidora Premium",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 55,
+    "tipo": "venta",
+    "referenciaId": 55,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00055",
+    "fecha": "2025-11-16T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 40.5,
+      "cliente": "Artesano Local",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 56,
+    "tipo": "venta",
+    "referenciaId": 56,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de pulpa seca - Folio: VENT-00056",
+    "fecha": "2025-11-15T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2550,
+      "cliente": "Importadora Canadiense",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 57,
+    "tipo": "venta",
+    "referenciaId": 57,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00057",
+    "fecha": "2025-11-14T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 770,
+      "cliente": "Tienda Saludable",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 58,
+    "tipo": "venta",
+    "referenciaId": 58,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00058",
+    "fecha": "2025-11-13T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1073,
+      "cliente": "Exportadora Nacional",
+      "productos": ["Copra"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 59,
+    "tipo": "venta",
+    "referenciaId": 59,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00059",
+    "fecha": "2025-11-12T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1125,
+      "cliente": "Restaurante Mexicano",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 60,
+    "tipo": "venta",
+    "referenciaId": 60,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00060",
+    "fecha": "2025-11-11T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1320,
+      "cliente": "Supermercado Verde",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 61,
+    "tipo": "venta",
+    "referenciaId": 61,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de estopa - Folio: VENT-00061",
+    "fecha": "2025-11-10T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 78.75,
+      "cliente": "Importadora Textil",
+      "productos": ["Estopa"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 62,
+    "tipo": "venta",
+    "referenciaId": 62,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00062",
+    "fecha": "2025-11-09T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 810,
+      "cliente": "Panadería Moderna",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 63,
+    "tipo": "venta",
+    "referenciaId": 63,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00063",
+    "fecha": "2025-11-08T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2090,
+      "cliente": "Tienda Orgánica",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 64,
+    "tipo": "venta",
+    "referenciaId": 64,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00064",
+    "fecha": "2025-11-07T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1757.5,
+      "cliente": "Exportadora del Sur",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 65,
+    "tipo": "venta",
+    "referenciaId": 65,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00065",
+    "fecha": "2025-11-06T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 510,
+      "cliente": "Restaurante Tropical",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 66,
+    "tipo": "venta",
+    "referenciaId": 66,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de aceite - Folio: VENT-00066",
+    "fecha": "2025-11-05T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 8525,
+      "cliente": "Importadora Americana",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 67,
+    "tipo": "venta",
+    "referenciaId": 67,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00067",
+    "fecha": "2025-11-04T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 27,
+      "cliente": "Artesano Independiente",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 68,
+    "tipo": "venta",
+    "referenciaId": 68,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00068",
+    "fecha": "2025-11-03T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1440,
+      "cliente": "Distribuidora Local",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 69,
+    "tipo": "venta",
+    "referenciaId": 69,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00069",
+    "fecha": "2025-11-02T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2310,
+      "cliente": "Supermercado Central",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 70,
+    "tipo": "venta",
+    "referenciaId": 70,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00070",
+    "fecha": "2025-11-01T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1258,
+      "cliente": "Exportadora del Norte",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 71,
+    "tipo": "venta",
+    "referenciaId": 71,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de pulpa fresca - Folio: VENT-00071",
+    "fecha": "2025-10-31T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1875,
+      "cliente": "Importadora Española",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 72,
+    "tipo": "venta",
+    "referenciaId": 72,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00072",
+    "fecha": "2025-10-30T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 880,
+      "cliente": "Tienda Naturalista",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 73,
+    "tipo": "venta",
+    "referenciaId": 73,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00073",
+    "fecha": "2025-10-29T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 49.5,
+      "cliente": "Artesanías Regionales",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 74,
+    "tipo": "venta",
+    "referenciaId": 74,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00074",
+    "fecha": "2025-10-28T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1560,
+      "cliente": "Distribuidora Metropolitana",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 75,
+    "tipo": "venta",
+    "referenciaId": 75,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00075",
+    "fecha": "2025-10-27T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1430,
+      "cliente": "Supermercado Saludable",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 76,
+    "tipo": "venta",
+    "referenciaId": 76,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de copra - Folio: VENT-00076",
+    "fecha": "2025-10-26T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1942.5,
+      "cliente": "Importadora Asiática",
+      "productos": ["Copra"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 77,
+    "tipo": "venta",
+    "referenciaId": 77,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa fresca - Folio: VENT-00077",
+    "fecha": "2025-10-25T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 360,
+      "cliente": "Restaurante Gourmet",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 78,
+    "tipo": "venta",
+    "referenciaId": 78,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00078",
+    "fecha": "2025-10-24T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1815,
+      "cliente": "Tienda Especializada",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 79,
+    "tipo": "venta",
+    "referenciaId": 79,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00079",
+    "fecha": "2025-10-23T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 90,
+      "cliente": "Artesanías Contemporáneas",
+      "productos": ["Estopa"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 80,
+    "tipo": "venta",
+    "referenciaId": 80,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de pulpa seca - Folio: VENT-00080",
+    "fecha": "2025-10-22T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1080,
+      "cliente": "Panadería Tradicional",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 81,
+    "tipo": "venta",
+    "referenciaId": 81,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Gran exportación de aceite - Folio: VENT-00081",
+    "fecha": "2025-10-21T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 9350,
+      "cliente": "Importadora Mundial",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 82,
+    "tipo": "venta",
+    "referenciaId": 82,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00082",
+    "fecha": "2025-10-20T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 814,
+      "cliente": "Exportadora Regional",
+      "productos": ["Copra"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 83,
+    "tipo": "venta",
+    "referenciaId": 83,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta semanal - Folio: VENT-00083",
+    "fecha": "2025-10-19T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 435,
+      "cliente": "Mercado Popular",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 84,
+    "tipo": "venta",
+    "referenciaId": 84,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00084",
+    "fecha": "2025-10-18T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2530,
+      "cliente": "Distribuidora Premium",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 85,
+    "tipo": "venta",
+    "referenciaId": 85,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de estopa - Folio: VENT-00085",
+    "fecha": "2025-10-17T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 36,
+      "cliente": "Artesano Local",
+      "productos": ["Estopa"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 86,
+    "tipo": "venta",
+    "referenciaId": 86,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Exportación de pulpa seca - Folio: VENT-00086",
+    "fecha": "2025-10-16T14:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2340,
+      "cliente": "Importadora Canadiense",
+      "productos": ["Pulpa seca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 87,
+    "tipo": "venta",
+    "referenciaId": 87,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de aceite - Folio: VENT-00087",
+    "fecha": "2025-10-15T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 715,
+      "cliente": "Tienda Saludable",
+      "productos": ["Aceite de coco"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 88,
+    "tipo": "venta",
+    "referenciaId": 88,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Venta de copra - Folio: VENT-00088",
+    "fecha": "2025-10-14T17:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 943.5,
+      "cliente": "Exportadora Nacional",
+      "productos": ["Copra"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 89,
+    "tipo": "venta",
+    "referenciaId": 89,
+    "referenciaTipo": "ventas",
+    "accion": "creacion",
+    "usuarioId": 2,
+    "detalles": "Primera venta de pulpa fresca - Folio: VENT-00089",
+    "fecha": "2025-10-13T12:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1080,
+      "cliente": "Restaurante Mexicano",
+      "productos": ["Pulpa fresca"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 90,
+    "tipo": "compra",
+    "referenciaId": 1,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00125",
+    "fecha": "2026-01-08T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6500,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 91,
+    "tipo": "compra",
+    "referenciaId": 2,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00124",
+    "fecha": "2026-01-07T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1625,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 92,
+    "tipo": "compra",
+    "referenciaId": 3,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00123",
+    "fecha": "2026-01-06T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4600,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 93,
+    "tipo": "compra",
+    "referenciaId": 4,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00122",
+    "fecha": "2026-01-05T16:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7440,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 94,
+    "tipo": "compra",
+    "referenciaId": 5,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00121",
+    "fecha": "2026-01-04T15:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1860,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 95,
+    "tipo": "compra",
+    "referenciaId": 6,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00120",
+    "fecha": "2026-01-03T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5400,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 96,
+    "tipo": "compra",
+    "referenciaId": 7,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00119",
+    "fecha": "2026-01-02T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1400,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 97,
+    "tipo": "compra",
+    "referenciaId": 8,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00118",
+    "fecha": "2026-01-01T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6930,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 98,
+    "tipo": "compra",
+    "referenciaId": 9,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00117",
+    "fecha": "2025-12-31T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1760,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 99,
+    "tipo": "compra",
+    "referenciaId": 10,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00116",
+    "fecha": "2025-12-30T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6080,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 100,
+    "tipo": "compra",
+    "referenciaId": 11,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00115",
+    "fecha": "2025-12-29T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1530,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 101,
+    "tipo": "compra",
+    "referenciaId": 12,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra navideña de coco bueno - Folio: COMP-00114",
+    "fecha": "2025-12-28T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5185,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 102,
+    "tipo": "compra",
+    "referenciaId": 13,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00113",
+    "fecha": "2025-12-27T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1650,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 103,
+    "tipo": "compra",
+    "referenciaId": 14,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00112",
+    "fecha": "2025-12-26T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6510,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 104,
+    "tipo": "compra",
+    "referenciaId": 15,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra navideña de coco desecho - Folio: COMP-00111",
+    "fecha": "2025-12-25T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1860,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 105,
+    "tipo": "compra",
+    "referenciaId": 16,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00110",
+    "fecha": "2025-12-24T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6300,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 106,
+    "tipo": "compra",
+    "referenciaId": 17,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00109",
+    "fecha": "2025-12-23T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1632,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 107,
+    "tipo": "compra",
+    "referenciaId": 18,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00108",
+    "fecha": "2025-12-22T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5520,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 108,
+    "tipo": "compra",
+    "referenciaId": 19,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00107",
+    "fecha": "2025-12-21T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1664,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 109,
+    "tipo": "compra",
+    "referenciaId": 20,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00106",
+    "fecha": "2025-12-20T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6588,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 110,
+    "tipo": "compra",
+    "referenciaId": 21,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00105",
+    "fecha": "2025-12-19T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1914,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 111,
+    "tipo": "compra",
+    "referenciaId": 22,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00104",
+    "fecha": "2025-12-18T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6076,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 112,
+    "tipo": "compra",
+    "referenciaId": 23,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00103",
+    "fecha": "2025-12-17T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1610,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 113,
+    "tipo": "compra",
+    "referenciaId": 24,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00102",
+    "fecha": "2025-12-16T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5632,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 114,
+    "tipo": "compra",
+    "referenciaId": 25,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00101",
+    "fecha": "2025-12-15T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1674,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 115,
+    "tipo": "compra",
+    "referenciaId": 26,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00096",
+    "fecha": "2025-12-14T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6426,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 116,
+    "tipo": "compra",
+    "referenciaId": 27,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00099",
+    "fecha": "2025-12-13T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1984,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 117,
+    "tipo": "compra",
+    "referenciaId": 28,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00098",
+    "fecha": "2025-12-12T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5856,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 118,
+    "tipo": "compra",
+    "referenciaId": 29,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00097",
+    "fecha": "2025-12-11T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1496,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 119,
+    "tipo": "compra",
+    "referenciaId": 30,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00096",
+    "fecha": "2025-12-10T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5400,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 120,
+    "tipo": "compra",
+    "referenciaId": 31,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00095",
+    "fecha": "2025-12-09T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1848,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 121,
+    "tipo": "compra",
+    "referenciaId": 32,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00094",
+    "fecha": "2025-12-08T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6448,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 122,
+    "tipo": "compra",
+    "referenciaId": 33,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00093",
+    "fecha": "2025-12-07T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1984,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 123,
+    "tipo": "compra",
+    "referenciaId": 34,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00092",
+    "fecha": "2025-12-06T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5922,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 124,
+    "tipo": "compra",
+    "referenciaId": 35,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00091",
+    "fecha": "2025-12-05T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1470,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 125,
+    "tipo": "compra",
+    "referenciaId": 36,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00090",
+    "fecha": "2025-12-04T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5504,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 126,
+    "tipo": "compra",
+    "referenciaId": 37,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00089",
+    "fecha": "2025-12-03T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1856,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 127,
+    "tipo": "compra",
+    "referenciaId": 38,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00088",
+    "fecha": "2025-12-02T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6466,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 128,
+    "tipo": "compra",
+    "referenciaId": 39,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00087",
+    "fecha": "2025-12-01T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2178,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 129,
+    "tipo": "compra",
+    "referenciaId": 40,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00086",
+    "fecha": "2025-11-30T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5704,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 130,
+    "tipo": "compra",
+    "referenciaId": 41,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00085",
+    "fecha": "2025-11-29T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1360,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 131,
+    "tipo": "compra",
+    "referenciaId": 42,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00084",
+    "fecha": "2025-11-28T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5280,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 132,
+    "tipo": "compra",
+    "referenciaId": 43,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00083",
+    "fecha": "2025-11-27T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1860,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 133,
+    "tipo": "compra",
+    "referenciaId": 44,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00082",
+    "fecha": "2025-11-26T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6804,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 134,
+    "tipo": "compra",
+    "referenciaId": 45,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00081",
+    "fecha": "2025-11-25T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2176,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 135,
+    "tipo": "compra",
+    "referenciaId": 46,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00080",
+    "fecha": "2025-11-24T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5490,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 136,
+    "tipo": "compra",
+    "referenciaId": 47,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00079",
+    "fecha": "2025-11-23T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1330,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 137,
+    "tipo": "compra",
+    "referenciaId": 48,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00078",
+    "fecha": "2025-11-22T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5376,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 138,
+    "tipo": "compra",
+    "referenciaId": 49,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00077",
+    "fecha": "2025-11-21T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2046,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 139,
+    "tipo": "compra",
+    "referenciaId": 50,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00076",
+    "fecha": "2025-11-20T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6820,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 140,
+    "tipo": "compra",
+    "referenciaId": 51,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00075",
+    "fecha": "2025-11-19T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2170,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 141,
+    "tipo": "compra",
+    "referenciaId": 52,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00074",
+    "fecha": "2025-11-18T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5544,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 142,
+    "tipo": "compra",
+    "referenciaId": 53,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00073",
+    "fecha": "2025-11-17T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1224,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 143,
+    "tipo": "compra",
+    "referenciaId": 54,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00072",
+    "fecha": "2025-11-16T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4920,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 144,
+    "tipo": "compra",
+    "referenciaId": 55,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00071",
+    "fecha": "2025-11-15T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2048,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 145,
+    "tipo": "compra",
+    "referenciaId": 56,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00070",
+    "fecha": "2025-11-14T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 6832,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 146,
+    "tipo": "compra",
+    "referenciaId": 57,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00069",
+    "fecha": "2025-11-13T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2376,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 147,
+    "tipo": "compra",
+    "referenciaId": 58,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00068",
+    "fecha": "2025-11-12T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5332,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 148,
+    "tipo": "compra",
+    "referenciaId": 59,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00067",
+    "fecha": "2025-11-11T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1190,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 149,
+    "tipo": "compra",
+    "referenciaId": 60,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00066",
+    "fecha": "2025-11-10T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5120,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 150,
+    "tipo": "compra",
+    "referenciaId": 61,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00065",
+    "fecha": "2025-11-09T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2046,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 151,
+    "tipo": "compra",
+    "referenciaId": 62,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00064",
+    "fecha": "2025-11-08T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7182,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 152,
+    "tipo": "compra",
+    "referenciaId": 63,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00063",
+    "fecha": "2025-11-07T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2368,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 153,
+    "tipo": "compra",
+    "referenciaId": 64,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00062",
+    "fecha": "2025-11-06T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5124,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 154,
+    "tipo": "compra",
+    "referenciaId": 65,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00061",
+    "fecha": "2025-11-05T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1088,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 155,
+    "tipo": "compra",
+    "referenciaId": 66,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00060",
+    "fecha": "2025-11-04T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4680,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 156,
+    "tipo": "compra",
+    "referenciaId": 67,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00059",
+    "fecha": "2025-11-03T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2244,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 157,
+    "tipo": "compra",
+    "referenciaId": 68,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00058",
+    "fecha": "2025-11-02T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7192,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 158,
+    "tipo": "compra",
+    "referenciaId": 69,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00057",
+    "fecha": "2025-11-01T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2356,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 159,
+    "tipo": "compra",
+    "referenciaId": 70,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00056",
+    "fecha": "2025-10-31T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 5166,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 160,
+    "tipo": "compra",
+    "referenciaId": 71,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00055",
+    "fecha": "2025-10-30T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1050,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 161,
+    "tipo": "compra",
+    "referenciaId": 72,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00054",
+    "fecha": "2025-10-29T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4864,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 162,
+    "tipo": "compra",
+    "referenciaId": 73,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00053",
+    "fecha": "2025-10-28T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2240,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 163,
+    "tipo": "compra",
+    "referenciaId": 74,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00052",
+    "fecha": "2025-10-27T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7198,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 164,
+    "tipo": "compra",
+    "referenciaId": 75,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00051",
+    "fecha": "2025-10-26T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2574,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 165,
+    "tipo": "compra",
+    "referenciaId": 76,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00050",
+    "fecha": "2025-10-25T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4960,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 166,
+    "tipo": "compra",
+    "referenciaId": 77,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00049",
+    "fecha": "2025-10-24T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 952,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 167,
+    "tipo": "compra",
+    "referenciaId": 78,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00048",
+    "fecha": "2025-10-23T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4440,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 168,
+    "tipo": "compra",
+    "referenciaId": 79,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00047",
+    "fecha": "2025-10-22T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2232,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 169,
+    "tipo": "compra",
+    "referenciaId": 80,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00046",
+    "fecha": "2025-10-21T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7560,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 170,
+    "tipo": "compra",
+    "referenciaId": 81,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00045",
+    "fecha": "2025-10-20T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2560,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 171,
+    "tipo": "compra",
+    "referenciaId": 82,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00044",
+    "fecha": "2025-10-19T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4758,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 172,
+    "tipo": "compra",
+    "referenciaId": 83,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00043",
+    "fecha": "2025-10-18T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 910,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 173,
+    "tipo": "compra",
+    "referenciaId": 84,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00042",
+    "fecha": "2025-10-17T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4608,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 174,
+    "tipo": "compra",
+    "referenciaId": 85,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00041",
+    "fecha": "2025-10-16T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2442,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 175,
+    "tipo": "compra",
+    "referenciaId": 86,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00040",
+    "fecha": "2025-10-15T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7564,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 176,
+    "tipo": "compra",
+    "referenciaId": 87,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00039",
+    "fecha": "2025-10-14T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2752,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 177,
+    "tipo": "compra",
+    "referenciaId": 88,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00038",
+    "fecha": "2025-10-13T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4788,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 178,
+    "tipo": "compra",
+    "referenciaId": 89,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00037",
+    "fecha": "2025-10-12T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 816,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 179,
+    "tipo": "compra",
+    "referenciaId": 90,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00036",
+    "fecha": "2025-10-11T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4200,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 180,
+    "tipo": "compra",
+    "referenciaId": 91,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00035",
+    "fecha": "2025-10-10T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2432,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 181,
+    "tipo": "compra",
+    "referenciaId": 92,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00034",
+    "fecha": "2025-10-09T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7564,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 182,
+    "tipo": "compra",
+    "referenciaId": 93,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00033",
+    "fecha": "2025-10-08T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2772,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 183,
+    "tipo": "compra",
+    "referenciaId": 94,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00032",
+    "fecha": "2025-10-07T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4588,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 184,
+    "tipo": "compra",
+    "referenciaId": 95,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00031",
+    "fecha": "2025-10-06T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 770,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 185,
+    "tipo": "compra",
+    "referenciaId": 96,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra regular de coco bueno - Folio: COMP-00030",
+    "fecha": "2025-10-05T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4352,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 186,
+    "tipo": "compra",
+    "referenciaId": 97,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco desecho - Folio: COMP-00029",
+    "fecha": "2025-10-04T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2418,
+      "proveedor": "Finca San José",
+      "productos": ["Coco desecho"],
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 187,
+    "tipo": "compra",
+    "referenciaId": 98,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco bueno - Folio: COMP-00028",
+    "fecha": "2025-10-03T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 7938,
+      "proveedor": "Finca Los Cocos",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 188,
+    "tipo": "compra",
+    "referenciaId": 99,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra de coco desecho - Folio: COMP-00027",
+    "fecha": "2025-10-02T15:30:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2752,
+      "proveedor": "Plantación del Valle",
+      "productos": ["Coco desecho"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 189,
+    "tipo": "compra",
+    "referenciaId": 100,
+    "referenciaTipo": "compras",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Compra semanal de coco bueno - Folio: COMP-00026",
+    "fecha": "2025-10-01T16:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 4392,
+      "proveedor": "Finca San José",
+      "productos": ["Coco bueno"],
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 190,
+    "tipo": "gasto",
+    "referenciaId": 1,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en combustible - Folio: GAST-00001",
+    "fecha": "2026-01-10T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2500,
+      "categoria": "Transporte",
+      "proveedor": "Pemex",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 191,
+    "tipo": "gasto",
+    "referenciaId": 2,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en reparación de máquina - Folio: GAST-00002",
+    "fecha": "2026-01-08T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1800,
+      "categoria": "Mantenimiento",
+      "proveedor": "Taller Industrial García",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 192,
+    "tipo": "gasto",
+    "referenciaId": 3,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en factura de luz - Folio: GAST-00003",
+    "fecha": "2026-01-05T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 3200,
+      "categoria": "Servicios",
+      "proveedor": "CFE",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 193,
+    "tipo": "gasto",
+    "referenciaId": 4,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en cajas y etiquetas - Folio: GAST-00004",
+    "fecha": "2026-01-03T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 950,
+      "categoria": "Materiales",
+      "proveedor": "Empaques del Valle",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 194,
+    "tipo": "gasto",
+    "referenciaId": 5,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en mantenimiento vehicular - Folio: GAST-00005",
+    "fecha": "2025-12-28T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1200,
+      "categoria": "Transporte",
+      "proveedor": "Auto Servicio Ramírez",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 195,
+    "tipo": "gasto",
+    "referenciaId": 6,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en pago de empleados - Folio: GAST-00006",
+    "fecha": "2025-12-27T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 8500,
+      "categoria": "Personal",
+      "proveedor": "Nómina Interna",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 196,
+    "tipo": "gasto",
+    "referenciaId": 7,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en factura de agua - Folio: GAST-00007",
+    "fecha": "2025-12-25T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 450,
+      "categoria": "Servicios",
+      "proveedor": "SAPAC",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 197,
+    "tipo": "gasto",
+    "referenciaId": 8,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en reparación de techo - Folio: GAST-00008",
+    "fecha": "2025-12-20T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2800,
+      "categoria": "Mantenimiento",
+      "proveedor": "Constructora López",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 198,
+    "tipo": "gasto",
+    "referenciaId": 9,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en diésel para generador - Folio: GAST-00009",
+    "fecha": "2025-12-18T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2200,
+      "categoria": "Transporte",
+      "proveedor": "Pemex",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 199,
+    "tipo": "gasto",
+    "referenciaId": 10,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en productos de limpieza - Folio: GAST-00010",
+    "fecha": "2025-12-15T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 320,
+      "categoria": "Materiales",
+      "proveedor": "Distribuidora Limpia",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 200,
+    "tipo": "gasto",
+    "referenciaId": 11,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en servicio de internet - Folio: GAST-00011",
+    "fecha": "2025-12-10T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 800,
+      "categoria": "Servicios",
+      "proveedor": "Telmex",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 201,
+    "tipo": "gasto",
+    "referenciaId": 12,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en curso de seguridad - Folio: GAST-00012",
+    "fecha": "2025-12-08T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1500,
+      "categoria": "Personal",
+      "proveedor": "Instituto de Capacitación",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 202,
+    "tipo": "gasto",
+    "referenciaId": 13,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en seguro del camión - Folio: GAST-00013",
+    "fecha": "2025-12-05T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1800,
+      "categoria": "Transporte",
+      "proveedor": "Seguros Monterrey",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 203,
+    "tipo": "gasto",
+    "referenciaId": 14,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en repuestos para prensadora - Folio: GAST-00014",
+    "fecha": "2025-12-03T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 950,
+      "categoria": "Mantenimiento",
+      "proveedor": "Maquinaria Industrial",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 204,
+    "tipo": "gasto",
+    "referenciaId": 15,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en factura de teléfono - Folio: GAST-00015",
+    "fecha": "2025-12-01T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 250,
+      "categoria": "Servicios",
+      "proveedor": "Telcel",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 205,
+    "tipo": "gasto",
+    "referenciaId": 16,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en suministros de oficina - Folio: GAST-00016",
+    "fecha": "2025-11-28T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 180,
+      "categoria": "Materiales",
+      "proveedor": "Papelería Central",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 206,
+    "tipo": "gasto",
+    "referenciaId": 17,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en gasolina para camión - Folio: GAST-00017",
+    "fecha": "2025-11-25T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2100,
+      "categoria": "Transporte",
+      "proveedor": "Pemex",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 207,
+    "tipo": "gasto",
+    "referenciaId": 18,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en pago de empleados - Folio: GAST-00018",
+    "fecha": "2025-11-21T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 8500,
+      "categoria": "Personal",
+      "proveedor": "Nómina Interna",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 208,
+    "tipo": "gasto",
+    "referenciaId": 19,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en factura de luz - Folio: GAST-00019",
+    "fecha": "2025-11-18T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 3100,
+      "categoria": "Servicios",
+      "proveedor": "CFE",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 209,
+    "tipo": "gasto",
+    "referenciaId": 20,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en pintura de almacén - Folio: GAST-00020",
+    "fecha": "2025-11-15T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 650,
+      "categoria": "Mantenimiento",
+      "proveedor": "Pinturas y Más",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 210,
+    "tipo": "gasto",
+    "referenciaId": 21,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en cambio de llantas - Folio: GAST-00021",
+    "fecha": "2025-11-12T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1350,
+      "categoria": "Transporte",
+      "proveedor": "Llantera Express",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 211,
+    "tipo": "gasto",
+    "referenciaId": 22,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en etiquetas y sellos - Folio: GAST-00022",
+    "fecha": "2025-11-10T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 880,
+      "categoria": "Materiales",
+      "proveedor": "Empaques del Valle",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 212,
+    "tipo": "gasto",
+    "referenciaId": 23,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en factura de agua - Folio: GAST-00023",
+    "fecha": "2025-11-08T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 420,
+      "categoria": "Servicios",
+      "proveedor": "SAPAC",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 213,
+    "tipo": "gasto",
+    "referenciaId": 24,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en uniformes de trabajo - Folio: GAST-00024",
+    "fecha": "2025-11-05T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1200,
+      "categoria": "Personal",
+      "proveedor": "Uniformes Industriales",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 214,
+    "tipo": "gasto",
+    "referenciaId": 25,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en gasolina para camión - Folio: GAST-00025",
+    "fecha": "2025-11-03T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1950,
+      "categoria": "Transporte",
+      "proveedor": "Pemex",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 215,
+    "tipo": "gasto",
+    "referenciaId": 26,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en reparación de secadora - Folio: GAST-00026",
+    "fecha": "2025-11-01T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 2200,
+      "categoria": "Mantenimiento",
+      "proveedor": "Taller Industrial García",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 216,
+    "tipo": "gasto",
+    "referenciaId": 27,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en servicio de internet - Folio: GAST-00027",
+    "fecha": "2025-10-28T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 800,
+      "categoria": "Servicios",
+      "proveedor": "Telmex",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 217,
+    "tipo": "gasto",
+    "referenciaId": 28,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en productos de limpieza - Folio: GAST-00028",
+    "fecha": "2025-10-25T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 290,
+      "categoria": "Materiales",
+      "proveedor": "Distribuidora Limpia",
+      "metodoPago": "efectivo"
+    }
+  },
+  {
+    "id": 218,
+    "tipo": "gasto",
+    "referenciaId": 29,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en pago de empleados - Folio: GAST-00029",
+    "fecha": "2025-10-24T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 8500,
+      "categoria": "Personal",
+      "proveedor": "Nómina Interna",
+      "metodoPago": "transferencia"
+    }
+  },
+  {
+    "id": 219,
+    "tipo": "gasto",
+    "referenciaId": 30,
+    "referenciaTipo": "gastos",
+    "accion": "creacion",
+    "usuarioId": 3,
+    "detalles": "Gasto en seguro del camión - Folio: GAST-00030",
+    "fecha": "2025-10-20T00:00:00.000Z",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "metadata": {
+      "total": 1800,
+      "categoria": "Transporte",
+      "proveedor": "Seguros Monterrey",
+      "metodoPago": "transferencia"
+    }
+  }
+]
+

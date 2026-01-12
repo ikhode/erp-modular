@@ -3,17 +3,128 @@
     "employeeId": 1,
     "action": "entrada",
     "timestamp": "2026-01-10T07:00:00.000Z",
-    "notes": "Inicio de turno",
+    "notes": "Inicio de turno matutino",
     "createdAt": "2026-01-10T07:00:00.000Z",
     "updatedAt": "2026-01-10T07:00:00.000Z"
   },
   {
     "employeeId": 2,
+    "action": "entrada",
+    "timestamp": "2026-01-10T07:15:00.000Z",
+    "notes": "Inicio de turno matutino",
+    "createdAt": "2026-01-10T07:15:00.000Z",
+    "updatedAt": "2026-01-10T07:15:00.000Z"
+  },
+  {
+    "employeeId": 3,
+    "action": "entrada",
+    "timestamp": "2026-01-10T07:30:00.000Z",
+    "notes": "Inicio de turno matutino",
+    "createdAt": "2026-01-10T07:30:00.000Z",
+    "updatedAt": "2026-01-10T07:30:00.000Z"
+  },
+  {
+    "employeeId": 4,
+    "action": "entrada",
+    "timestamp": "2026-01-10T07:45:00.000Z",
+    "notes": "Inicio de turno matutino",
+    "createdAt": "2026-01-10T07:45:00.000Z",
+    "updatedAt": "2026-01-10T07:45:00.000Z"
+  },
+  {
+    "employeeId": 5,
+    "action": "entrada",
+    "timestamp": "2026-01-10T08:00:00.000Z",
+    "notes": "Inicio de turno matutino",
+    "createdAt": "2026-01-10T08:00:00.000Z",
+    "updatedAt": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "employeeId": 1,
     "action": "salida",
     "timestamp": "2026-01-10T15:00:00.000Z",
-    "notes": "Fin de turno",
+    "notes": "Fin de turno matutino",
     "createdAt": "2026-01-10T15:00:00.000Z",
     "updatedAt": "2026-01-10T15:00:00.000Z"
+  },
+  {
+    "employeeId": 2,
+    "action": "salida",
+    "timestamp": "2026-01-10T15:15:00.000Z",
+    "notes": "Fin de turno matutino",
+    "createdAt": "2026-01-10T15:15:00.000Z",
+    "updatedAt": "2026-01-10T15:15:00.000Z"
+  },
+  {
+    "employeeId": 3,
+    "action": "salida",
+    "timestamp": "2026-01-10T15:30:00.000Z",
+    "notes": "Fin de turno matutino",
+    "createdAt": "2026-01-10T15:30:00.000Z",
+    "updatedAt": "2026-01-10T15:30:00.000Z"
+  },
+  {
+    "employeeId": 4,
+    "action": "salida",
+    "timestamp": "2026-01-10T15:45:00.000Z",
+    "notes": "Fin de turno matutino",
+    "createdAt": "2026-01-10T15:45:00.000Z",
+    "updatedAt": "2026-01-10T15:45:00.000Z"
+  },
+  {
+    "employeeId": 5,
+    "action": "salida",
+    "timestamp": "2026-01-10T16:00:00.000Z",
+    "notes": "Fin de turno matutino",
+    "createdAt": "2026-01-10T16:00:00.000Z",
+    "updatedAt": "2026-01-10T16:00:00.000Z"
+  },
+  {
+    "employeeId": 6,
+    "action": "entrada",
+    "timestamp": "2026-01-10T14:00:00.000Z",
+    "notes": "Inicio de turno vespertino",
+    "createdAt": "2026-01-10T14:00:00.000Z",
+    "updatedAt": "2026-01-10T14:00:00.000Z"
+  },
+  {
+    "employeeId": 7,
+    "action": "entrada",
+    "timestamp": "2026-01-10T14:15:00.000Z",
+    "notes": "Inicio de turno vespertino",
+    "createdAt": "2026-01-10T14:15:00.000Z",
+    "updatedAt": "2026-01-10T14:15:00.000Z"
+  },
+  {
+    "employeeId": 8,
+    "action": "entrada",
+    "timestamp": "2026-01-10T14:30:00.000Z",
+    "notes": "Inicio de turno vespertino",
+    "createdAt": "2026-01-10T14:30:00.000Z",
+    "updatedAt": "2026-01-10T14:30:00.000Z"
+  },
+  {
+    "employeeId": 6,
+    "action": "salida",
+    "timestamp": "2026-01-10T22:00:00.000Z",
+    "notes": "Fin de turno vespertino",
+    "createdAt": "2026-01-10T22:00:00.000Z",
+    "updatedAt": "2026-01-10T22:00:00.000Z"
+  },
+  {
+    "employeeId": 7,
+    "action": "salida",
+    "timestamp": "2026-01-10T22:15:00.000Z",
+    "notes": "Fin de turno vespertino",
+    "createdAt": "2026-01-10T22:15:00.000Z",
+    "updatedAt": "2026-01-10T22:15:00.000Z"
+  },
+  {
+    "employeeId": 8,
+    "action": "salida",
+    "timestamp": "2026-01-10T22:30:00.000Z",
+    "notes": "Fin de turno vespertino",
+    "createdAt": "2026-01-10T22:30:00.000Z",
+    "updatedAt": "2026-01-10T22:30:00.000Z"
   }
 ]
-

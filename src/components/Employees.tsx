@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {CreditCard as Edit, Eye, Search, Trash2, UserPlus, Users} from 'lucide-react';
+import {Camera, CreditCard as Edit, Eye, Search, Trash2, UserPlus, Users} from 'lucide-react';
 import {storage} from '../lib/storage';
 import type {Empleado, ProduccionTicket} from '../lib/db';
+import FaceAuth from './FaceAuth';
+import {useTenant} from '../contexts/TenantContext';
 
 const Employees: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -19,6 +21,10 @@ const Employees: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Empleado | null>(null);
   const [employeeTickets, setEmployeeTickets] = useState<(ProduccionTicket & { procesoNombre?: string; productoNombre?: string })[]>([]);
   const [showEmployeeHistory, setShowEmployeeHistory] = useState(false);
+  const [showFaceRegistration, setShowFaceRegistration] = useState(false);
+  const [faceRegistrationEmployee, setFaceRegistrationEmployee] = useState<Empleado | null>(null);
+
+  const { tenantId } = useTenant();
 
   // Refresca empleados cada vez que se cierra el modal de agregar/editar
   useEffect(() => {
@@ -110,6 +116,11 @@ const Employees: React.FC = () => {
     );
 
     setEmployeeTickets(enrichedTickets as ProduccionTicket[]);
+  };
+
+  const handleFaceRegistration = (employee: Empleado) => {
+    setFaceRegistrationEmployee(employee);
+    setShowFaceRegistration(true);
   };
 
   return (
@@ -240,6 +251,9 @@ const Employees: React.FC = () => {
                       <button className="text-green-600 hover:text-green-900" onClick={() => handleShowHistory(employee)}>
                         <Eye className="h-4 w-4" />
                       </button>
+                      <button className="text-purple-600 hover:text-purple-900" onClick={() => handleFaceRegistration(employee)}>
+                        <Camera className="h-4 w-4" />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -311,7 +325,7 @@ const Employees: React.FC = () => {
                       className="w-32 px-2 py-1 border rounded"
                       onBlur={async () => {
                         if (newRole.trim()) {
-                          await storage.userRoles.add({ name: newRole.trim(), createdAt: new Date(), updatedAt: new Date() });
+                          await storage.userRoles.add({ name: newRole.trim(), createdAt: new Date(), updatedAt: new Date(), tenantId });
                           setRoles(prev => [...prev, newRole.trim()]);
                           setNewEmployee({ ...newEmployee, rol: newRole.trim() });
                           setShowNewRoleInput(false);
@@ -440,6 +454,36 @@ const Employees: React.FC = () => {
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de registro facial */}
+      {showFaceRegistration && faceRegistrationEmployee && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Registro Facial - {faceRegistrationEmployee.nombre}
+            </h3>
+            <div className="mb-4">
+              <FaceAuth
+                mode="register"
+                userId={faceRegistrationEmployee.id?.toString()}
+                onAuthenticated={() => {
+                  setShowFaceRegistration(false);
+                  alert('Face registered successfully!');
+                }}
+                onRoleSet={() => {}}
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowFaceRegistration(false)}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>

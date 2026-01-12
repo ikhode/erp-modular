@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {CreditCard, Edit, FileText, History, Plus, Save, Search, Trash2, Truck, User, Wrench, X} from 'lucide-react';
 import {proveedorStorage} from '../lib/storage';
 import type {Proveedor} from '../lib/db';
+import {useTenant} from '../contexts/TenantContext';
 
 const Providers: React.FC = () => {
   const [providers, setProviders] = useState<Proveedor[]>([]);
@@ -24,6 +25,8 @@ const Providers: React.FC = () => {
     categoria: '',
     notas: ''
   });
+
+  const { tenantId } = useTenant();
 
   // Firma digital
   const [showSignatureModal, setShowSignatureModal] = useState(false);
@@ -65,6 +68,7 @@ const Providers: React.FC = () => {
     try {
       const providerData = {
         ...formData,
+        tenantId: tenantId!,
         createdAt: new Date(),
         updatedAt: new Date()
       };

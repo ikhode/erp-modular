@@ -3,77 +3,77 @@
     "id": 1,
     "productoId": 1,
     "ubicacionId": 1,
-    "cantidad": 2500,
-    "minimo": 500,
-    "maximo": 5000,
-    "proveedor": "Finca Los Cocos de Michoacán",
+    "cantidad": 1200,
+    "minimo": 100,
+    "maximo": 2000,
+    "proveedor": "Proveedor ABC",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T08:00:00.000Z"
   },
   {
     "id": 2,
     "productoId": 2,
     "ubicacionId": 1,
-    "cantidad": 800,
-    "minimo": 200,
+    "cantidad": 900,
+    "minimo": 50,
     "maximo": 1500,
-    "proveedor": "Finca Los Cocos de Michoacán",
+    "proveedor": "Proveedor XYZ",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T08:30:00.000Z"
   },
   {
     "id": 3,
     "productoId": 3,
-    "ubicacionId": 7,
-    "cantidad": 150,
+    "ubicacionId": 2,
+    "cantidad": 585,
     "minimo": 50,
-    "maximo": 300,
+    "maximo": 1000,
     "proveedor": "Producción interna",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T21:00:00.000Z"
   },
   {
     "id": 4,
     "productoId": 4,
-    "ubicacionId": 6,
-    "cantidad": 75,
-    "minimo": 25,
-    "maximo": 150,
+    "ubicacionId": 3,
+    "cantidad": 171,
+    "minimo": 20,
+    "maximo": 300,
     "proveedor": "Producción interna",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T19:00:00.000Z"
   },
   {
     "id": 5,
     "productoId": 5,
-    "ubicacionId": 6,
-    "cantidad": 200,
-    "minimo": 50,
-    "maximo": 400,
+    "ubicacionId": 4,
+    "cantidad": 81,
+    "minimo": 10,
+    "maximo": 200,
     "proveedor": "Producción interna",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T20:00:00.000Z"
   },
   {
     "id": 6,
     "productoId": 6,
-    "ubicacionId": 6,
-    "cantidad": 45,
-    "minimo": 10,
-    "maximo": 100,
+    "ubicacionId": 4,
+    "cantidad": 9,
+    "minimo": 5,
+    "maximo": 50,
     "proveedor": "Producción interna",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T20:00:00.000Z"
   },
   {
     "id": 7,
-    "productoId": 7,
-    "ubicacionId": 7,
-    "cantidad": 120,
-    "minimo": 30,
-    "maximo": 250,
-    "proveedor": "Subproducto de destopado",
+    "productoId": 8,
+    "ubicacionId": 2,
+    "cantidad": 65,
+    "minimo": 10,
+    "maximo": 100,
+    "proveedor": "Subproducto de producción",
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-01-10T00:00:00.000Z"
+    "updatedAt": "2026-01-10T21:00:00.000Z"
   }
 ]
