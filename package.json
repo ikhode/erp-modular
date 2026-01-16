@@ -15,7 +15,7 @@
     "@supabase/supabase-js": "^2.90.1",
     "@tensorflow/tfjs": "^4.22.0",
     "chart.js": "^4.5.1",
-    "deno": "^2.6.4",
+    "deno": "^2.6.5",
     "dexie": "^4.2.1",
     "face-api.js": "^0.22.2",
     "html5-qrcode": "^2.3.8",
