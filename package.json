@@ -12,7 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.90.1",
+    "@supabase/supabase-js": "^2.91.1",
     "@tensorflow/tfjs": "^4.22.0",
     "chart.js": "^4.5.1",
     "deno": "^2.6.4",
